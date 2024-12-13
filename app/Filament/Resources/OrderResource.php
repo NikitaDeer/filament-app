@@ -21,7 +21,7 @@ class OrderResource extends Resource
 
   protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-  protected static ?string $navigationGroup = 'Управление заявками';
+  protected static ?string $navigationGroup = 'Управление услугами и заявками';
 
   protected static ?string $navigationLabel = 'Заявки клиентов';
 
@@ -31,23 +31,28 @@ class OrderResource extends Resource
       ->schema([
         Card::make()
           ->schema([
-            Select::make('service_id')
-              ->relationship('service', 'name')
+            Forms\Components\Select::make('tariff_id')
+              ->relationship('tariff', 'title')
               ->required()
-              ->label('Выберите услугу')
+              ->label('Выберите тариф')
               ->options(
-                \App\Models\Service::where('is_published', 1)->pluck('name', 'id')->toArray()
+                \App\Models\Tariff::where('is_published', 1)->pluck('name', 'id')->toArray()
               ),
             // ->getOptions(function () {
             //   return \App\Models\Service::where('is_published', 1)->get()->pluck('name', 'id')->toArray();
             // }),
-            Select::make('user_id')
-              ->relationship('user', 'name')
+            Forms\Components\Select::make('user_id')
+              ->relationship('user', 'email')
               ->required()
               ->label('Имя пользователя'),
-            Forms\Components\DatePicker::make('order_date')
-              ->required()
-              ->label('Дата заявки'),
+            Forms\Components\Select::make('order_status')
+              ->options([
+                  'active' => 'Активный',
+                  'non-active' => 'Неактивный',
+                  'paused' => 'Приостановлен'
+              ])
+              ->default('non-active')
+              ->label('Статус'),
           ])->columns(3),
 
         Card::make()
@@ -67,27 +72,31 @@ class OrderResource extends Resource
           ->sortable()
           ->label('ID')
           ->searchable(),
-        Tables\Columns\TextColumn::make('user.name')
+        Tables\Columns\TextColumn::make('user.email')
           ->sortable()
           ->label('Имя пользователя')
           ->searchable(),
-        Tables\Columns\TextColumn::make('service.name')
+        Tables\Columns\TextColumn::make('tariff.title')
           ->sortable()
-          ->label('Услуга')
+          ->label('Тариф')
           ->searchable(),
-        Tables\Columns\TextColumn::make('service.price')
+        Tables\Columns\TextColumn::make('tariff.price')
           ->sortable()
           ->label('Цена')
           ->searchable(),
+        Tables\Columns\BadgeColumn::make('order_status')
+          ->colors([
+              'success' => 'active',
+              'danger' => 'non-active',
+              'warning' => 'paused',
+          ]),
         Tables\Columns\TextColumn::make('description')
           ->limit(20)
           ->label('Описание')
           ->searchable(),
-        Tables\Columns\TextColumn::make('order_date')
-          ->sortable()
-          ->searchable()
-          ->label('Дата заказа')
-          ->date('Y-m-d H:i'),
+        Tables\Columns\TextColumn::make('created_at')
+          ->dateTime()
+          ->label('Создан'),
       ])
       ->filters([
         //

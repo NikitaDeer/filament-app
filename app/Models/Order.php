@@ -11,9 +11,8 @@ class Order extends Model
 
   protected $fillable = [
     'description',
-    'order_date',
     'user_id',
-    'service_id',
+    'tariff_id',
   ];
 
   public function user()
@@ -21,8 +20,8 @@ class Order extends Model
     return $this->belongsTo(User::class);
   }
 
-  public function service()
+  public function tariff()
   {
-    return $this->belongsTo(Service::class);
+    return $this->belongsTo(Tariff::class);
   }
 }

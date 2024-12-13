@@ -34,27 +34,17 @@ class UserResource extends Resource
       ->schema([
         Card::make()
           ->schema([
-            TextInput::make('name')
-              ->label('Имя')
-              ->required()
-              ->maxLength(255),
-            TextInput::make('surname')
-              ->label('Фамилия')
-              ->maxLength(255),
-            TextInput::make('patronymic')
-              ->label('Отчество')
-              ->maxLength(255),
-            TextInput::make('phone')
-              ->label('Ном. телефона')
-              ->required()
-              ->tel()
-              ->maxLength(255),
+            // TextInput::make('name')
+            //   ->label('Имя')
+            //   ->maxLength(255),
             TextInput::make('email')
               ->label('Email')
               ->required()
               ->email()
               ->unique(User::class, 'email', fn ($record) => $record)
               ->maxLength(255),
+            Forms\Components\DateTimePicker::make('email_verified_at')
+              ->label('Email подтвержден'),
             TextInput::make('password')
               ->password()
               ->label('Пароль')
@@ -68,7 +58,12 @@ class UserResource extends Resource
               ->label('Подтвердите пароль')
               ->required(fn (Page $livewire): bool => $livewire instanceof CreateRecord)
               ->minLength(6)
-              ->dehydrated(false)
+              ->dehydrated(false),
+            Forms\Components\Select::make('roles')
+              ->multiple()
+              ->relationship('roles', 'name')
+              ->preload()
+              ->label('Роли')
           ])
       ]);
   }
@@ -81,25 +76,19 @@ class UserResource extends Resource
           ->label('ID')
           ->sortable(),
         TextColumn::make('name')
-          ->label('Имя')
-          ->sortable()
-          ->searchable(),
-        TextColumn::make('surname')
-          ->label('Фамилия')
-          ->sortable()
-          ->searchable(),
-        TextColumn::make('patronymic')
-          ->label('Отчество')
-          ->sortable()
-          ->searchable(),
-        TextColumn::make('phone')
-          ->label('Ном. телефона')
-          ->sortable()
-          ->searchable(),
+          ->label('Имя'),
         TextColumn::make('email')
           ->label('Email')
           ->sortable()
           ->searchable(),
+        // BooleanColumn::make('email_verified_at')
+        //             ->label('Email подтвержден')
+        //             ->trueIcon('heroicon-o-check-circle')
+        //             ->falseIcon('heroicon-o-x-circle'),
+        TextColumn::make('roles.name')
+                ->label('Роли')
+                ->formatStateUsing(fn ($state, $record) => $record->roles->pluck('name')->join(', '))
+                ->searchable(), 
         TextColumn::make('created_at')
           ->label('Дата создания')
           ->sortable()

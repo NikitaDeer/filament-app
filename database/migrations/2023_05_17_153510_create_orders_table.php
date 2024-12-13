@@ -15,12 +15,13 @@ return new class extends Migration
       $table->id();
 
       $table->text('description')->default('Опишите свою просьбу');
-      $table->date('order_date');
+
+      $table->enum('order_status', ['active', 'non-active', 'paused'])->default('non-active');
 
       $table->foreignId('user_id')
         ->constrained()
         ->cascadeOnDelete();
-      $table->foreignId('service_id')
+      $table->foreignId('tariff_id')
         ->constrained()
         ->cascadeOnDelete();
 

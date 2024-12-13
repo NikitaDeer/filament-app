@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Service;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Notifications\NewOrderNotification;
 use App\Http\Requests\Order\StoreOrderRequest;
 
 class OrderController extends Controller
@@ -36,16 +37,21 @@ class OrderController extends Controller
   {
 
     $data = $request->validated();
-
     $data['user_id'] = auth()->id();
 
     // Order::firstOrCreate($data);
     Order::create($data);
 
+    $order = Order::create($data);
+
     // return to_route('')
     //   ->withSuccess("Товар создан");
 
-    return to_route('home')->with('success', 'Order created successfully');
+    // Отправьте уведомление
+    $user = auth()->user();
+    $user->notify(new NewOrderNotification($order, $user));
+
+    return to_route('home')->with('success', 'Заявка отправлена успешно');
   }
 
   /**

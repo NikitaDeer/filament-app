@@ -17,13 +17,13 @@ use App\Filament\Resources\ServiceResource\RelationManagers;
 
 class ServiceResource extends Resource
 {
-  protected static ?string $model = Service::class;
+  // protected static ?string $model = Service::class;
 
-  protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
+  // protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
 
-  protected static ?string $navigationGroup = 'Управление заявками';
+  // protected static ?string $navigationGroup = 'Управление заявками';
 
-  protected static ?string $navigationLabel = 'Предоставляемые услуги';
+  // protected static ?string $navigationLabel = 'Предоставляемые услуги';
 
   public static function form(Form $form): Form
   {

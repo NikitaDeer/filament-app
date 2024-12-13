@@ -2,41 +2,65 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Page;
 use App\Models\User;
-use App\Models\Advantage;
+use App\Models\Order;
+use App\Models\Tariff;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-  /**
-   * Seed the application's database.
-   */
-  public function run(): void
-  {
-    // \App\Models\User::factory(10)->create();
+    public function run(): void
+    {
+        // Создание ролей
+        Role::create(['name' => 'Admin']);
+        Role::create(['name' => 'User']);
 
-    // \App\Models\Role::factory(10)->create();
+        // Создание администратора
+        $admin = User::create([
+            'name' => 'Администратор',
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+        ]);
+        $admin->assignRole('Admin');
 
-    Page::factory(3)->create();
-    Advantage::factory(12)->create();
+        // Создание тестового пользователя
+        $user = User::create([
+            'name' => 'Пользователь',
+            'email' => 'user@user.com',
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+        ]);
+        $user->assignRole('User');
 
-    $admin = User::factory()->create([
-      'name' => 'admin',
-      'email' => 'admin@example.com',
-    ]);
+        // Создание тарифов
+        $tariff1 = Tariff::create([
+            'title' => 'Базовый',
+            'description' => 'Базовый тариф для начинающих',
+            'price' => 100,
+            'is_published' => true,
+        ]);
 
-    $user = User::factory()->create([
-      'name' => 'user',
-      'email' => 'user@example.com',
-    ]);
+        $tariff2 = Tariff::create([
+            'title' => 'Премиум',
+            'description' => 'Премиум тариф для продвинутых пользователей',
+            'price' => 200,
+            'is_published' => true,
+        ]);
 
-    Role::create(['name' => 'Admin']);
-    Role::create(['name' => 'User']);
+        // Создание тестовых заказов
+        Order::create([
+            'user_id' => $user->id,
+            'tariff_id' => $tariff1->id,
+            'order_status' => 'active',
+        ]);
 
-    $admin->assignRole('Admin');
-    $user->assignRole('User');
-  }
+        Order::create([
+            'user_id' => $user->id,
+            'tariff_id' => $tariff2->id,
+            'order_status' => 'non-active',
+        ]);
+    }
 }

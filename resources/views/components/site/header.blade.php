@@ -3,7 +3,7 @@
     <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between">
       <a href="https://forestking.dergunov.info" class="flex items-center">
         {{-- <img src="сюда лого" class="mr-3 h-6 sm:h-9" alt="Lorem Logo" /> --}}
-        <span class="self-center whitespace-nowrap text-xl font-semibold">Lorem ipsum!</span>
+        <span class="self-center whitespace-nowrap text-xl font-semibold">Медицинские услуги</span>
       </a>
       <div class="flex items-center lg:order-2">
         @guest
@@ -40,7 +40,7 @@
               class="bg-primary-700 lg:text-primary-700 block rounded py-2 pr-4 pl-3 text-gray-700 lg:bg-transparent lg:p-0"
               aria-current="page">Home</a>
           </li>
-          <li>
+          {{-- <li>
             <a href="#"
               class="lg:hover:text-primary-700 block border-b border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 lg:border-0 lg:p-0 lg:hover:bg-transparent">Company</a>
           </li>
@@ -59,7 +59,7 @@
           <li>
             <a href="#"
               class="lg:hover:text-primary-700 block border-b border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 lg:border-0 lg:p-0 lg:hover:bg-transparent">Contact</a>
-          </li>
+          </li> --}}
         </ul>
       </div>
     </div>
