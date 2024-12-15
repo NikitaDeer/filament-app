@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\User;
+use Filament\Facades\Filament;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,7 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // $admin = User::where('name', 'admin')->first();
-        // view()->share('admin', $admin);
+        Filament::serving(function () {
+            Filament::registerViteTheme('resources/css/filament.css');
+        });
     }
 }
