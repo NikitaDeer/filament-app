@@ -16,8 +16,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\TariffResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-
 
 class TariffResource extends Resource
 {
@@ -33,20 +31,21 @@ class TariffResource extends Resource
     {
         return $form
             ->schema([
-            Section::make('Предоставляемый тариф')
-                ->schema([
-                TextInput::make('title')
-                    ->label(__('Заголовок:'))
-                    ->required(),
-                Textarea::make('description')
-                    ->label(__('Текст:')),
-                TextInput::make('price')
-                    ->label(__('Цена:'))
-                    ->required()
-                    ->numeric(),
-                Toggle::make('is_published')
-                    ->label(__('Опубликовать')),
-                ]),
+                Section::make('Предоставляемый тариф')
+                    ->schema([
+                        TextInput::make('title')
+                            ->label('Название тарифа')
+                            ->required(),
+                        Textarea::make('description')
+                            ->label('Описание'),
+                        TextInput::make('price')
+                            ->label('Базовая цена (месяц)')
+                            ->required()
+                            ->numeric()
+                            ->prefix('₽'),
+                        Toggle::make('is_published')
+                            ->label('Опубликовать'),
+                    ]),
             ]);
     }
 
@@ -54,29 +53,21 @@ class TariffResource extends Resource
     {
         return $table
             ->columns([
-            TextColumn::make('title')
-                ->searchable()
-                ->sortable()
-                ->label('Заголовок'),
-            TextColumn::make('description')
-                ->searchable()
-                ->sortable()
-                ->limit(25)
-                ->label('Содержимое'),
-            TextColumn::make('price')
-                ->searchable()
-                ->sortable()
-                ->money('RUB')
-                ->label('Цена'),
-            TextColumn::make('created_at')
-                ->searchable()
-                ->sortable()
-                ->dateTime('d-m-Y H:i')
-                ->label('Дата создания'),
-            ToggleColumn::make('is_published')
-                ->searchable()
-                ->sortable()
-                ->label('Опубликованно'),
+                TextColumn::make('title')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Название'),
+                TextColumn::make('description')
+                    ->limit(25)
+                    ->label('Описание'),
+                TextColumn::make('price')
+                    ->money('RUB')
+                    ->label('Базовая цена за месяц'),
+                ToggleColumn::make('is_published')
+                    ->label('Опубликован'),
+                TextColumn::make('created_at')
+                    ->dateTime('d.m.Y H:i')
+                    ->label('Создан'),
             ])
             ->filters([
                 //

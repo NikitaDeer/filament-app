@@ -10,9 +10,10 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Hash;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\UserResource\Pages;
@@ -34,36 +35,39 @@ class UserResource extends Resource
       ->schema([
         Card::make()
           ->schema([
-            // TextInput::make('name')
-            //   ->label('Имя')
-            //   ->maxLength(255),
-            TextInput::make('email')
-              ->label('Email')
+            TextInput::make('name')
               ->required()
+              ->maxLength(255)
+              ->label('Имя'),
+            TextInput::make('email')
               ->email()
-              ->unique(User::class, 'email', fn ($record) => $record)
-              ->maxLength(255),
-            Forms\Components\DateTimePicker::make('email_verified_at')
-              ->label('Email подтвержден'),
+              ->required()
+              ->unique(ignoreRecord: true)
+              ->label('Email'),
             TextInput::make('password')
               ->password()
+              ->required(fn ($livewire) => $livewire instanceof Pages\CreateUser)
+              ->minLength(8)
               ->label('Пароль')
-              ->required(fn (Page $livewire): bool => $livewire instanceof CreateRecord)
-              ->minLength(6)
-              ->same('passwordConfirmation')
-              ->dehydrated(fn ($state) => filled($state))
-              ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
-            TextInput::make('passwordConfirmation')
-              ->password()
-              ->label('Подтвердите пароль')
-              ->required(fn (Page $livewire): bool => $livewire instanceof CreateRecord)
-              ->minLength(6)
-              ->dehydrated(false),
-            Forms\Components\Select::make('roles')
-              ->multiple()
-              ->relationship('roles', 'name')
-              ->preload()
-              ->label('Роли')
+              ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+              ->visible(fn ($livewire) => $livewire instanceof Pages\CreateUser),
+            TextInput::make('email_verified_at')
+              ->disabled()
+              ->label('Дата подтверждения email')
+              ->formatStateUsing(fn ($state) => $state ? date('d.m.Y H:i', strtotime($state)) : 'Не подтвержден')
+              ->visible(fn ($livewire) => !($livewire instanceof Pages\CreateUser)),
+            Forms\Components\Select::make('current_tariff_id')
+              ->relationship('currentTariff', 'title')
+              ->label('Текущий тариф')
+              ->visible(fn ($livewire) => !($livewire instanceof Pages\CreateUser)),
+            Forms\Components\Select::make('tariff_status')
+              ->options([
+                'active' => 'Активен',
+                'non-active' => 'Не активен',
+                'paused' => 'Приостановлен'
+              ])
+              ->label('Статус тарифа')
+              ->visible(fn ($livewire) => !($livewire instanceof Pages\CreateUser)),
           ])
       ]);
   }
@@ -72,31 +76,67 @@ class UserResource extends Resource
   {
     return $table
       ->columns([
-        TextColumn::make('id')
-          ->label('ID')
-          ->sortable(),
         TextColumn::make('name')
+          ->searchable()
+          ->sortable()
           ->label('Имя'),
         TextColumn::make('email')
-          ->label('Email')
-          ->sortable()
-          ->searchable(),
-        // BooleanColumn::make('email_verified_at')
-        //             ->label('Email подтвержден')
-        //             ->trueIcon('heroicon-o-check-circle')
-        //             ->falseIcon('heroicon-o-x-circle'),
-        TextColumn::make('roles.name')
-                ->label('Роли')
-                ->formatStateUsing(fn ($state, $record) => $record->roles->pluck('name')->join(', '))
-                ->searchable(), 
-        TextColumn::make('created_at')
-          ->label('Дата создания')
-          ->sortable()
           ->searchable()
-          ->dateTime()
+          ->sortable()
+          ->label('Email'),
+        TextColumn::make('currentTariff.title')
+          ->label('Текущий тариф')
+          ->default('Нет тарифа'),
+        TextColumn::make('orders')
+          ->label('Срок тарифа')
+          ->formatStateUsing(function ($record) {
+            $activeOrder = $record->orders()
+              ->where('order_status', 'active')
+              ->latest()
+              ->first();
+            
+            if (!$activeOrder) {
+              return 'Нет активного тарифа';
+            }
+
+            return match ($activeOrder->duration) {
+              '1_month' => '1 месяц',
+              '3_months' => '3 месяца',
+              '12_months' => '12 месяцев',
+              default => 'Не указан'
+            };
+          }),
+        BadgeColumn::make('tariff_status')
+          ->label('Статус тарифа')
+          ->enum([
+            'active' => 'Активен',
+            'non-active' => 'Не активен',
+            'paused' => 'Приостановлен'
+          ])
+          ->colors([
+            'success' => 'active',
+            'danger' => 'non-active',
+            'warning' => 'paused',
+          ]),
+        TextColumn::make('roles.name')
+          ->label('Роль')
+          ->formatStateUsing(fn (string $state): string => match ($state) {
+            'Admin' => 'Администратор',
+            'User' => 'Пользователь',
+            default => $state
+          }),
+        TextColumn::make('created_at')
+          ->dateTime('d.m.Y H:i')
+          ->label('Дата регистрации'),
       ])
       ->filters([
-        //
+        Tables\Filters\SelectFilter::make('tariff_status')
+          ->options([
+            'active' => 'Активен',
+            'non-active' => 'Не активен',
+            'paused' => 'Приостановлен'
+          ])
+          ->label('Статус тарифа')
       ])
       ->actions([
         Tables\Actions\EditAction::make(),

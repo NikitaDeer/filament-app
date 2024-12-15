@@ -12,7 +12,7 @@
   {{-- main section --}}
   <x-site.main :$page />
 
-  <x-site.service :$services />
+  <x-site.service :$services :$tariffs />
 
   {{-- bye bye section --}}
   <x-site.bye-bye />

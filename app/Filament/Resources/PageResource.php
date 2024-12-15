@@ -41,6 +41,7 @@ class PageResource extends Resource
             FileUpload::make('main_photo_path')
               ->image()
               ->directory('images')
+              ->visibility('public')
               ->label(__('Основная фотография:')),
             Textarea::make('content')->label(__('Содержимое:')),
           ]),
@@ -57,10 +58,12 @@ class PageResource extends Resource
             FileUpload::make('first_photo_path')
               ->image()
               ->directory('images')
+              ->visibility('public')
               ->label(__('Фотография 1:')),
             FileUpload::make('second_photo_path')
               ->image()
               ->directory('images')
+              ->visibility('public')
               ->label(__('Фотография 2:')),
             Textarea::make('about_content')->label(__('Содержимое. 1 часть:')),
             Textarea::make('about_second_content')->label(__('Содержимое. 2 часть:')),

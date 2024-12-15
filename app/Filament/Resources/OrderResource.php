@@ -5,123 +5,145 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Order;
+use App\Models\Tariff;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OrderResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\OrderResource\RelationManagers;
 
 class OrderResource extends Resource
 {
-  protected static ?string $model = Order::class;
+    protected static ?string $model = Order::class;
 
-  protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-  protected static ?string $navigationGroup = 'Управление услугами и заявками';
+    protected static ?string $navigationGroup = 'Управление услугами и заявками';
 
-  protected static ?string $navigationLabel = 'Заявки клиентов';
+    protected static ?string $navigationLabel = 'Заявки клиентов';
 
-  public static function form(Form $form): Form
-  {
-    return $form
-      ->schema([
-        Card::make()
-          ->schema([
-            Forms\Components\Select::make('tariff_id')
-              ->relationship('tariff', 'title')
-              ->required()
-              ->label('Выберите тариф')
-              ->options(
-                \App\Models\Tariff::where('is_published', 1)->pluck('name', 'id')->toArray()
-              ),
-            // ->getOptions(function () {
-            //   return \App\Models\Service::where('is_published', 1)->get()->pluck('name', 'id')->toArray();
-            // }),
-            Forms\Components\Select::make('user_id')
-              ->relationship('user', 'email')
-              ->required()
-              ->label('Имя пользователя'),
-            Forms\Components\Select::make('order_status')
-              ->options([
-                  'active' => 'Активный',
-                  'non-active' => 'Неактивный',
-                  'paused' => 'Приостановлен'
-              ])
-              ->default('non-active')
-              ->label('Статус'),
-          ])->columns(3),
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'email')
+                    ->required()
+                    ->label('Выберите пользователя'),
+                Forms\Components\Select::make('tariff_id')
+                    ->relationship('tariff', 'title')
+                    ->required()
+                    ->label('Выберите тариф'),
+                Forms\Components\Select::make('duration')
+                    ->options([
+                        '1_month' => '1 месяц',
+                        '3_months' => '3 месяца (-10%)',
+                        '12_months' => '12 месяцев (-20%)',
+                    ])
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set, $get) {
+                        if ($get('tariff_id')) {
+                            $tariff = Tariff::find($get('tariff_id'));
+                            $finalPrice = $tariff->calculatePrice($state);
+                            $set('final_price', $finalPrice);
+                        }
+                    })
+                    ->label('Длительность'),
+                Forms\Components\TextInput::make('final_price')
+                    ->disabled()
+                    ->label('Итоговая цена')
+                    ->prefix('₽'),
+                Forms\Components\Select::make('order_status')
+                    ->options([
+                        'active' => 'Активен',
+                        'non-active' => 'Не активен',
+                        'paused' => 'Приостановлен'
+                    ])
+                    ->default('active')
+                    ->required()
+                    ->label('Статус заявки'),
+            ]);
+    }
 
-        Card::make()
-          ->schema([
-            Forms\Components\Textarea::make('description')
-              ->maxLength(1000)
-              ->label('Описание'),
-          ])
-      ]);
-  }
+    protected static function afterCreate($record): void
+    {
+        // Обновляем текущий тариф пользователя
+        $record->user->update([
+            'current_tariff_id' => $record->tariff_id,
+            'tariff_status' => 'active'
+        ]);
+    }
 
-  public static function table(Table $table): Table
-  {
-    return $table
-      ->columns([
-        Tables\Columns\TextColumn::make('id')
-          ->sortable()
-          ->label('ID')
-          ->searchable(),
-        Tables\Columns\TextColumn::make('user.email')
-          ->sortable()
-          ->label('Имя пользователя')
-          ->searchable(),
-        Tables\Columns\TextColumn::make('tariff.title')
-          ->sortable()
-          ->label('Тариф')
-          ->searchable(),
-        Tables\Columns\TextColumn::make('tariff.price')
-          ->sortable()
-          ->label('Цена')
-          ->searchable(),
-        Tables\Columns\BadgeColumn::make('order_status')
-          ->colors([
-              'success' => 'active',
-              'danger' => 'non-active',
-              'warning' => 'paused',
-          ]),
-        Tables\Columns\TextColumn::make('description')
-          ->limit(20)
-          ->label('Описание')
-          ->searchable(),
-        Tables\Columns\TextColumn::make('created_at')
-          ->dateTime()
-          ->label('Создан'),
-      ])
-      ->filters([
-        //
-      ])
-      ->actions([
-        Tables\Actions\EditAction::make(),
-      ])
-      ->bulkActions([
-        Tables\Actions\DeleteBulkAction::make(),
-      ]);
-  }
-
-  public static function getRelations(): array
-  {
-    return [
-      //
-    ];
-  }
-
-  public static function getPages(): array
-  {
-    return [
-      'index' => Pages\ListOrders::route('/'),
-      'create' => Pages\CreateOrder::route('/create'),
-      'edit' => Pages\EditOrder::route('/{record}/edit'),
-    ];
-  }
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
+                TextColumn::make('user.email')
+                    ->label('Email пользователя')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('tariff.title')
+                    ->label('Тариф')
+                    ->sortable(),
+                TextColumn::make('duration')
+                    ->label('Длительность')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        '1_month' => '1 месяц',
+                        '3_months' => '3 месяца',
+                        '12_months' => '12 месяцев',
+                    }),
+                TextColumn::make('final_price')
+                    ->label('Стоимость')
+                    ->money('RUB'),
+                BadgeColumn::make('order_status')
+                    ->label('Статус')
+                    ->colors([
+                        'success' => 'active',
+                        'danger' => 'non-active',
+                        'warning' => 'paused',
+                    ]),
+                TextColumn::make('created_at')
+                    ->label('Дата создания')
+                    ->dateTime('d.m.Y H:i')
+                    ->sortable(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('order_status')
+                    ->options([
+                        'active' => 'Активен',
+                        'non-active' => 'Не активен',
+                        'paused' => 'Приостановлен'
+                    ])
+                    ->label('Статус')
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
+    }
+    
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+    
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListOrders::route('/'),
+            'create' => Pages\CreateOrder::route('/create'),
+            'edit' => Pages\EditOrder::route('/{record}/edit'),
+        ];
+    }    
 }

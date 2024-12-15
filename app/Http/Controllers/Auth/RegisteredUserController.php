@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Tariff;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
@@ -32,21 +33,18 @@ class RegisteredUserController extends Controller
   public function store(Request $request): RedirectResponse
   {
     $request->validate([
-      'name' => ['required', 'string', 'max:255'],
-      'surname' => ['required', 'string', 'max:255'],
-      'patronymic' => ['required', 'string', 'max:255'],
-      'phone' => ['required', 'string', 'max:255', 'unique:' . User::class, 'regex:/^[\d\s\-\+\(\)]+$/'],
+      'name' => ['nullable', 'string', 'max:255'],
       'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
-      'password' => ['required', 'confirmed', Rules\Password::defaults()],
+      'password' => ['required', 'confirmed', Rules\Password::defaults()],  
     ]);
+
+    // $emptyTariff = Tariff::where('title', 'Нет тарифа')->first();
 
     $user = User::create([
       'name' => $request->name,
-      'surname' => $request->surname,
-      'patronymic' => $request->patronymic,
-      'phone' => $request->phone,
       'email' => $request->email,
       'password' => Hash::make($request->password),
+      'tariff_status' => 'non-active'
 
     ]);
 

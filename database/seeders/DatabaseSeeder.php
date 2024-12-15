@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Page;
+use App\Models\Advantage;
 use App\Models\Tariff;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -17,12 +19,30 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'Admin']);
         Role::create(['name' => 'User']);
 
+        // Создание базового пустого тарифа
+        $emptyTariff = Tariff::create([
+            'title' => 'Нет тарифа',
+            'description' => 'Базовый тариф для новых пользователей',
+            'price' => 0,
+            'is_published' => true,
+        ]);
+
+        // Создание обычного тарифа
+        $tariff = Tariff::create([
+            'title' => 'Базовый',
+            'description' => 'Базовый тариф для начинающих',
+            'price' => 100,
+            'is_published' => true,
+        ]);
+
         // Создание администратора
         $admin = User::create([
             'name' => 'Администратор',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
+            'current_tariff_id' => $emptyTariff->id,
+            'tariff_status' => 'non-active',
         ]);
         $admin->assignRole('Admin');
 
@@ -32,35 +52,22 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@user.com',
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
+            'current_tariff_id' => $tariff->id,
+            'tariff_status' => 'active',
         ]);
         $user->assignRole('User');
-
-        // Создание тарифов
-        $tariff1 = Tariff::create([
-            'title' => 'Базовый',
-            'description' => 'Базовый тариф для начинающих',
-            'price' => 100,
-            'is_published' => true,
-        ]);
-
-        $tariff2 = Tariff::create([
-            'title' => 'Премиум',
-            'description' => 'Премиум тариф для продвинутых пользователей',
-            'price' => 200,
-            'is_published' => true,
-        ]);
 
         // Создание тестовых заказов
         Order::create([
             'user_id' => $user->id,
-            'tariff_id' => $tariff1->id,
+            'tariff_id' => $tariff->id,
+            'duration' => '1_month',
+            'final_price' => $tariff->calculatePrice('1_month'),
             'order_status' => 'active',
         ]);
 
-        Order::create([
-            'user_id' => $user->id,
-            'tariff_id' => $tariff2->id,
-            'order_status' => 'non-active',
-        ]);
+        // Создание страниц и преимуществ
+        Page::factory(3)->create();
+        Advantage::factory(6)->create();
     }
 }

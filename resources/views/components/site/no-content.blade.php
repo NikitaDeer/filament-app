@@ -1,4 +1,3 @@
-      <div class="mb-8 max-w-screen-md lg:mb-16">
-        <p class="text-gray-300 sm:text-xl">Данные пока в разработке...</p>
-        {{-- <h1>Данные пока в разработке ...</h1> --}}
-      </div>
+<div class="mb-8 max-w-screen-md lg:mb-16">
+  <p class="text-violet-200 sm:text-xl">Данные пока в разработке...</p>
+</div>

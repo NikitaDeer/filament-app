@@ -6,34 +6,35 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-  /**
-   * Run the migrations.
-   */
-  public function up(): void
-  {
-    Schema::create('orders', function (Blueprint $table) {
-      $table->id();
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
 
-      $table->text('description')->default('Опишите свою просьбу');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+            $table->foreignId('tariff_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
-      $table->enum('order_status', ['active', 'non-active', 'paused'])->default('non-active');
+            $table->enum('duration', ['1_month', '3_months', '12_months']);
+            $table->decimal('final_price', 10, 2);
 
-      $table->foreignId('user_id')
-        ->constrained()
-        ->cascadeOnDelete();
-      $table->foreignId('tariff_id')
-        ->constrained()
-        ->cascadeOnDelete();
+            $table->enum('order_status', ['active', 'non-active', 'paused'])->default('active');
 
-      $table->timestamps();
-    });
-  }
+            $table->timestamps();
+        });
+    }
 
-  /**
-   * Reverse the migrations.
-   */
-  public function down(): void
-  {
-    Schema::dropIfExists('orders');
-  }
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('orders');
+    }
 };
