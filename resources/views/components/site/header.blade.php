@@ -1,5 +1,5 @@
-<header class="bg-gray-900">
-  <nav class="border-gray-700 bg-gray-900 px-4 py-2.5 lg:px-6">
+<header class="bg-slate-900">
+  <nav class="border-gray-700 bg-slate-900 px-4 py-2.5 lg:px-6">
     <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between">
       <a href="https://forestking.dergunov.info" class="flex items-center">
         {{-- <img src="сюда лого" class="mr-3 h-6 sm:h-9" alt="Lorem Logo" /> --}}

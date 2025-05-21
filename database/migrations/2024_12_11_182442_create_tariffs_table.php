@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('tariffs', function (Blueprint $table) {
             $table->id();
-
             $table->string('title');
+            $table->enum('type', ['trial', 'regular'])->default('regular');
+            $table->integer('duration_days');
             $table->decimal('price', 10, 2);
             $table->text('description')->nullable();
             $table->boolean('is_published')->default(false);
-
+            $table->boolean('is_renewable')->default(true);
             $table->timestamps();
         });
     }
