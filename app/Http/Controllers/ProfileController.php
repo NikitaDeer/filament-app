@@ -26,16 +26,24 @@ class ProfileController extends Controller
 
     public function edit(Request $request): View
     {
-        $user = $request->user();
-    
-        // Получаем текущий ключ пользователя
-        $accessKey = $user->accessKey; // например, связь hasOne
-    
-        // Получаем историю подписок (если есть)
-        $subscriptions = $user->subscriptions; // например, связь hasMany
-    
-        return view('profile.edit', compact('user', 'accessKey', 'subscriptions'));
+        return view('profile.edit', [
+            'user' => $request->user(),
+            'subscriptions' => $request->user()->subscriptions,
+        ]);
     }
+
+    // public function edit(Request $request): View
+    // {
+    //     $user = $request->user();
+    
+    //     // Получаем текущий ключ пользователя
+    //     $accessKey = $user->accessKey; // например, связь hasOne
+    
+    //     // Получаем историю подписок (если есть)
+    //     $subscriptions = $user->subscriptions; // например, связь hasMany
+    
+    //     return view('profile.edit', compact('user', 'accessKey', 'subscriptions'));
+    // }
 
     /**
      * Update the user's profile information.

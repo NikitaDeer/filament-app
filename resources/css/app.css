@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.tab-pane {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Иконки */
+.far.fa-copy::before {
+    content: "\f0c5"; /* FontAwesome icon code */
+}
+
+.text-primary-500 {
+    color: #0ea5e9;
+}
+
+.border-primary-500 {
+    border-color: #0ea5e9;
+}
+
+.bg-primary-500 {
+    background-color: #0ea5e9;
+}
+
+.hover\:bg-primary-500:hover {
+    background-color: #0ea5e9;
+}
+
