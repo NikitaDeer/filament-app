@@ -33,18 +33,36 @@ class TariffResource extends Resource
             ->schema([
                 Section::make('Предоставляемый тариф')
                     ->schema([
-                        TextInput::make('title')
-                            ->label('Название тарифа')
-                            ->required(),
-                        Textarea::make('description')
-                            ->label('Описание'),
-                        TextInput::make('price')
-                            ->label('Базовая цена (месяц)')
-                            ->required()
-                            ->numeric()
-                            ->prefix('₽'),
-                        Toggle::make('is_published')
-                            ->label('Опубликовать'),
+                        Forms\Components\TextInput::make('title')
+                        ->required(),
+                    Forms\Components\Select::make('type')
+                        ->options([
+                            'trial' => 'Trial',
+                            'regular' => 'Regular'
+                        ])
+                        ->required(),
+                    Forms\Components\TextInput::make('duration_days')
+                        ->numeric()
+                        ->required(),
+                    Forms\Components\TextInput::make('price')
+                        ->numeric()
+                        ->prefix('RUB')
+                        ->required(),
+                    Forms\Components\Toggle::make('is_renewable'),
+                    Forms\Components\Toggle::make('is_published')
+                        
+                        // TextInput::make('title')
+                        //     ->label('Название тарифа')
+                        //     ->required(),
+                        // Textarea::make('description')
+                        //     ->label('Описание'),
+                        // TextInput::make('price')
+                        //     ->label('Базовая цена (месяц)')
+                        //     ->required()
+                        //     ->numeric()
+                        //     ->prefix('₽'),
+                        // Toggle::make('is_published')
+                        //     ->label('Опубликовать'),
                     ]),
             ]);
     }
@@ -53,21 +71,34 @@ class TariffResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')
-                    ->searchable()
-                    ->sortable()
-                    ->label('Название'),
-                TextColumn::make('description')
-                    ->limit(25)
-                    ->label('Описание'),
-                TextColumn::make('price')
-                    ->money('RUB')
-                    ->label('Базовая цена за месяц'),
-                ToggleColumn::make('is_published')
-                    ->label('Опубликован'),
-                TextColumn::make('created_at')
-                    ->dateTime('d.m.Y H:i')
-                    ->label('Создан'),
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
+                Tables\Columns\BadgeColumn::make('type')
+                    ->colors([
+                        'primary' => 'trial',
+                        'success' => 'regular'
+                    ]),
+                Tables\Columns\TextColumn::make('duration_days'),
+                Tables\Columns\TextColumn::make('price')
+                    ->money('RUB'),
+                Tables\Columns\IconColumn::make('is_published')
+                    ->boolean(),
+                
+                // TextColumn::make('title')
+                //     ->searchable()
+                //     ->sortable()
+                //     ->label('Название'),
+                // TextColumn::make('description')
+                //     ->limit(25)
+                //     ->label('Описание'),
+                // TextColumn::make('price')
+                //     ->money('RUB')
+                //     ->label('Базовая цена за месяц'),
+                // ToggleColumn::make('is_published')
+                //     ->label('Опубликован'),
+                // TextColumn::make('created_at')
+                //     ->dateTime('d.m.Y H:i')
+                //     ->label('Создан'),
             ])
             ->filters([
                 //

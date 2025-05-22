@@ -19,18 +19,26 @@
             @include('layouts.navigation')
 
             <!-- Page Heading -->
-            @if (isset($header))
+            <!-- @if (isset($header))
                 <header class="bg-gray-800 shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
-            @endif
-
+            @endif -->
             <!-- Page Content -->
             <main>
+                @include('components.site.header')
                 {{ $slot }}
             </main>
         </div>
+
+        <script>
+    document.getElementById('mobile-menu-button').addEventListener('click', function () {
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>
+
     </body>
 </html>

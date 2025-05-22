@@ -8,17 +8,33 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
+use App\Models\AccessKey;
+use App\Models\Subscription;
 
 class ProfileController extends Controller
 {
     /**
      * Display the user's profile form.
      */
+    // public function edit(Request $request): View
+    // {
+    //     return view('profile.edit', [
+    //         'user' => $request->user(),
+    //     ]);
+    // }
+
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = $request->user();
+    
+        // Получаем текущий ключ пользователя
+        $accessKey = $user->accessKey; // например, связь hasOne
+    
+        // Получаем историю подписок (если есть)
+        $subscriptions = $user->subscriptions; // например, связь hasMany
+    
+        return view('profile.edit', compact('user', 'accessKey', 'subscriptions'));
     }
 
     /**

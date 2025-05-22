@@ -1,4 +1,56 @@
-<header class="bg-slate-900">
+<header class="bg-white shadow-md">
+  <nav class="container mx-auto px-4 py-4 lg:px-6">
+    <div class="flex items-center justify-between">
+      <!-- Логотип -->
+      <a href="/" class="text-cyan-500 text-2xl font-bold">VPN Okolo</a>
+
+      <!-- Мобильное меню -->
+      <x-site.hamburger />
+
+      <!-- Навигация -->
+      <div class="hidden lg:block">
+        <ul class="flex space-x-6">
+          <li>
+            <a href="#" class="text-gray-800 hover:text-cyan-500">Главная</a>
+          </li>
+          <li>
+            <a href="#" class="text-gray-800 hover:text-cyan-500">Тарифы</a>
+          </li>
+          <li>
+            <a href="#" class="text-gray-800 hover:text-cyan-500">О нас</a>
+          </li>
+          <li>
+            <a href="#" class="text-gray-800 hover:text-cyan-500">Контакты</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Авторизация/Личный кабинет -->
+      <div class="flex items-center space-x-4">
+        @guest
+          <a href="{{ route('login') }}" class="text-gray-800 hover:text-cyan-500">Войти</a>
+          <a href="{{ route('register') }}" class="bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600">Регистрация</a>
+        @endguest
+
+        @auth
+          <a href="{{ route('profile.edit') }}" class="flex items-center space-x-2">
+            <i class="fas fa-user-alt text-cyan-500"></i>
+            <span>Личный кабинет</span>
+          </a>
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="flex items-center space-x-2">
+              <i class="fas fa-door-open text-cyan-500"></i>
+              <span>Выйти</span>
+            </button>
+          </form>
+        @endauth
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- <header class="bg-slate-900">
   <nav class="border-gray-700 bg-slate-900 px-4 py-2.5 lg:px-6">
     <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between">
       <a href="https://forestking.dergunov.info" class="flex items-center">
@@ -64,4 +116,4 @@
       </div>
     </div>
   </nav>
-</header>
+</header> -->
