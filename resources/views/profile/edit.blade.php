@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <nav class="space-y-4">
-                        <button data-tab="profile" class="w-full text-left px-4 py-3 bg-primary-100 hover:bg-primary-50 text-primary-700 rounded-lg font-medium">
+                        <button data-tab="profile" class="w-full text-left px-4 py-3 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-lg font-medium active">
                             <i class="fas fa-user mr-2"></i> Профиль
                         </button>
                         <button data-tab="access-key" class="w-full text-left px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
@@ -39,46 +39,51 @@
 
                 <!-- Основной контент -->
                 <main class="bg-white p-6 rounded-lg shadow-md w-full">
-                    <div id="tab-content">
-                        @include('profile.tabs.profile')
-                        @include('profile.tabs.access-key')
-                        @include('profile.tabs.subscriptions')
-                        @include('profile.tabs.settings')
-                    </div>
+                <div id="tab-content">
+    @include('profile.tabs.profile', ['user' => $user])
+    @include('profile.tabs.access-key', ['key' => $key])
+    @include('profile.tabs.subscriptions', ['subscriptions' => $subscriptions])
+    @include('profile.tabs.settings')
+</div>
                 </main>
+
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const buttons = document.querySelectorAll('[data-tab]');
-            const panes = document.querySelectorAll('.tab-pane');
-
-            buttons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const target = this.getAttribute('data-tab');
-
-                    // Убираем активность у всех кнопок
-                    buttons.forEach(btn => btn.classList.remove('bg-primary-100', 'text-primary-700'));
-                    buttons.forEach(btn => btn.classList.add('hover:bg-gray-100'));
-
-                    // Показываем нужную вкладку
-                    panes.forEach(pane => pane.classList.add('hidden'));
-                    document.getElementById(target + '-tab').classList.remove('hidden');
-
-                    // Делаем текущую кнопку активной
-                    this.classList.add('bg-primary-100', 'text-primary-700');
-                });
-            });
-        });
-
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Ключ скопирован в буфер обмена');
-            }).catch(err => {
-                console.error('Ошибка копирования:', err);
-            });
-        }
-    </script>
 </x-main-layout>
+
+<!-- ПОЛЕЗНО: Перенесите JS вниз страницы -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('[data-tab]');
+    const panes = document.querySelectorAll('.tab-pane');
+
+    // Активируем первую вкладку
+    if (!document.querySelector('.tab-pane:not(.hidden)')) {
+        document.getElementById('profile-tab').classList.remove('hidden');
+    }
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = this.getAttribute('data-tab');
+
+            // Скрываем все панели
+            panes.forEach(pane => pane.classList.add('hidden'));
+
+            // Показываем нужную
+            document.getElementById(`${target}-tab`).classList.remove('hidden');
+
+            // Снимаем активность с других кнопок
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-blue-100', 'text-blue-800');
+                btn.classList.add('text-gray-700', 'hover:bg-gray-100');
+            });
+
+            // Активируем текущую кнопку
+            this.classList.remove('text-gray-700', 'hover:bg-gray-100');
+            this.classList.add('bg-blue-100', 'text-blue-800');
+        });
+    });
+});
+</script>

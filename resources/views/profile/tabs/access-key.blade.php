@@ -1,9 +1,6 @@
 <div id="access-key-tab" class="tab-pane hidden">
     <section class="mb-6">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4">Ваш ключ доступа</h3>
-        @php
-            $key = Auth::user()->accessKey;
-        @endphp
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Ключ доступа</h3>
 
         @if ($key)
             <div class="bg-gray-50 p-4 rounded-lg mb-4 relative">

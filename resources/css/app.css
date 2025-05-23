@@ -18,25 +18,7 @@
     }
 }
 
-/* Стили для личного кабинета */
-#tab-content > div {
+
+.hidden {
     display: none;
-}
-#tab-content > div.active {
-    display: block;
-}
-
-/* Левое меню */
-.sidebar {
-    width: 200px; /* Ширина левого меню */
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-/* Основной контент */
-.main-content {
-    flex: 1;
-    padding: 24px;
 }

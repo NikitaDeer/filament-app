@@ -24,13 +24,31 @@ class ProfileController extends Controller
     //     ]);
     // }
 
+    // public function edit(Request $request): View
+    // {
+    //     return view('profile.edit', [
+    //         'user' => $request->user(),
+    //         'subscriptions' => $request->user()->subscriptions,
+    //     ]);
+    // }
+
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-            'subscriptions' => $request->user()->subscriptions,
-        ]);
+        $user = $request->user();
+        $key = $user->accessKeys()->first(); // Исправлено на accessKeys()
+        $subscriptions = $user->subscriptions;
+    
+        return view('profile.edit', compact('user', 'key', 'subscriptions'));
     }
+
+    // public function edit(Request $request): View
+    // {
+    //     $user = $request->user();
+    //     $key = $user->accessKey;
+    //     $subscriptions = $user->subscriptions;
+    
+    //     return view('profile.edit', compact('user', 'key', 'subscriptions'));
+    // }
 
     // public function edit(Request $request): View
     // {
