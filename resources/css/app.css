@@ -18,6 +18,14 @@
     }
 }
 
+/* Стили для личного кабинета */
+#tab-content > div {
+    display: none;
+}
+#tab-content > div.active {
+    display: block;
+}
+
 /* Левое меню */
 .sidebar {
     width: 200px; /* Ширина левого меню */
