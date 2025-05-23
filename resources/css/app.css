@@ -2,32 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-.tab-pane {
-    display: block;
+/* Цветовая палитра */
+@layer utilities {
+    .text-primary-500 {
+        color: #0ea5e9;
+    }
+    .bg-primary-500 {
+        background-color: #0ea5e9;
+    }
+    .text-primary-700 {
+        color: #0284c7;
+    }
+    .bg-primary-100 {
+        background-color: #f0f9ff;
+    }
 }
 
-.hidden {
-    display: none;
+/* Левое меню */
+.sidebar {
+    width: 200px; /* Ширина левого меню */
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-/* Иконки */
-.far.fa-copy::before {
-    content: "\f0c5"; /* FontAwesome icon code */
+/* Основной контент */
+.main-content {
+    flex: 1;
+    padding: 24px;
 }
-
-.text-primary-500 {
-    color: #0ea5e9;
-}
-
-.border-primary-500 {
-    border-color: #0ea5e9;
-}
-
-.bg-primary-500 {
-    background-color: #0ea5e9;
-}
-
-.hover\:bg-primary-500:hover {
-    background-color: #0ea5e9;
-}
-

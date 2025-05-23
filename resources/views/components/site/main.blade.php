@@ -28,7 +28,7 @@
       <div class="max-w-screen-lg text-violet-200 sm:text-lg">
         <h2 class="text-4xl font-bold text-violet-200 mb-6">{{ $page->FourthTitle }}</h2>
         <p class="text-lg font-light mb-6">{!! $page->footer_content !!}</p>
-        <p class="text-lg font-medium">{!! $page->footer_second_content !!}</p>
+        <p class="text-lg font-medium">ffffffffffffffffffffffffffffffffffffffff{!! $page->footer_second_content !!}</p>
       </div>
     </div>
   @endif

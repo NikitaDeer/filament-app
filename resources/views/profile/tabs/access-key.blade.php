@@ -1,6 +1,6 @@
 <div id="access-key-tab" class="tab-pane hidden">
-    <section class="bg-white shadow-md p-6 rounded-lg mb-6">
-        <h3 class="text-xl font-bold text-gray-900 mb-4">Ваш ключ доступа</h3>
+    <section class="mb-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Ваш ключ доступа</h3>
         @php
             $key = Auth::user()->accessKey;
         @endphp

@@ -7,75 +7,78 @@
 
     <x-site.header />
 
-    <div class="py-6">
+    <div class="py-6 bg-gray-50">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Вкладки -->
-            <nav class="mb-6 border-b border-gray-200">
-                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="tab-menu">
-                    <li class="mr-2">
-                        <button type="button" data-tab="profile" class="inline-block p-4 border-b-2 border-primary-500 rounded-t-lg active">Профиль</button>
-                    </li>
-                    <li class="mr-2">
-                        <button type="button" data-tab="access-key" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300">Ключ доступа</button>
-                    </li>
-                    <li class="mr-2">
-                        <button type="button" data-tab="subscriptions" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300">Подписки</button>
-                    </li>
-                    <li class="mr-2">
-                        <button type="button" data-tab="settings" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300">Настройки</button>
-                    </li>
-                </ul>
-            </nav>
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Левое меню -->
+                <aside class="md:w-64 bg-white shadow-md p-6 rounded-lg sticky top-6 self-start">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user text-cyan-500 text-xl"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium">{{ Auth::user()->name }}</p>
+                            <p class="text-xs text-gray-500">Пользователь</p>
+                        </div>
+                    </div>
+                    <nav class="space-y-4">
+                        <button data-tab="profile" class="w-full text-left px-4 py-3 bg-primary-100 hover:bg-primary-50 text-primary-700 rounded-lg font-medium">
+                            <i class="fas fa-user mr-2"></i> Профиль
+                        </button>
+                        <button data-tab="access-key" class="w-full text-left px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-key mr-2"></i> Ключ доступа
+                        </button>
+                        <button data-tab="subscriptions" class="w-full text-left px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-calendar-alt mr-2"></i> Подписки
+                        </button>
+                        <button data-tab="settings" class="w-full text-left px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-cog mr-2"></i> Настройки
+                        </button>
+                    </nav>
+                </aside>
 
-            <!-- Контент вкладок -->
-            <div id="tab-content">
-                @include('profile.tabs.profile')
-                @include('profile.tabs.access-key')
-                @include('profile.tabs.subscriptions')
-                @include('profile.tabs.settings')
+                <!-- Основной контент -->
+                <main class="bg-white p-6 rounded-lg shadow-md w-full">
+                    <div id="tab-content">
+                        @include('profile.tabs.profile')
+                        @include('profile.tabs.access-key')
+                        @include('profile.tabs.subscriptions')
+                        @include('profile.tabs.settings')
+                    </div>
+                </main>
             </div>
         </div>
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tabs = document.querySelectorAll('[data-tab]');
-        const tabPanes = document.querySelectorAll('.tab-pane');
+        document.addEventListener('DOMContentLoaded', function () {
+            const buttons = document.querySelectorAll('[data-tab]');
+            const panes = document.querySelectorAll('.tab-pane');
 
-        // Переключение вкладок
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function () {
-                const target = this.getAttribute('data-tab');
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const target = this.getAttribute('data-tab');
 
-                // Скрываем все вкладки
-                tabPanes.forEach(pane => {
-                    pane.classList.add('hidden');
+                    // Убираем активность у всех кнопок
+                    buttons.forEach(btn => btn.classList.remove('bg-primary-100', 'text-primary-700'));
+                    buttons.forEach(btn => btn.classList.add('hover:bg-gray-100'));
+
+                    // Показываем нужную вкладку
+                    panes.forEach(pane => pane.classList.add('hidden'));
+                    document.getElementById(target + '-tab').classList.remove('hidden');
+
+                    // Делаем текущую кнопку активной
+                    this.classList.add('bg-primary-100', 'text-primary-700');
                 });
-
-                // Убираем активный класс у всех кнопок
-                tabs.forEach(t => {
-                    t.classList.remove('border-primary-500');
-                    t.classList.add('border-transparent');
-                });
-
-                // Показываем нужную вкладку
-                document.getElementById(target + '-tab').classList.remove('hidden');
-
-                // Делаем текущую вкладку активной
-                this.classList.add('border-primary-500');
-                this.classList.remove('border-transparent');
             });
         });
-    });
 
-    // Функция копирования ключа
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Ключ скопирован в буфер обмена');
-        }).catch(err => {
-            console.error('Ошибка копирования:', err);
-        });
-    }
-</script>
-
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Ключ скопирован в буфер обмена');
+            }).catch(err => {
+                console.error('Ошибка копирования:', err);
+            });
+        }
+    </script>
 </x-main-layout>

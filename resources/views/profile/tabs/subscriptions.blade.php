@@ -1,6 +1,6 @@
 <div id="subscriptions-tab" class="tab-pane hidden">
-    <section class="bg-white shadow-md p-6 rounded-lg mb-6">
-        <h3 class="text-xl font-bold text-gray-900 mb-4">История подписок</h3>
+    <section class="mb-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">История подписок</h3>
         <table class="w-full text-left text-gray-700">
             <thead class="bg-gray-100 text-xs uppercase tracking-wider text-gray-600">
                 <tr>
