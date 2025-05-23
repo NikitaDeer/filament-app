@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\{User, Order, Page, Advantage, Tariff, Subscription, AccessKey};
@@ -12,124 +13,106 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Создание ролей
-        Role::create(['name' => 'Admin']);
-        Role::create(['name' => 'User']);
+    // Создание ролей
+    Role::create(['name' => 'Admin']);
+    Role::create(['name' => 'User']);
 
-        // Создание тарифов
-        $trialTariff = Tariff::create([
-            'title' => '7 Days Trial',
-            'type' => 'trial',
-            'duration_days' => 7,
-            'price' => 0,
-            'description' => 'Пробный период на 7 дней',
-            'is_published' => true,
-            'is_renewable' => false
-        ]);
+    // Создание тарифов с новыми полями
+    $trialTariff = Tariff::create([
+        'title' => '7 Days Trial',
+        'type' => 'trial',
+        'duration_days' => 7,
+        'price' => 0,
+        'description' => 'Пробный период на 7 дней',
+        'is_published' => true,
+        'is_renewable' => false
+    ]);
 
-        $basicTariff = Tariff::create([
-            'title' => 'Monthly Premium',
-            'type' => 'regular',
-            'duration_days' => 30,
-            'price' => 100,
-            'description' => 'Ежемесячная подписка',
-            'is_published' => true,
-            'is_renewable' => true
-        ]);
+    $basicTariff = Tariff::create([
+        'title' => 'Monthly Premium',
+        'type' => 'regular',
+        'duration_days' => 30,
+        'price' => 100,
+        'description' => 'Ежемесячная подписка',
+        'is_published' => true,
+        'is_renewable' => true
+    ]);
 
-        // Создание администратора
-        $admin = User::create([
-            'name' => 'Администратор',
-            'email' => 'admin@admin.com',
-            'password' => Hash::make('password'),
-            'email_verified_at' => now(),
-            'telegram_id' => null,
-            'trial_used' => true,
-            'trial_ends_at' => now()->addYear(),
-            'current_tariff_id' => $trialTariff->id,
-            'tariff_status' => 'active'
-        ]);
-        $admin->assignRole('Admin');
+    // Создание администратора
+    $admin = User::create([
+        'name' => 'Администратор',
+        'email' => 'admin@admin.com',
+        'password' => Hash::make('password'),
+        'email_verified_at' => now(),
+        'telegram_id' => null,
+        'trial_used' => true,
+        'trial_ends_at' => now()->addYear(),
+        'current_tariff_id' => $trialTariff->id,
+        'tariff_status' => 'active'
+    ]);
+    $admin->assignRole('Admin');
 
-        // Создание подписки и ключа для администратора
-        $adminSubscription = Subscription::create([
-            'user_id' => $admin->id,
-            'tariff_id' => $trialTariff->id,
-            'start_date' => now(),
-            'end_date' => now()->addYear(),
-            'status' => 'active',
-            'final_price' => 0
-        ]);
+    // Создание тестового пользователя с активной подпиской
+    $user = User::create([
+        'name' => 'Пользователь',
+        'email' => 'user@user.com',
+        'password' => Hash::make('password'),
+        'email_verified_at' => now(),
+        'telegram_id' => 123456789,
+        'trial_used' => false,
+        'trial_ends_at' => null,
+        'current_tariff_id' => $basicTariff->id,
+        'tariff_status' => 'active'
+    ]);
+    $user->assignRole('User');
 
-        AccessKey::create([
-            'user_id' => $admin->id,
-            'subscription_id' => $adminSubscription->id,
-            'encrypted_key' => Crypt::encryptString('DEMO-KEY-ADMIN-1234'),
-            'generated_at' => now(),
-            'expires_at' => now()->addYear(),
-            'is_active' => true
-        ]);
+    // Создание активной подписки
+    $subscription = Subscription::create([
+        'user_id' => $user->id,
+        'tariff_id' => $basicTariff->id,
+        'start_date' => now(),
+        'end_date' => now()->addDays(30),
+        'status' => 'active',
+        'final_price' => $basicTariff->price
+    ]);
 
-        // Создание тестового пользователя
-        $user = User::create([
-            'name' => 'Пользователь',
-            'email' => 'user@user.com',
-            'password' => Hash::make('password'),
-            'email_verified_at' => now(),
-            'telegram_id' => 123456789,
-            'trial_used' => false,
-            'trial_ends_at' => now()->addDays(7),
-            'current_tariff_id' => $basicTariff->id,
-            'tariff_status' => 'active'
-        ]);
+    // Генерация ключа доступа
+    AccessKey::create([
+        'user_id' => $user->id,
+        'subscription_id' => $subscription->id,
+        'encrypted_key' => Crypt::encryptString(Str::random(40)),
+        'generated_at' => now(),
+        'expires_at' => $subscription->end_date,
+        'is_active' => true
+    ]);
+
+    // Создание демо-контента
+    Page::factory(3)->create();
+    Advantage::factory(6)->create();
+
+    // Создание 50 тестовых пользователей
+    User::factory(50)->create()->each(function ($user) use ($basicTariff) {
         $user->assignRole('User');
+        
+        if (rand(0, 1)) {
+            $subscription = Subscription::create([
+                'user_id' => $user->id,
+                'tariff_id' => $basicTariff->id,
+                'start_date' => now(),
+                'end_date' => now()->addDays(30),
+                'status' => 'active',
+                'final_price' => $basicTariff->price
+            ]);
 
-        // Создание подписки и ключа для тестового пользователя
-        $subscription = Subscription::create([
-            'user_id' => $user->id,
-            'tariff_id' => $basicTariff->id,
-            'start_date' => now(),
-            'end_date' => now()->addDays(30),
-            'status' => 'active',
-            'final_price' => $basicTariff->price
-        ]);
-
-        AccessKey::create([
-            'user_id' => $user->id,
-            'subscription_id' => $subscription->id,
-            'encrypted_key' => Crypt::encryptString('USER-KEY-1234'),
-            'generated_at' => now(),
-            'expires_at' => $subscription->end_date,
-            'is_active' => true
-        ]);
-
-        // Создание демо-контента
-        Page::factory(3)->create();
-        Advantage::factory(6)->create();
-
-        // Создание 50 тестовых пользователей
-        User::factory(50)->create()->each(function ($user) use ($basicTariff) {
-            $user->assignRole('User');
-            
-            if (rand(0, 1)) {
-                $subscription = Subscription::create([
-                    'user_id' => $user->id,
-                    'tariff_id' => $basicTariff->id,
-                    'start_date' => now(),
-                    'end_date' => now()->addDays(30),
-                    'status' => 'active',
-                    'final_price' => $basicTariff->price
-                ]);
-
-                AccessKey::create([
-                    'user_id' => $user->id,
-                    'subscription_id' => $subscription->id,
-                    'encrypted_key' => Crypt::encryptString(Str::random(40)),
-                    'generated_at' => now(),
-                    'expires_at' => $subscription->end_date,
-                    'is_active' => true
-                ]);
-            }
-        });
+            AccessKey::create([
+                'user_id' => $user->id,
+                'subscription_id' => $subscription->id,
+                'encrypted_key' => Crypt::encryptString(Str::random(40)),
+                'generated_at' => now(),
+                'expires_at' => $subscription->end_date,
+                'is_active' => true
+            ]);
+        }
+    });
     }
 }

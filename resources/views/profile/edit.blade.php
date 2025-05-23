@@ -87,3 +87,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+
+<script>
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      const tooltip = document.createElement('div');
+      tooltip.textContent = 'Скопировано!';
+      tooltip.className = 'fixed bottom-4 right-4 bg-cyan-500 text-white px-4 py-2 rounded-lg shadow-lg';
+      document.body.appendChild(tooltip);
+      setTimeout(() => tooltip.remove(), 2000);
+    })
+    .catch(err => console.error('Ошибка копирования:', err));
+}
+</script>
