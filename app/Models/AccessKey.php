@@ -46,4 +46,12 @@ class AccessKey extends Model
             return 'Invalid key';
         }
     }
+
+    // Акцессор для расчета оставшегося времени
+    public function remainingPercentage()
+    {
+        $totalDays = $this->generated_at->diffInDays($this->expires_at);
+        $remainingDays = $this->expires_at->diffInDays(now());
+        return ($remainingDays / $totalDays) * 100;
+    }
 }

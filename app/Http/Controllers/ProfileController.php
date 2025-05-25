@@ -17,11 +17,18 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+
     public function edit(Request $request): View
     {
         $user = $request->user();
-        $key = $user->accessKeys()->first(); // Исправлено на accessKeys()
-        $subscriptions = $user->subscriptions;
+        $key = $user->accessKeys()
+            ->where('is_active', true)
+            ->latest('generated_at')
+            ->first();
+        
+        $subscriptions = $user->subscriptions()
+            ->with('tariff')
+            ->get();
     
         return view('profile.edit', compact('user', 'key', 'subscriptions'));
     }
