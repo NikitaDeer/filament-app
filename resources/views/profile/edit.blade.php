@@ -50,6 +50,13 @@
             </div>
         </div>
     </div>
+
+    {{-- bye bye section --}}
+  <x-site.bye-bye />
+
+  {{-- footer --}}
+  <x-site.footer />
+
 </x-main-layout>
 
 <!-- ПОЛЕЗНО: Перенесите JS вниз страницы -->

@@ -48,6 +48,7 @@ class TariffResource extends Resource
                         ->numeric()
                         ->prefix('RUB')
                         ->required(),
+                    Forms\Components\TextInput::make('description'),
                     Forms\Components\Toggle::make('is_renewable'),
                     Forms\Components\Toggle::make('is_published')
                         

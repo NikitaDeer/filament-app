@@ -2,7 +2,7 @@
   <nav class="container mx-auto px-4 py-4 lg:px-6">
     <div class="flex items-center justify-between">
       <!-- Логотип -->
-      <a href="/" class="text-cyan-500 text-2xl font-bold">VPN Okolo</a>
+      <a href="/" class="text-cyan-500 text-2xl font-bold">Okolo</a>
 
       <!-- Мобильное меню -->
       <x-site.hamburger />

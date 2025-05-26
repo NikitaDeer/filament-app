@@ -40,4 +40,11 @@ class Subscription extends Model
     {
         return $this->hasOne(AccessKey::class);
     }
+
+    public function progressPercentage()
+    {
+        $totalDays = $this->start_date->diffInDays($this->end_date);
+        $elapsedDays = $this->start_date->diffInDays(now());
+        return ($elapsedDays / $totalDays) * 100;
+    }
 }

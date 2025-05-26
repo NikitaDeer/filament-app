@@ -1,25 +1,17 @@
-<section class="bg-white py-16">
+<section class="bg-gradient-to-t from-white via-cyan-50 to-white py-16">
   @if (session('success'))
-    <div id="notification" class="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-screen bg-opacity-50 bg-black">
-      <div class="rounded-lg bg-gray-800 border border-gray-700 py-8 px-16 shadow-2xl transform transition-all duration-500 ease-in-out">
+    <div id="notification" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div class="bg-gradient-to-r from-cyan-500 to-cyan-700 rounded-2xl p-6 shadow-xl transform transition-all duration-500">
         <p class="text-white text-lg font-semibold text-center">{{ session('success') }}</p>
       </div>
     </div>
 
     <script>
-      setTimeout(function() {
+      setTimeout(() => {
         const notification = document.getElementById('notification');
-        let opacity = 1;
-        const timer = setInterval(function() {
-          if (opacity <= 0.1) {
-            clearInterval(timer);
-            notification.style.display = 'none';
-          }
-          notification.style.opacity = opacity;
-          notification.style.filter = 'alpha(opacity=' + opacity * 100 + ")";
-          opacity -= opacity * 0.1;
-        }, 50);
-      }, 1000);
+        notification.style.opacity = '0';
+        setTimeout(() => notification.remove(), 500);
+      }, 3000);
     </script>
   @endif
 
@@ -41,21 +33,21 @@
         <div class="flex flex-col sm:flex-row gap-4">
           @guest
             <a href="#"
-              class="w-full sm:w-auto bg-gradient-to-r from-orange-400 to-pink-500 text-white rounded-lg py-3 px-8 text-lg font-semibold text-center hover:from-orange-500 hover:to-pink-600 transition-all">
-              Подключить VPN Okolo
+              class="w-full sm:w-auto bg-gradient-to-r from-cyan-400 to-cyan-600 text-white rounded-lg py-3 px-8 text-lg font-semibold text-center hover:from-cyan-500 hover:to-cyan-700 transition-all">
+              Подключить Okolo
             </a>
           @endguest
 
           @auth
             <a href="{{ route('orders.create') }}"
-              class="w-full sm:w-auto bg-gradient-to-r from-orange-400 to-pink-500 text-white rounded-lg py-3 px-8 text-lg font-semibold text-center hover:from-orange-500 hover:to-pink-600 transition-all">
-              Подключить VPN Okolo
+              class="w-full sm:w-auto bg-gradient-to-r from-cyan-400 to-cyan-600 text-white rounded-lg py-3 px-8 text-lg font-semibold text-center hover:from-cyan-500 hover:to-cyan-700 transition-all">
+              Подключить Okolo
             </a>
           @endauth
 
           @can('view', auth()->user())
-            <a href="/admin" class="text-cyan-600 hover:text-cyan-800 mt-4 sm:mt-0">
-              Перейти в админ панель
+            <a href="/admin" class="text-cyan-600 hover:text-cyan-800 mt-4 sm:mt-0 flex items-center gap-2">
+              <i class="fas fa-cog"></i> Админ панель
             </a>
           @endcan
         </div>
@@ -63,21 +55,21 @@
 
       <!-- FAQ Accordion -->
       <div class="lg:col-span-5">
-        <div class="bg-gray-50 rounded-2xl p-6 shadow-md">
-          <h2 class="text-xl font-bold text-cyan-600 mb-4">Часто задаваемые вопросы</h2>
+        <div class="bg-white rounded-3xl p-6 shadow-lg border border-cyan-100">
+          <h2 class="text-2xl font-bold text-cyan-600 mb-6">Часто задаваемые вопросы</h2>
           
           <!-- FAQ Item 1 -->
-          <div class="mb-3">
+          <div class="border-b border-cyan-100 last:border-b-0">
             <button 
               type="button" 
-              class="flex justify-between items-center w-full text-left p-3 bg-white rounded-lg focus:outline-none"
+              class="flex justify-between items-center w-full text-left p-4 focus:outline-none"
               onclick="toggleAccordion('faq1')"
             >
-              <span>Как работает пробный период?</span>
-              <i class="fas fa-plus text-cyan-600"></i>
+              <span class="text-gray-800 font-medium">Как работает пробный период?</span>
+              <i class="fas fa-chevron-down text-cyan-600 transition-transform transform" id="icon-faq1"></i>
             </button>
-            <div id="faq1" class="overflow-hidden transition-all duration-300 max-h-0">
-              <p class="text-gray-700 mt-2">
+            <div id="faq1" class="overflow-hidden transition-all duration-300 max-h-0 px-4">
+              <p class="text-gray-600 mb-4">
                 Пробный период предоставляется автоматически после подтверждения почты. 
                 Он длится 7 дней и позволяет протестировать все функции сервиса без оплаты.
               </p>
@@ -85,17 +77,17 @@
           </div>
 
           <!-- FAQ Item 2 -->
-          <div class="mb-3">
+          <div class="border-b border-cyan-100 last:border-b-0">
             <button 
               type="button" 
-              class="flex justify-between items-center w-full text-left p-3 bg-white rounded-lg focus:outline-none"
+              class="flex justify-between items-center w-full text-left p-4 focus:outline-none"
               onclick="toggleAccordion('faq2')"
             >
-              <span>Как обновить подписку?</span>
-              <i class="fas fa-plus text-cyan-600"></i>
+              <span class="text-gray-800 font-medium">Как обновить подписку?</span>
+              <i class="fas fa-chevron-down text-cyan-600 transition-transform transform" id="icon-faq2"></i>
             </button>
-            <div id="faq2" class="overflow-hidden transition-all duration-300 max-h-0">
-              <p class="text-gray-700 mt-2">
+            <div id="faq2" class="overflow-hidden transition-all duration-300 max-h-0 px-4">
+              <p class="text-gray-600 mb-4">
                 Для обновления подписки перейдите в личный кабинет > Подписки > Выберите новый тариф и оплатите его.
               </p>
             </div>
@@ -105,14 +97,14 @@
           <div>
             <button 
               type="button" 
-              class="flex justify-between items-center w-full text-left p-3 bg-white rounded-lg focus:outline-none"
+              class="flex justify-between items-center w-full text-left p-4 focus:outline-none"
               onclick="toggleAccordion('faq3')"
             >
-              <span>Где хранятся мои ключи доступа?</span>
-              <i class="fas fa-plus text-cyan-600"></i>
+              <span class="text-gray-800 font-medium">Где хранятся мои ключи доступа?</span>
+              <i class="fas fa-chevron-down text-cyan-600 transition-transform transform" id="icon-faq3"></i>
             </button>
-            <div id="faq3" class="overflow-hidden transition-all duration-300 max-h-0">
-              <p class="text-gray-700 mt-2">
+            <div id="faq3" class="overflow-hidden transition-all duration-300 max-h-0 px-4">
+              <p class="text-gray-600 mb-4">
                 Ключи доступа зашифрованы и хранятся в нашей базе данных. 
                 Вы можете всегда найти их в разделе "Ключи доступа" вашего личного кабинета.
               </p>
@@ -125,19 +117,12 @@
 </section>
 
 <script>
-function toggleAccordion(id) {
-  const content = document.getElementById(id);
-  const icon = event.target.querySelector('i');
-  
-  if (content.classList.contains('max-h-0')) {
-    content.classList.remove('max-h-0');
-    icon.classList.remove('transform');
-    icon.classList.add('transform', 'rotate-45');
-  } else {
-    content.classList.add('max-h-0');
-    icon.classList.remove('transform', 'rotate-45');
+  function toggleAccordion(id) {
+    const content = document.getElementById(id);
+    const icon = document.querySelector(`#icon-${id}`);
+    content.style.maxHeight = content.style.maxHeight ? null : `${content.scrollHeight}px`;
+    icon.classList.toggle('rotate-180');
   }
-}
 </script>
 
 
