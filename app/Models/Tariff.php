@@ -26,17 +26,6 @@ class Tariff extends Model
         'duration_days' => 'integer',
     ];
 
-    // public function calculatePrice(string $duration): float
-    // {
-    //     $discount = match($duration) {
-    //         '3_months' => 0.10, // 10% скидка
-    //         '12_months' => 0.20, // 20% скидка
-    //         default => 0,
-    //     };
-
-    //     return $this->price * (1 - $discount);
-    // }
-
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);

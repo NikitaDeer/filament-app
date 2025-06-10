@@ -91,9 +91,4 @@ class User extends Authenticatable implements FilamentUser
         return $this->activeSubscription()->exists();
     }
 
-//     public function accessKey()
-// {
-//     return $this->hasOne(AccessKey::class)->latestOfMany();
-// }
-
 }
