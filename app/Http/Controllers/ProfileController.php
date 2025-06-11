@@ -17,36 +17,36 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-
     public function edit(Request $request): View
     {
-
         $user = auth()->user();
-        $accessKey = $user->accessKeys()
-            ->where('is_active', true)
-            ->latest()
-            ->first();
+        
+        // Загружаем пользователя с нужными связями
+        $user->load([
+            'currentTariff',
+            'activeSubscription.tariff',
+            'activeAccessKey',
+            'subscriptions.tariff'
+        ]);
+        
+        // Получаем активный ключ
+        $accessKey = $user->activeAccessKey;
+        
+        // Получаем все подписки пользователя
         $subscriptions = $user->subscriptions()
+            ->with('tariff')
             ->orderBy('created_at', 'desc')
             ->get();
+
+        // Получаем статус подписки
+        $subscriptionStatus = $user->getSubscriptionStatus();
     
         return view('profile.edit', [
             'user' => $user,
-            'accessKey' => $accessKey ?? null, // Явное указание null
-            'subscriptions' => $subscriptions ?? collect(), // Пустая коллекция
+            'accessKey' => $accessKey,
+            'subscriptions' => $subscriptions,
+            'subscriptionStatus' => $subscriptionStatus,
         ]);
-
-        // $user = $request->user();
-        // $accessKey = $user->accessKeys()
-        //     ->where('is_active', true)
-        //     ->latest('generated_at')
-        //     ->first();
-        
-        // $subscriptions = $user->subscriptions()
-        //     ->with('tariff')
-        //     ->get();
-    
-        // return view('profile.edit', compact('user', 'accessKey', 'subscriptions'));
     }
 
     /**
