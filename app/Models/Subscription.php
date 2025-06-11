@@ -45,6 +45,31 @@ class Subscription extends Model
     {
         $totalDays = $this->start_date->diffInDays($this->end_date);
         $elapsedDays = $this->start_date->diffInDays(now());
-        return ($elapsedDays / $totalDays) * 100;
+        
+        // Защита от деления на ноль и отрицательных значений
+        if ($totalDays <= 0) {
+            return 0;
+        }
+        
+        $percentage = ($elapsedDays / $totalDays) * 100;
+        
+        // Ограничиваем значение от 0 до 100
+        return min(100, max(0, $percentage));
+    }
+
+    // Метод для проверки активности подписки
+    public function isActive()
+    {
+        return $this->status === 'active' && $this->end_date->isFuture();
+    }
+
+    // Метод для получения оставшихся дней
+    public function remainingDays()
+    {
+        if ($this->end_date->isPast()) {
+            return 0;
+        }
+        
+        return $this->end_date->diffInDays(now());
     }
 }
