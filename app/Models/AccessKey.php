@@ -48,12 +48,46 @@ class AccessKey extends Model
         }
     }
 
-    // Акцессор для расчета оставшегося времени
+    // Акцессор для расчета оставшегося времени в процентах
     public function remainingPercentage()
     {
+        if (!$this->generated_at || !$this->expires_at) {
+            return 0;
+        }
+
         $totalDays = $this->generated_at->diffInDays($this->expires_at);
-        $remainingDays = $this->expires_at->diffInDays(now());
-        return ($remainingDays / $totalDays) * 100;
+        $remainingDays = now()->diffInDays($this->expires_at, false); // false для получения отрицательных значений если истек
+        
+        // Защита от деления на ноль
+        if ($totalDays <= 0) {
+            return 0;
+        }
+        
+        // Если ключ истек
+        if ($remainingDays < 0) {
+            return 0;
+        }
+        
+        $percentage = ($remainingDays / $totalDays) * 100;
+        
+        // Ограничиваем значение от 0 до 100
+        return min(100, max(0, $percentage));
+    }
+
+    // Метод для получения оставшихся дней
+    public function remainingDays()
+    {
+        if (!$this->expires_at || $this->expires_at->isPast()) {
+            return 0;
+        }
+        
+        return $this->expires_at->diffInDays(now());
+    }
+
+    // Проверка активности ключа
+    public function isActive()
+    {
+        return $this->is_active && $this->expires_at && $this->expires_at->isFuture();
     }
 
     public function generateKey(User $user, Subscription $subscription)
@@ -61,10 +95,13 @@ class AccessKey extends Model
         // Формируем данные для шифрования
         $data = json_encode([
             'user_id' => $user->id,
+            'user_name' => $user->name,
+            'user_email' => $user->email,
             'subscription_id' => $subscription->id,
             'start_date' => $subscription->start_date->timestamp,
             'end_date' => $subscription->end_date->timestamp,
-            'tariff' => $subscription->tariff->only(['title', 'duration_days']),
+            'tariff' => $subscription->tariff->only(['id', 'title', 'duration_days']),
+            'generated_at' => now()->timestamp,
         ]);
     
         // Шифруем данные
