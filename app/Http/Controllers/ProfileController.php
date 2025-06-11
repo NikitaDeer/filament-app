@@ -29,7 +29,7 @@ class ProfileController extends Controller
             'subscriptions.tariff'
         ]);
         
-        // Получаем активный ключ
+        // Получаем активный ключ с проверкой
         $accessKey = $user->activeAccessKey;
         
         // Получаем все подписки пользователя
