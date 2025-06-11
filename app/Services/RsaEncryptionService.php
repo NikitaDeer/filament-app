@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use phpseclib3\Crypt\RSA;
-
 class RsaEncryptionService
 {
     protected $publicKey;
@@ -12,17 +10,14 @@ class RsaEncryptionService
 
     public function __construct()
     {
-        // Загружаем данные из .env
-        $this->passphrase = env('RSA_PASSPHRASE');
+        $this->passphrase = env('RSA_PASSPHRASE', '');
         $publicKeyPath = env('RSA_PUBLIC_KEY_PATH');
         $privateKeyPath = env('RSA_PRIVATE_KEY_PATH');
-
-        // Проверяем существование файлов
+    
         if (!file_exists($publicKeyPath) || !file_exists($privateKeyPath)) {
-            throw new \Exception("Ключи не найдены!");
+            throw new \Exception("Ключи не найдены! Проверьте пути: {$publicKeyPath} и {$privateKeyPath}");
         }
-
-        // Загружаем ключи
+    
         $this->publicKey = file_get_contents($publicKeyPath);
         $this->privateKey = file_get_contents($privateKeyPath);
     }
@@ -33,11 +28,22 @@ class RsaEncryptionService
     public function encrypt(string $data): string
     {
         try {
-            $rsa = new RSA();
-            $rsa->loadKey($this->publicKey);
-            $rsa->setEncryptionMode(RSA::ENCRYPTION_OAEP);
-            return base64_encode($rsa->encrypt($data));
+            $publicKeyResource = openssl_pkey_get_public($this->publicKey);
+            
+            if (!$publicKeyResource) {
+                throw new \Exception('Не удалось загрузить публичный ключ');
+            }
+
+            $encrypted = '';
+            $result = openssl_public_encrypt($data, $encrypted, $publicKeyResource, OPENSSL_PKCS1_PADDING);
+            
+            if (!$result) {
+                throw new \Exception('Ошибка шифрования');
+            }
+
+            return base64_encode($encrypted);
         } catch (\Exception $e) {
+            \Log::error('Ошибка шифрования: ' . $e->getMessage());
             throw new \RuntimeException('Ошибка шифрования: ' . $e->getMessage());
         }
     }
@@ -48,11 +54,22 @@ class RsaEncryptionService
     public function decrypt(string $encryptedData): string
     {
         try {
-            $rsa = new RSA();
-            $rsa->loadKey($this->privateKey, RSA::PRIVATE_FORMAT_PKCS1, $this->passphrase);
-            $rsa->setEncryptionMode(RSA::ENCRYPTION_OAEP);
-            return $rsa->decrypt(base64_decode($encryptedData));
+            $privateKeyResource = openssl_pkey_get_private($this->privateKey, $this->passphrase);
+            
+            if (!$privateKeyResource) {
+                throw new \Exception('Не удалось загрузить приватный ключ');
+            }
+
+            $decrypted = '';
+            $result = openssl_private_decrypt(base64_decode($encryptedData), $decrypted, $privateKeyResource, OPENSSL_PKCS1_PADDING);
+            
+            if (!$result) {
+                throw new \Exception('Ошибка дешифровки');
+            }
+
+            return $decrypted;
         } catch (\Exception $e) {
+            \Log::error('Ошибка дешифровки: ' . $e->getMessage());
             throw new \Exception("Ошибка дешифровки: " . $e->getMessage());
         }
     }

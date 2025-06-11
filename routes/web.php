@@ -21,6 +21,31 @@ use App\Http\Controllers\SubscriptionController;
 //   return view('main');
 // });
 
+Route::get('/test-encryption', function() {
+  try {
+      $service = new \App\Services\RsaEncryptionService();
+      $testData = 'Hello, this is test data!';
+      
+      echo "Исходные данные: " . $testData . "<br>";
+      
+      $encrypted = $service->encrypt($testData);
+      echo "Зашифровано: " . substr($encrypted, 0, 100) . "...<br>";
+      
+      $decrypted = $service->decrypt($encrypted);
+      echo "Расшифровано: " . $decrypted . "<br>";
+      
+      if ($testData === $decrypted) {
+          echo "<strong style='color: green;'>✅ ТЕСТ ПРОШЕЛ УСПЕШНО!</strong>";
+      } else {
+          echo "<strong style='color: red;'>❌ ТЕСТ НЕ ПРОШЕЛ!</strong>";
+      }
+      
+  } catch (\Exception $e) {
+      echo "<strong style='color: red;'>Ошибка: " . $e->getMessage() . "</strong><br>";
+      echo "Trace: <pre>" . $e->getTraceAsString() . "</pre>";
+  }
+})->name('test.encryption');
+
 Route::get('/', [MainController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
