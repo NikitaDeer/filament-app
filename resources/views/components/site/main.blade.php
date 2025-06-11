@@ -24,7 +24,7 @@
               <div>
                 <h4 class="font-medium text-cyan-800">Шифрование ключей</h4>
                 <p class="text-gray-600 text-sm">
-                  Все ключи доступа защищены AES-256 шифрованием
+                  Все ключи доступа защищены RSA-256 шифрованием
                 </p>
               </div>
             </div>
@@ -35,7 +35,7 @@
               <div>
                 <h4 class="font-medium text-cyan-800">Ограничение сроков</h4>
                 <p class="text-gray-600 text-sm">
-                  Ключи автоматически expire через 30 дней
+                  Ключи автоматически истекают согласно тарифу
                 </p>
               </div>
             </div>
@@ -58,21 +58,27 @@
           <h3 class="text-xl font-bold text-cyan-800 mb-4">Статус вашей подписки</h3>
           
           @auth
-            @if (Auth::user()->activeSubscription)
+            @php
+              $user = Auth::user();
+              $activeSubscription = $user->activeSubscription;
+              $currentTariff = $user->currentTariff;
+            @endphp
+
+            @if ($activeSubscription && $activeSubscription->tariff)
               <div class="mb-4">
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-sm text-gray-600">Текущий тариф:</span>
-                  <span class="font-medium text-cyan-800">{{ Auth::user()->currentTariff->title }}</span>
+                  <span class="font-medium text-cyan-800">{{ $activeSubscription->tariff->title }}</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2.5">
                   <div 
                     class="bg-gradient-to-r from-orange-400 to-pink-500 h-2.5 rounded-full" 
-                    style="width: {{ Auth::user()->activeSubscription->progressPercentage() }}%"
+                    style="width: {{ $activeSubscription->progressPercentage() }}%"
                   ></div>
                 </div>
                 <div class="flex justify-between text-xs text-gray-600 mt-1">
-                  <span>Начало: {{ Auth::user()->activeSubscription->start_date->format('d.m.Y') }}</span>
-                  <span>Окончание: {{ Auth::user()->activeSubscription->end_date->format('d.m.Y') }}</span>
+                  <span>Начало: {{ $activeSubscription->start_date->format('d.m.Y') }}</span>
+                  <span>Окончание: {{ $activeSubscription->end_date->format('d.m.Y') }}</span>
                 </div>
               </div>
 
@@ -81,7 +87,23 @@
               >
                 Управление подпиской
               </a>
+            @elseif ($currentTariff)
+              {{-- Если есть текущий тариф, но нет активной подписки --}}
+              <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-sm text-gray-600">Текущий тариф:</span>
+                  <span class="font-medium text-cyan-800">{{ $currentTariff->title }}</span>
+                </div>
+                <p class="text-sm text-orange-600 mb-3">Подписка истекла или неактивна</p>
+              </div>
+              
+              <a href="{{ route('profile.edit') }}"
+                class="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg py-2 px-4 text-sm font-medium hover:from-orange-600 hover:to-red-600 transition-colors w-full text-center"
+              >
+                Продлить подписку
+              </a>
             @else
+              {{-- Нет ни активной подписки, ни текущего тарифа --}}
               <div class="text-center">
                 <i class="fas fa-exclamation-circle text-cyan-500 text-3xl mb-3"></i>
                 <p class="text-gray-600 mb-4">Подписка не активна</p>
@@ -121,32 +143,3 @@
     </div>
   @endif
 </section>
-
-
-<!-- <section class="bg-slate-700">
-  <div class="mx-auto max-w-screen-xl items-center gap-16 py-8 px-10 lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
-    <div class="font-light text-violet-200 sm:text-lg">
-      @if ($page)
-        <h2 class="mb-4 text-4xl font-extrabold text-violet-200">{{ $page->ThirdTitle }}</h2>
-        <p class="mb-4">{!! $page->about_content !!}</p>
-        <p>{!! $page->about_second_content !!}</p>
-      @endif
-    </div>
-    @if ($page)
-      <div class="mt-8 grid grid-cols-2 gap-4">
-        <img class="w-full rounded-lg" src="storage/{{ $page->first_photo_path }}" alt="Тут Доктор">
-        <img class="mt-4 w-full rounded-lg lg:mt-10" src="storage/{{ $page->second_photo_path }}" alt="Тут Доктор">
-      </div>
-    @endif
-  </div>
-
-  @if ($page)
-    <div class="mx-auto max-w-screen-xl py-8 px-10 lg:py-16 lg:px-6">
-      <div class="max-w-screen-lg text-violet-200 sm:text-lg">
-        <h2 class="mb-4 text-4xl font-bold text-violet-200">{{ $page->FourthTitle }}</h2>
-        <p class="mb-4 font-light">{!! $page->footer_content !!}</p>
-        <p class="mb-4 font-medium">{!! $page->footer_second_content !!}</p>
-      </div>
-    </div>
-  @endif
-</section> -->
