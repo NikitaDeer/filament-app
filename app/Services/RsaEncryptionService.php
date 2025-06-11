@@ -32,10 +32,14 @@ class RsaEncryptionService
      */
     public function encrypt(string $data): string
     {
-        $rsa = new RSA();
-        $rsa->loadKey($this->publicKey);
-        $rsa->setEncryptionMode(RSA::ENCRYPTION_OAEP);
-        return base64_encode($rsa->encrypt($data));
+        try {
+            $rsa = new RSA();
+            $rsa->loadKey($this->publicKey);
+            $rsa->setEncryptionMode(RSA::ENCRYPTION_OAEP);
+            return base64_encode($rsa->encrypt($data));
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Ошибка шифрования: ' . $e->getMessage());
+        }
     }
 
     /**

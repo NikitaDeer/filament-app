@@ -28,7 +28,6 @@ class User extends Authenticatable implements FilamentUser
         'trial_used',
         'trial_ends_at',
         'current_tariff_id',
-        'tariff_status'
     ];
 
     /**
@@ -62,11 +61,6 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Order::class);
     }
 
-    public function currentTariff(): BelongsTo
-    {
-        return $this->belongsTo(Tariff::class, 'current_tariff_id');
-    }
-
     // Новые отношения
     public function subscriptions()
     {
@@ -82,7 +76,19 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasOne(Subscription::class)
             ->where('status', 'active')
-            ->latestOfMany();
+            ->latest();
+    }
+
+    public function currentTariff()
+    {
+        return $this->belongsTo(Tariff::class, 'current_tariff_id');
+    }
+
+    public function currentSubscription()
+    {
+        return $this->hasOne(Subscription::class)
+            ->where('status', 'active')
+            ->latest();
     }
 
     // Новые методы

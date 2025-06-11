@@ -40,11 +40,11 @@
                 <!-- Основной контент -->
                 <main class="bg-white p-6 rounded-lg shadow-md w-full">
                 <div id="tab-content">
-    @include('profile.tabs.profile', ['user' => $user])
-    @include('profile.tabs.access-key', ['key' => $key])
-    @include('profile.tabs.subscriptions', ['subscriptions' => $subscriptions])
-    @include('profile.tabs.settings')
-</div>
+                    @include('profile.tabs.profile', ['user' => $user])
+                    @include('profile.tabs.access-key', ['accessKey' => $accessKey])
+                    @include('profile.tabs.subscriptions', ['subscriptions' => $subscriptions])
+                    @include('profile.tabs.settings')
+                </div>
                 </main>
 
             </div>
@@ -59,7 +59,6 @@
 
 </x-main-layout>
 
-<!-- ПОЛЕЗНО: Перенесите JS вниз страницы -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const buttons = document.querySelectorAll('[data-tab]');

@@ -20,17 +20,33 @@ class ProfileController extends Controller
 
     public function edit(Request $request): View
     {
-        $user = $request->user();
-        $key = $user->accessKeys()
+
+        $user = auth()->user();
+        $accessKey = $user->accessKeys()
             ->where('is_active', true)
-            ->latest('generated_at')
+            ->latest()
             ->first();
-        
         $subscriptions = $user->subscriptions()
-            ->with('tariff')
+            ->orderBy('created_at', 'desc')
             ->get();
     
-        return view('profile.edit', compact('user', 'key', 'subscriptions'));
+        return view('profile.edit', [
+            'user' => $user,
+            'accessKey' => $accessKey ?? null, // Явное указание null
+            'subscriptions' => $subscriptions ?? collect(), // Пустая коллекция
+        ]);
+
+        // $user = $request->user();
+        // $accessKey = $user->accessKeys()
+        //     ->where('is_active', true)
+        //     ->latest('generated_at')
+        //     ->first();
+        
+        // $subscriptions = $user->subscriptions()
+        //     ->with('tariff')
+        //     ->get();
+    
+        // return view('profile.edit', compact('user', 'accessKey', 'subscriptions'));
     }
 
     /**

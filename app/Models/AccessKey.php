@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Services\RsaEncryptionService;
 
 class AccessKey extends Model
 {
@@ -53,5 +54,27 @@ class AccessKey extends Model
         $totalDays = $this->generated_at->diffInDays($this->expires_at);
         $remainingDays = $this->expires_at->diffInDays(now());
         return ($remainingDays / $totalDays) * 100;
+    }
+
+    public function generateKey(User $user, Subscription $subscription)
+    {
+        // Формируем данные для шифрования
+        $data = json_encode([
+            'user_id' => $user->id,
+            'subscription_id' => $subscription->id,
+            'start_date' => $subscription->start_date->timestamp,
+            'end_date' => $subscription->end_date->timestamp,
+            'tariff' => $subscription->tariff->only(['title', 'duration_days']),
+        ]);
+    
+        // Шифруем данные
+        $rsaService = new RsaEncryptionService();
+        $this->encrypted_key = $rsaService->encrypt($data);
+        $this->generated_at = now();
+        $this->expires_at = $subscription->end_date;
+        $this->is_active = true;
+        
+        // Сохраняем модель
+        $this->save();
     }
 }
