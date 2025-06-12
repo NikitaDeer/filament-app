@@ -10,8 +10,11 @@ use Flowframe\Trend\TrendValue;
 class NewUsersChart extends ChartWidget
 {
     protected static ?string $heading = 'Новые пользователи (30 дней)';
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 2;
     protected static ?string $maxHeight = '300px';
+
+    protected int | string | array $columnSpan = '6';
+
 
     protected function getData(): array
     {

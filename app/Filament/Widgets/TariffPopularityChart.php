@@ -8,8 +8,10 @@ use Filament\Widgets\ChartWidget;
 class TariffPopularityChart extends ChartWidget
 {
     protected static ?string $heading = 'Популярность тарифов';
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 4;
     protected static ?string $maxHeight = '300px';
+
+    protected int | string | array $columnSpan = 'full';
     
 
     protected function getData(): array

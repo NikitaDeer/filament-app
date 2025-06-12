@@ -10,8 +10,10 @@ use Flowframe\Trend\TrendValue;
 class SubscriptionsChart extends ChartWidget
 {
     protected static ?string $heading = 'Новые подписки (30 дней)';
-    protected static ?int $sort = 4;
+    protected static ?int $sort = 2;
     protected static ?string $maxHeight = '300px';
+
+    protected int | string | array $columnSpan = '6';
 
     protected function getData(): array
     {
