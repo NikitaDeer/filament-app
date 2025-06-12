@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showCurrentPasswordLoading();
 
         // AJAX запрос для проверки текущего пароля
-        fetch('/api/validate-current-password', {
+        fetch('/profile/validate-current-password', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
