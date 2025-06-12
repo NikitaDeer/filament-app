@@ -12,6 +12,12 @@ class Subscription extends Model
 {
     use HasFactory;
 
+    // Константы для статусов
+    const STATUS_ACTIVE = 'active';
+    const STATUS_EXPIRED = 'expired';
+    const STATUS_PENDING = 'pending';
+    const STATUS_CANCELLED = 'cancelled';
+
     protected $fillable = [
         'user_id',
         'tariff_id',
@@ -60,7 +66,13 @@ class Subscription extends Model
     // Метод для проверки активности подписки
     public function isActive()
     {
-        return $this->status === 'active' && $this->end_date->isFuture();
+        return $this->status === self::STATUS_ACTIVE && $this->end_date->isFuture();
+    }
+
+    // Метод для проверки отмененной подписки
+    public function isCancelled()
+    {
+        return $this->status === self::STATUS_CANCELLED;
     }
 
     // Метод для получения оставшихся дней
@@ -71,5 +83,16 @@ class Subscription extends Model
         }
         
         return $this->end_date->diffInDays(now());
+    }
+
+    // Метод для получения всех доступных статусов
+    public static function getAvailableStatuses()
+    {
+        return [
+            self::STATUS_ACTIVE => 'Активная',
+            self::STATUS_EXPIRED => 'Истекшая',
+            self::STATUS_PENDING => 'Ожидание',
+            self::STATUS_CANCELLED => 'Отменена',
+        ];
     }
 }
