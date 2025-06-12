@@ -264,6 +264,146 @@
 </div>
 
 <script>
+
+// Добавьте этот код в ваш Blade компонент в секцию <script>
+
+// Валидация пароля в реальном времени
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordField = document.getElementById('password');
+    const confirmPasswordField = document.getElementById('password_confirmation');
+    const passwordForm = passwordField.closest('form');
+
+    // Функция для проверки совпадения паролей
+    function validatePasswordMatch() {
+        const password = passwordField.value;
+        const confirmPassword = confirmPasswordField.value;
+        
+        // Удаляем предыдущие сообщения об ошибках
+        removePasswordMatchError();
+        
+        if (confirmPassword && password !== confirmPassword) {
+            showPasswordMatchError('Пароли не совпадают');
+            return false;
+        }
+        
+        return true;
+    }
+
+    // Функция для показа ошибки несовпадения паролей
+    function showPasswordMatchError(message) {
+        // Удаляем существующую ошибку
+        removePasswordMatchError();
+        
+        // Создаем новый элемент ошибки
+        const errorElement = document.createElement('p');
+        errorElement.className = 'mt-1 text-sm text-red-600';
+        errorElement.id = 'password-match-error';
+        errorElement.textContent = message;
+        
+        // Добавляем после поля подтверждения пароля
+        confirmPasswordField.parentNode.appendChild(errorElement);
+        
+        // Добавляем красную границу
+        confirmPasswordField.classList.add('border-red-500');
+        confirmPasswordField.classList.remove('border-gray-300');
+    }
+
+    // Функция для удаления ошибки несовпадения паролей
+    function removePasswordMatchError() {
+        const existingError = document.getElementById('password-match-error');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        // Убираем красную границу
+        confirmPasswordField.classList.remove('border-red-500');
+        confirmPasswordField.classList.add('border-gray-300');
+    }
+
+    // Функция для проверки силы пароля
+    function validatePasswordStrength(password) {
+        const strengthIndicator = document.getElementById('password-strength');
+        
+        if (!password) {
+            if (strengthIndicator) strengthIndicator.remove();
+            return;
+        }
+
+        const requirements = [
+            { regex: /.{8,}/, text: 'минимум 8 символов' },
+            { regex: /[a-z]/, text: 'строчные буквы' },
+            { regex: /[A-Z]/, text: 'заглавные буквы' },
+            { regex: /\d/, text: 'цифры' },
+            { regex: /[!@#$%^&*(),.?":{}|<>]/, text: 'специальные символы' }
+        ];
+
+        const met = requirements.filter(req => req.regex.test(password));
+        const strength = met.length;
+
+        // Создаем или обновляем индикатор силы пароля
+        let strengthElement = document.getElementById('password-strength');
+        if (!strengthElement) {
+            strengthElement = document.createElement('div');
+            strengthElement.id = 'password-strength';
+            strengthElement.className = 'mt-2';
+            passwordField.parentNode.appendChild(strengthElement);
+        }
+
+        const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'];
+        const strengthTexts = ['Очень слабый', 'Слабый', 'Средний', 'Хороший', 'Отличный'];
+
+        strengthElement.innerHTML = `
+            <div class="flex items-center space-x-2">
+                <div class="flex space-x-1">
+                    ${Array(5).fill(0).map((_, i) => 
+                        `<div class="h-2 w-6 rounded ${i < strength ? strengthColors[strength - 1] : 'bg-gray-200'}"></div>`
+                    ).join('')}
+                </div>
+                <span class="text-sm text-gray-600">${strengthTexts[strength - 1] || 'Слишком слабый'}</span>
+            </div>
+            <div class="mt-1 text-xs text-gray-500">
+                Требования: ${requirements.map(req => 
+                    `<span class="${req.regex.test(password) ? 'text-green-600' : 'text-red-600'}">${req.text}</span>`
+                ).join(', ')}
+            </div>
+        `;
+    }
+
+    // Добавляем обработчики событий
+    passwordField.addEventListener('input', function() {
+        validatePasswordStrength(this.value);
+        if (confirmPasswordField.value) {
+            validatePasswordMatch();
+        }
+    });
+
+    confirmPasswordField.addEventListener('input', validatePasswordMatch);
+    confirmPasswordField.addEventListener('blur', validatePasswordMatch);
+
+    // Валидация при отправке формы
+    passwordForm.addEventListener('submit', function(e) {
+        if (!validatePasswordMatch()) {
+            e.preventDefault();
+            confirmPasswordField.focus();
+            return false;
+        }
+    });
+});
+
+// Улучшенная функция переключения видимости пароля
+function togglePassword(fieldId) {
+    const field = document.getElementById(fieldId);
+    const icon = document.getElementById(fieldId + '_icon');
+    
+    if (field.type === 'password') {
+        field.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        field.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
 // Функция для переключения видимости пароля
 function togglePassword(fieldId) {
     const field = document.getElementById(fieldId);
