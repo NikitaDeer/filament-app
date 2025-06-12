@@ -324,35 +324,59 @@ document.getElementById('deleteForm').addEventListener('submit', function(e) {
         return;
     }
     
+    // Блокируем кнопку отправки
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.innerHTML;
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Удаление...';
+    
     // Отправляем AJAX запрос
     fetch(this.action, {
         method: 'POST',
         headers: {
             'X-CSRF-TOKEN': formData.get('_token'),
             'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
         },
         body: formData
     })
     .then(response => {
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        
         if (response.ok) {
-            // Успешное удаление - перенаправляем
-            window.location.href = '/';
-        } else {
+            // Успешное удаление
+            return response.json().then(data => {
+                console.log('Success data:', data);
+                showNotification('Аккаунт успешно удален', 'success');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            }).catch(() => {
+                // Если JSON не парсится, значит сервер вернул редирект
+                console.log('No JSON response, redirecting...');
+                window.location.href = '/';
+            });
+        } else if (response.status === 422) {
             // Ошибка валидации
-            return response.json();
-        }
-    })
-    .then(data => {
-        if (data && data.errors) {
-            // Показываем ошибку пароля
-            if (data.errors.password) {
-                showDeletePasswordError(data.errors.password[0]);
-            }
+            return response.json().then(data => {
+                console.log('Validation errors:', data);
+                if (data.errors && data.errors.password) {
+                    showDeletePasswordError(data.errors.password[0]);
+                }
+            });
+        } else {
+            throw new Error('Server error: ' + response.status);
         }
     })
     .catch(error => {
         console.error('Error:', error);
         showDeletePasswordError('Произошла ошибка. Попробуйте еще раз.');
+    })
+    .finally(() => {
+        // Разблокируем кнопку
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalText;
     });
 });
 
