@@ -58,6 +58,9 @@ Route::middleware('auth')->group(function () {
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
   
+  Route::post('/profile/validate-current-password', [ProfileController::class, 'validateCurrentPassword'])
+  ->name('profile.validate-current-password');
+
   Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('password.update');
 
 // Маршрут для активации тарифа
