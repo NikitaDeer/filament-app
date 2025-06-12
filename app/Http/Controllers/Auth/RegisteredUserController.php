@@ -34,9 +34,20 @@ class RegisteredUserController extends Controller
   {
     $request->validate([
       'name' => ['nullable', 'string', 'max:255'],
-      'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+      'email' => [
+          'required',
+          'string',
+          'email', // Стандартная проверка формата
+          'max:255',
+          'unique:' . User::class,
+          // Проверяем наличие точки в домене
+          'regex:/^.+@.+\..+$/i',
+      ],
       'password' => ['required', 'confirmed', Rules\Password::defaults()],  
-    ]);
+  ],
+  [
+      'email.regex' => 'Email должен содержать корректный домен (пример: example.com)'
+  ]);
 
     // $emptyTariff = Tariff::where('title', 'Нет тарифа')->first();
 
