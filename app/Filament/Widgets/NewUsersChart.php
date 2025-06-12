@@ -2,35 +2,32 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Subscription;
+use App\Models\User;
 use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 
-class SubscriptionsChart extends ChartWidget
+class NewUsersChart extends ChartWidget
 {
-    protected static ?string $heading = 'Новые подписки (30 дней)';
-    protected static ?int $sort = 4;
+    protected static ?string $heading = 'Новые пользователи (30 дней)';
+    protected static ?int $sort = 3;
     protected static ?string $maxHeight = '300px';
 
     protected function getData(): array
     {
-        $data = Trend::model(Subscription::class)
-            ->between(
-                now()->subDays(30),
-                now()
-            )
+        $data = Trend::model(User::class)
+            ->between(now()->subDays(30), now())
             ->perDay()
             ->count();
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Подписки',
+                    'label' => 'Пользователи',
                     'data' => $data->map(fn(TrendValue $value) => $value->aggregate),
-                    'borderColor' => '#3B82F6',
-                    'backgroundColor' => 'rgba(59, 130, 246, 0.2)',
-                    'pointBackgroundColor' => '#3B82F6',
+                    'borderColor' => '#8B5CF6',
+                    'backgroundColor' => 'rgba(139, 92, 246, 0.2)',
+                    'pointBackgroundColor' => '#8B5CF6',
                     'pointRadius' => 4,
                     'tension' => 0.4,
                     'fill' => true,
@@ -53,34 +50,23 @@ class SubscriptionsChart extends ChartWidget
             'scales' => [
                 'y' => [
                     'beginAtZero' => true,
-                    'ticks' => [
-                        'color' => '#6B7280',
-                        'stepSize' => 1,
-                    ],
-                    'grid' => [
-                        'color' => '#E5E7EB',
-                    ],
+                    'ticks' => ['color' => '#6B7280'],
+                    'grid' => ['color' => '#E5E7EB'],
                 ],
                 'x' => [
-                    'ticks' => [
-                        'color' => '#6B7280',
-                    ],
-                    'grid' => [
-                        'display' => false,
-                    ],
+                    'ticks' => ['color' => '#6B7280'],
+                    'grid' => ['display' => false],
                 ],
             ],
             'plugins' => [
-                'legend' => [
-                    'display' => false,
-                ],
+                'legend' => ['display' => false],
                 'tooltip' => [
                     'backgroundColor' => '#1F2937',
                     'titleColor' => '#F3F4F6',
                     'bodyColor' => '#F3F4F6',
                     'cornerRadius' => 6,
-                    'borderWidth' => 1,
                     'borderColor' => '#374151',
+                    'borderWidth' => 1,
                 ],
             ],
         ];
