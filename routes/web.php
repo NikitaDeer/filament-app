@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function () {
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
   
+  Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('password.update');
+
 // Маршрут для активации тарифа
   Route::post('/tariffs/{tariff}/activate', [SubscriptionController::class, 'activate'])
     ->middleware('auth')
