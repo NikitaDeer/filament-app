@@ -17,7 +17,11 @@ class AccessKeyResource extends Resource
 {
     protected static ?string $model = AccessKey::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-key';
+
+    protected static ?string $navigationGroup = 'Управление подписками и тарифами';
+
+    protected static ?string $navigationLabel = 'Ключи';
 
     public static function form(Form $form): Form
     {

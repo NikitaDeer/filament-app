@@ -19,6 +19,10 @@ class SubscriptionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static ?string $navigationGroup = 'Управление подписками и тарифами';
+
+    protected static ?string $navigationLabel = 'Подписки';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -52,18 +56,22 @@ class SubscriptionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('tariff.title'),
+                    ->searchable()
+                    ->label('Email'),
+                Tables\Columns\TextColumn::make('tariff.title')
+                ->label('Название тарифа'),
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
                         'success' => 'active',
                         'danger' => 'expired',
                         'warning' => 'pending',
                     ])
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Статус подписки'),
                 Tables\Columns\TextColumn::make('end_date')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Дата окончания подписки'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
@@ -72,6 +80,7 @@ class SubscriptionResource extends Resource
                         'expired' => 'Expired',
                         'pending' => 'Pending'
                     ])
+                    ->label('Статус подписки'), 
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

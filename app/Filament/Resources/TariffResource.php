@@ -23,7 +23,7 @@ class TariffResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
 
-    protected static ?string $navigationGroup = 'Управление услугами и заявками';
+    protected static ?string $navigationGroup = 'Управление подписками и тарифами';
 
     protected static ?string $navigationLabel = 'Предоставляемые тарифы';
 
@@ -51,19 +51,6 @@ class TariffResource extends Resource
                     Forms\Components\TextInput::make('description'),
                     Forms\Components\Toggle::make('is_renewable'),
                     Forms\Components\Toggle::make('is_published')
-                        
-                        // TextInput::make('title')
-                        //     ->label('Название тарифа')
-                        //     ->required(),
-                        // Textarea::make('description')
-                        //     ->label('Описание'),
-                        // TextInput::make('price')
-                        //     ->label('Базовая цена (месяц)')
-                        //     ->required()
-                        //     ->numeric()
-                        //     ->prefix('₽'),
-                        // Toggle::make('is_published')
-                        //     ->label('Опубликовать'),
                     ]),
             ]);
     }
@@ -73,33 +60,22 @@ class TariffResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Название'),
                 Tables\Columns\BadgeColumn::make('type')
                     ->colors([
                         'primary' => 'trial',
                         'success' => 'regular'
-                    ]),
-                Tables\Columns\TextColumn::make('duration_days'),
+                    ])
+                    ->label('Тип'),
+                Tables\Columns\TextColumn::make('duration_days')
+                    ->label('Длительность'),
                 Tables\Columns\TextColumn::make('price')
-                    ->money('RUB'),
+                    ->money('RUB')
+                    ->label('Цена'),
                 Tables\Columns\IconColumn::make('is_published')
+                    ->label('Опубликован')
                     ->boolean(),
-                
-                // TextColumn::make('title')
-                //     ->searchable()
-                //     ->sortable()
-                //     ->label('Название'),
-                // TextColumn::make('description')
-                //     ->limit(25)
-                //     ->label('Описание'),
-                // TextColumn::make('price')
-                //     ->money('RUB')
-                //     ->label('Базовая цена за месяц'),
-                // ToggleColumn::make('is_published')
-                //     ->label('Опубликован'),
-                // TextColumn::make('created_at')
-                //     ->dateTime('d.m.Y H:i')
-                //     ->label('Создан'),
             ])
             ->filters([
                 //
