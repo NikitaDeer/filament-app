@@ -13,7 +13,6 @@ use Illuminate\View\View;
 use App\Models\User;
 use App\Models\AccessKey;
 use App\Models\Subscription;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
@@ -97,7 +96,11 @@ class ProfileController extends Controller
 
             // Деактивируем все связанные записи перед удалением
             $user->subscriptions()->update(['status' => Subscription::STATUS_CANCELLED]);
-            $user->accessKeys()->update(['is_active' => false]);
+            
+            // Проверяем есть ли у пользователя ключи доступа
+            if ($user->accessKeys()->exists()) {
+                $user->accessKeys()->update(['is_active' => false]);
+            }
 
             Auth::logout();
             
@@ -106,11 +109,11 @@ class ProfileController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            // Если это AJAX запрос
-            if ($request->expectsJson()) {
+            // Если это AJAX запрос, возвращаем JSON
+            if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => true,
-                    'redirect' => '/'
+                    'message' => 'Аккаунт успешно удален'
                 ]);
             }
 
@@ -118,7 +121,7 @@ class ProfileController extends Controller
 
         } catch (ValidationException $e) {
             // Если это AJAX запрос, возвращаем JSON с ошибками
-            if ($request->expectsJson()) {
+            if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => false,
                     'errors' => $e->errors()
@@ -129,9 +132,12 @@ class ProfileController extends Controller
             throw $e;
         } catch (\Exception $e) {
             // Логируем ошибку
-            \Log::error('Error deleting user account: ' . $e->getMessage());
+            \Log::error('Error deleting user account: ' . $e->getMessage(), [
+                'user_id' => $request->user()?->id,
+                'trace' => $e->getTraceAsString()
+            ]);
 
-            if ($request->expectsJson()) {
+            if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Произошла ошибка при удалении аккаунта. Попробуйте позже.'
