@@ -53,6 +53,30 @@ class ProfileController extends Controller
     }
 
     /**
+     * Validate current password via AJAX
+     */
+    public function validateCurrentPassword(Request $request)
+    {
+        try {
+            $request->validate([
+                'current_password' => ['required', 'string']
+            ]);
+
+            $isValid = Hash::check($request->current_password, $request->user()->password);
+
+            return response()->json([
+                'valid' => $isValid
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'valid' => false,
+                'error' => 'Произошла ошибка при проверке пароля'
+            ], 500);
+        }
+    }
+
+    /**
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
