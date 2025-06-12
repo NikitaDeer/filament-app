@@ -254,7 +254,6 @@
             </div>
         </form>
         
-        <!-- Альтернативная форма без AJAX -->
         <form method="POST" action="{{ route('profile.destroy') }}" class="hidden" id="simpleDeleteForm">
             @csrf
             @method('delete')
