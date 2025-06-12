@@ -214,7 +214,7 @@
             Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.
         </p>
         
-        <form method="POST" action="{{ route('profile.destroy') }}" class="mb-4">
+        <form method="POST" action="{{ route('profile.destroy') }}" class="mb-4" id="deleteForm">
             @csrf
             @method('delete')
             
@@ -229,6 +229,11 @@
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     required
                 >
+                <!-- Добавляем блок для отображения ошибок -->
+                <div id="delete-password-error" class="mt-1 text-sm text-red-600 hidden"></div>
+                @error('password', 'userDeletion')
+                    <p class="mt-1 text-sm text-red-600" id="server-password-error">{{ $message }}</p>
+                @enderror
             </div>
             
             <div class="flex justify-end space-x-3">
@@ -269,11 +274,35 @@ function togglePassword(fieldId) {
 function openDeleteModal() {
     document.getElementById('deleteModal').classList.remove('hidden');
     document.getElementById('deleteModal').classList.add('flex');
+    // Очищаем поле пароля и ошибки при открытии
+    document.getElementById('delete_password').value = '';
+    hideDeletePasswordError();
 }
 
 function closeDeleteModal() {
     document.getElementById('deleteModal').classList.add('hidden');
     document.getElementById('deleteModal').classList.remove('flex');
+    // Очищаем ошибки при закрытии
+    hideDeletePasswordError();
+}
+
+function showDeletePasswordError(message) {
+    const errorDiv = document.getElementById('delete-password-error');
+    errorDiv.textContent = message;
+    errorDiv.classList.remove('hidden');
+    
+    // Добавляем красную границу к полю ввода
+    const passwordField = document.getElementById('delete_password');
+    passwordField.classList.add('border-red-500');
+}
+
+function hideDeletePasswordError() {
+    const errorDiv = document.getElementById('delete-password-error');
+    errorDiv.classList.add('hidden');
+    
+    // Убираем красную границу
+    const passwordField = document.getElementById('delete_password');
+    passwordField.classList.remove('border-red-500');
 }
 
 // Закрытие модального окна при клике вне его
@@ -283,6 +312,55 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
     }
 });
 
+// Обработка формы удаления с AJAX для лучшего UX
+document.getElementById('deleteForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const password = formData.get('password');
+    
+    if (!password) {
+        showDeletePasswordError('Пожалуйста, введите пароль');
+        return;
+    }
+    
+    // Отправляем AJAX запрос
+    fetch(this.action, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': formData.get('_token'),
+            'Accept': 'application/json',
+        },
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            // Успешное удаление - перенаправляем
+            window.location.href = '/';
+        } else {
+            // Ошибка валидации
+            return response.json();
+        }
+    })
+    .then(data => {
+        if (data && data.errors) {
+            // Показываем ошибку пароля
+            if (data.errors.password) {
+                showDeletePasswordError(data.errors.password[0]);
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showDeletePasswordError('Произошла ошибка. Попробуйте еще раз.');
+    });
+});
+
+// Скрываем ошибку при вводе в поле пароля
+document.getElementById('delete_password').addEventListener('input', function() {
+    hideDeletePasswordError();
+});
+
 // Показ уведомлений при успешном обновлении
 @if(session('status') === 'profile-updated')
     showNotification('Профиль успешно обновлен!', 'success');
@@ -290,6 +368,13 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
 
 @if(session('status') === 'password-updated')
     showNotification('Пароль успешно изменен!', 'success');
+@endif
+
+// Автоматическое открытие модального окна при ошибке валидации пароля
+@if($errors->userDeletion->has('password'))
+    document.addEventListener('DOMContentLoaded', function() {
+        openDeleteModal();
+    });
 @endif
 
 function showNotification(message, type = 'success') {
