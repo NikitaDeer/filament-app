@@ -150,17 +150,17 @@ class ProfileController extends Controller
             $request->validateWithBag('userDeletion', [
                 'password' => ['required', 'current_password'],
             ]);
-
+    
             $user = $request->user();
-
-            // Деактивируем все связанные записи перед удалением
-            $user->subscriptions()->update(['status' => Subscription::STATUS_CANCELLED]);
+    
+            // Используем строковое значение вместо константы
+            $user->subscriptions()->update(['status' => 'cancelled']);
             
-            // Проверяем есть ли у пользователя ключи доступа
+            // Деактивируем ключи доступа
             if ($user->accessKeys()->exists()) {
                 $user->accessKeys()->update(['is_active' => false]);
             }
-
+    
             // Логируем удаление аккаунта
             \Log::info('User account deleted', [
                 'user_id' => $user->id,
@@ -168,24 +168,25 @@ class ProfileController extends Controller
                 'ip' => $request->ip(),
                 'user_agent' => $request->userAgent(),
             ]);
-
+    
             Auth::logout();
             
             $user->delete();
-
+    
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-
+    
             // Если это AJAX запрос, возвращаем JSON
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Аккаунт успешно удален'
+                    'message' => 'Аккаунт успешно удален',
+                    'redirect' => '/'
                 ]);
             }
-
+    
             return Redirect::to('/')->with('status', 'account-deleted');
-
+    
         } catch (ValidationException $e) {
             // Если это AJAX запрос, возвращаем JSON с ошибками
             if ($request->ajax() || $request->wantsJson()) {
@@ -194,7 +195,7 @@ class ProfileController extends Controller
                     'errors' => $e->errors()
                 ], 422);
             }
-
+    
             // Для обычных запросов возвращаем как обычно
             throw $e;
         } catch (\Exception $e) {
@@ -203,14 +204,14 @@ class ProfileController extends Controller
                 'user_id' => $request->user()?->id,
                 'trace' => $e->getTraceAsString()
             ]);
-
+    
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Произошла ошибка при удалении аккаунта. Попробуйте позже.'
                 ], 500);
             }
-
+    
             return back()->withErrors(['password' => 'Произошла ошибка при удалении аккаунта.']);
         }
     }
