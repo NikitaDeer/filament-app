@@ -13,6 +13,8 @@ use Illuminate\View\View;
 use App\Models\User;
 use App\Models\AccessKey;
 use App\Models\Subscription;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
 {
@@ -84,25 +86,59 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request)
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
+        try {
+            $request->validateWithBag('userDeletion', [
+                'password' => ['required', 'current_password'],
+            ]);
 
-        $user = $request->user();
+            $user = $request->user();
 
-        Auth::logout();
+            // Деактивируем все связанные записи перед удалением
+            $user->subscriptions()->update(['status' => Subscription::STATUS_CANCELLED]);
+            $user->accessKeys()->update(['is_active' => false]);
 
-        // Деактивируем все связанные записи перед удалением
-        $user->subscriptions()->update(['status' => 'cancelled']);
-        $user->accessKeys()->update(['is_active' => false]);
-        
-        $user->delete();
+            Auth::logout();
+            
+            $user->delete();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+            // Если это AJAX запрос
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'redirect' => '/'
+                ]);
+            }
+
+            return Redirect::to('/')->with('status', 'account-deleted');
+
+        } catch (ValidationException $e) {
+            // Если это AJAX запрос, возвращаем JSON с ошибками
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $e->errors()
+                ], 422);
+            }
+
+            // Для обычных запросов возвращаем как обычно
+            throw $e;
+        } catch (\Exception $e) {
+            // Логируем ошибку
+            \Log::error('Error deleting user account: ' . $e->getMessage());
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Произошла ошибка при удалении аккаунта. Попробуйте позже.'
+                ], 500);
+            }
+
+            return back()->withErrors(['password' => 'Произошла ошибка при удалении аккаунта.']);
+        }
     }
 }
