@@ -265,7 +265,348 @@
 
 <script>
 
-// Добавьте этот код в ваш Blade компонент в секцию <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPasswordField = document.getElementById('current_password');
+    const passwordField = document.getElementById('password');
+    const confirmPasswordField = document.getElementById('password_confirmation');
+    const passwordForm = passwordField.closest('form');
+    
+    let currentPasswordValid = false;
+
+    // Валидация текущего пароля через AJAX
+    function validateCurrentPassword() {
+        const currentPassword = currentPasswordField.value;
+        
+        if (!currentPassword) {
+            removeCurrentPasswordError();
+            currentPasswordValid = false;
+            return;
+        }
+
+        // Показываем индикатор загрузки
+        showCurrentPasswordLoading();
+
+        // AJAX запрос для проверки текущего пароля
+        fetch('/api/validate-current-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                current_password: currentPassword
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            removeCurrentPasswordLoading();
+            
+            if (data.valid) {
+                showCurrentPasswordSuccess();
+                currentPasswordValid = true;
+            } else {
+                showCurrentPasswordError('Неверный текущий пароль');
+                currentPasswordValid = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error validating password:', error);
+            removeCurrentPasswordLoading();
+            // В случае ошибки сети разрешаем продолжить (валидация на сервере)
+            currentPasswordValid = true;
+        });
+    }
+
+    // Функции для отображения состояний текущего пароля
+    function showCurrentPasswordError(message) {
+        removeCurrentPasswordFeedback();
+        
+        const errorElement = document.createElement('p');
+        errorElement.className = 'mt-1 text-sm text-red-600';
+        errorElement.id = 'current-password-error';
+        errorElement.textContent = message;
+        
+        currentPasswordField.parentNode.appendChild(errorElement);
+        currentPasswordField.classList.add('border-red-500');
+        currentPasswordField.classList.remove('border-gray-300', 'border-green-500');
+    }
+
+    function showCurrentPasswordSuccess() {
+        removeCurrentPasswordFeedback();
+        
+        const successElement = document.createElement('p');
+        successElement.className = 'mt-1 text-sm text-green-600 flex items-center';
+        successElement.id = 'current-password-success';
+        successElement.innerHTML = '<i class="fas fa-check-circle mr-1"></i>Пароль подтвержден';
+        
+        currentPasswordField.parentNode.appendChild(successElement);
+        currentPasswordField.classList.add('border-green-500');
+        currentPasswordField.classList.remove('border-gray-300', 'border-red-500');
+    }
+
+    function showCurrentPasswordLoading() {
+        removeCurrentPasswordFeedback();
+        
+        const loadingElement = document.createElement('p');
+        loadingElement.className = 'mt-1 text-sm text-blue-600 flex items-center';
+        loadingElement.id = 'current-password-loading';
+        loadingElement.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Проверка пароля...';
+        
+        currentPasswordField.parentNode.appendChild(loadingElement);
+        currentPasswordField.classList.add('border-blue-500');
+        currentPasswordField.classList.remove('border-gray-300', 'border-red-500', 'border-green-500');
+    }
+
+    function removeCurrentPasswordFeedback() {
+        const existing = currentPasswordField.parentNode.querySelectorAll('#current-password-error, #current-password-success, #current-password-loading');
+        existing.forEach(el => el.remove());
+        
+        currentPasswordField.classList.remove('border-red-500', 'border-green-500', 'border-blue-500');
+        currentPasswordField.classList.add('border-gray-300');
+    }
+
+    function removeCurrentPasswordError() {
+        const errorElement = document.getElementById('current-password-error');
+        if (errorElement) {
+            errorElement.remove();
+        }
+        currentPasswordField.classList.remove('border-red-500');
+        currentPasswordField.classList.add('border-gray-300');
+    }
+
+    function removeCurrentPasswordLoading() {
+        const loadingElement = document.getElementById('current-password-loading');
+        if (loadingElement) {
+            loadingElement.remove();
+        }
+        currentPasswordField.classList.remove('border-blue-500');
+    }
+
+    // Функция для проверки совпадения паролей
+    function validatePasswordMatch() {
+        const password = passwordField.value;
+        const confirmPassword = confirmPasswordField.value;
+        
+        removePasswordMatchError();
+        
+        if (confirmPassword && password !== confirmPassword) {
+            showPasswordMatchError('Пароли не совпадают');
+            return false;
+        }
+        
+        return true;
+    }
+
+    function showPasswordMatchError(message) {
+        removePasswordMatchError();
+        
+        const errorElement = document.createElement('p');
+        errorElement.className = 'mt-1 text-sm text-red-600';
+        errorElement.id = 'password-match-error';
+        errorElement.textContent = message;
+        
+        confirmPasswordField.parentNode.appendChild(errorElement);
+        confirmPasswordField.classList.add('border-red-500');
+        confirmPasswordField.classList.remove('border-gray-300');
+    }
+
+    function removePasswordMatchError() {
+        const existingError = document.getElementById('password-match-error');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        confirmPasswordField.classList.remove('border-red-500');
+        confirmPasswordField.classList.add('border-gray-300');
+    }
+
+    // Проверка силы пароля
+    function validatePasswordStrength(password) {
+        let strengthElement = document.getElementById('password-strength');
+        
+        if (!password) {
+            if (strengthElement) strengthElement.remove();
+            return;
+        }
+
+        const requirements = [
+            { regex: /.{8,}/, text: 'минимум 8 символов', met: false },
+            { regex: /[a-z]/, text: 'строчные буквы', met: false },
+            { regex: /[A-Z]/, text: 'заглавные буквы', met: false },
+            { regex: /\d/, text: 'цифры', met: false },
+            { regex: /[!@#$%^&*(),.?":{}|<>]/, text: 'специальные символы', met: false }
+        ];
+
+        requirements.forEach(req => {
+            req.met = req.regex.test(password);
+        });
+
+        const metCount = requirements.filter(req => req.met).length;
+        
+        if (!strengthElement) {
+            strengthElement = document.createElement('div');
+            strengthElement.id = 'password-strength';
+            strengthElement.className = 'mt-2';
+            passwordField.parentNode.appendChild(strengthElement);
+        }
+
+        const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'];
+        const strengthTexts = ['Очень слабый', 'Слабый', 'Средний', 'Хороший', 'Отличный'];
+        const strengthIndex = Math.max(0, metCount - 1);
+
+        strengthElement.innerHTML = `
+            <div class="flex items-center space-x-2 mb-2">
+                <div class="flex space-x-1">
+                    ${Array(5).fill(0).map((_, i) => 
+                        `<div class="h-2 w-6 rounded ${i < metCount ? strengthColors[strengthIndex] : 'bg-gray-200'}"></div>`
+                    ).join('')}
+                </div>
+                <span class="text-sm font-medium ${metCount >= 4 ? 'text-green-600' : metCount >= 3 ? 'text-blue-600' : 'text-red-600'}">
+                    ${strengthTexts[strengthIndex] || 'Слишком слабый'}
+                </span>
+            </div>
+            <div class="grid grid-cols-1 gap-1 text-xs">
+                ${requirements.map(req => 
+                    `<div class="flex items-center">
+                        <i class="fas ${req.met ? 'fa-check text-green-500' : 'fa-times text-red-500'} mr-2 w-3"></i>
+                        <span class="${req.met ? 'text-green-600' : 'text-gray-500'}">${req.text}</span>
+                    </div>`
+                ).join('')}
+            </div>
+        `;
+    }
+
+    // Debounce функция для оптимизации запросов
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Обработчики событий с debounce
+    const debouncedValidateCurrentPassword = debounce(validateCurrentPassword, 500);
+
+    currentPasswordField.addEventListener('input', function() {
+        if (this.value.length >= 3) {
+            debouncedValidateCurrentPassword();
+        } else {
+            removeCurrentPasswordFeedback();
+            currentPasswordValid = false;
+        }
+    });
+
+    currentPasswordField.addEventListener('blur', function() {
+        if (this.value) {
+            validateCurrentPassword();
+        }
+    });
+
+    passwordField.addEventListener('input', function() {
+        validatePasswordStrength(this.value);
+        if (confirmPasswordField.value) {
+            validatePasswordMatch();
+        }
+    });
+
+    confirmPasswordField.addEventListener('input', validatePasswordMatch);
+    confirmPasswordField.addEventListener('blur', validatePasswordMatch);
+
+    // Валидация при отправке формы
+    passwordForm.addEventListener('submit', function(e) {
+        let isValid = true;
+        let focusElement = null;
+
+        // Проверяем текущий пароль
+        if (!currentPasswordField.value) {
+            showCurrentPasswordError('Введите текущий пароль');
+            if (!focusElement) focusElement = currentPasswordField;
+            isValid = false;
+        } else if (!currentPasswordValid) {
+            showCurrentPasswordError('Неверный текущий пароль');
+            if (!focusElement) focusElement = currentPasswordField;
+            isValid = false;
+        }
+
+        // Проверяем новый пароль
+        if (!passwordField.value) {
+            if (!focusElement) focusElement = passwordField;
+            isValid = false;
+        }
+
+        // Проверяем совпадение паролей
+        if (!validatePasswordMatch()) {
+            if (!focusElement) focusElement = confirmPasswordField;
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            if (focusElement) {
+                focusElement.focus();
+            }
+            return false;
+        }
+
+        // Блокируем форму во время отправки
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalText = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Обновление пароля...';
+        
+        // Через 10 секунд разблокируем кнопку на случай проблем
+        setTimeout(() => {
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalText;
+        }, 10000);
+    });
+
+    // Обработка ответа формы
+    passwordForm.addEventListener('submit', function(e) {
+        const formData = new FormData(this);
+        
+        // Можно добавить AJAX обработку для более плавного UX
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                showNotification('Пароль успешно изменен!', 'success');
+                // Очищаем форму
+                this.reset();
+                removeCurrentPasswordFeedback();
+                const strengthElement = document.getElementById('password-strength');
+                if (strengthElement) strengthElement.remove();
+            } else {
+                return response.json().then(data => {
+                    if (data.errors) {
+                        Object.keys(data.errors).forEach(field => {
+                            if (field === 'current_password') {
+                                showCurrentPasswordError(data.errors[field][0]);
+                            }
+                        });
+                    }
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Позволяем стандартной обработке формы сработать
+        });
+    });
+});
 
 // Валидация пароля в реальном времени
 document.addEventListener('DOMContentLoaded', function() {
