@@ -73,13 +73,48 @@ class ProfileController extends Controller
      */
     public function updatePassword(UpdatePasswordRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
+        try {
+            $validated = $request->validated();
+            
+            // Дополнительная проверка текущего пароля
+            if (!Hash::check($validated['current_password'], $request->user()->password)) {
+                throw ValidationException::withMessages([
+                    'current_password' => ['Текущий пароль неверен.'],
+                ]);
+            }
+            
+            // Проверяем, что новый пароль отличается от текущего
+            if (Hash::check($validated['password'], $request->user()->password)) {
+                throw ValidationException::withMessages([
+                    'password' => ['Новый пароль должен отличаться от текущего.'],
+                ]);
+            }
+            
+            // Обновляем пароль
+            $request->user()->update([
+                'password' => Hash::make($validated['password']),
+            ]);
+            
+            // Логируем изменение пароля для безопасности
+            \Log::info('Password updated for user', [
+                'user_id' => $request->user()->id,
+                'email' => $request->user()->email,
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
 
-        $request->user()->update([
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        return back()->with('status', 'password-updated');
+            return back()->with('status', 'password-updated');
+            
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            \Log::error('Error updating password: ' . $e->getMessage(), [
+                'user_id' => $request->user()?->id,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return back()->withErrors(['password' => 'Произошла ошибка при обновлении пароля.']);
+        }
     }
 
     /**
@@ -101,6 +136,14 @@ class ProfileController extends Controller
             if ($user->accessKeys()->exists()) {
                 $user->accessKeys()->update(['is_active' => false]);
             }
+
+            // Логируем удаление аккаунта
+            \Log::info('User account deleted', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
 
             Auth::logout();
             
