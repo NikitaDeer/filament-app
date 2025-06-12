@@ -1,79 +1,186 @@
-<footer class="bg-white p-6">
-  <div class="mx-auto max-w-screen-xl">
-    <div class="flex flex-col items-center justify-between sm:flex-row">
-      <!-- Левая часть - копирайт -->
-      <span class="text-sm text-gray-700 sm:text-left">
-        © 2024 
-        <a href="#" class="font-medium text-cyan-600 hover:text-cyan-800">Okolo™</a>. 
-        Все права защищены.
-      </span>
+<footer class="bg-gradient-to-b from-white to-gray-50 border-t border-gray-200">
+  <div class="mx-auto max-w-screen-xl px-6 lg:px-16">
+    <!-- Main Footer Content -->
+    <div class="py-12 lg:py-16">
+      <div class="grid grid-cols-1 gap-8 lg:grid-cols-4">
+        
+        <!-- Company Info -->
+        <div class="lg:col-span-2">
+          <div class="mb-6">
+            <h3 class="text-2xl font-bold text-cyan-800 mb-4">Okolo™</h3>
+            <p class="text-gray-700 leading-relaxed mb-6">
+              Безопасный и надежный сервис для управления доступом к вашим ресурсам. 
+              Мы обеспечиваем высочайший уровень защиты данных с использованием современных 
+              технологий шифрования.
+            </p>
+          </div>
+          
+          <!-- Features -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div class="flex items-center">
+              <div class="w-8 h-8 bg-cyan-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-shield text-cyan-600 text-sm"></i>
+              </div>
+              <span class="text-sm text-gray-700">256-битное шифрование</span>
+            </div>
+            <div class="flex items-center">
+              <div class="w-8 h-8 bg-cyan-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-clock text-cyan-600 text-sm"></i>
+              </div>
+              <span class="text-sm text-gray-700">24/7 поддержка</span>
+            </div>
+            <div class="flex items-center">
+              <div class="w-8 h-8 bg-cyan-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-users text-cyan-600 text-sm"></i>
+              </div>
+              <span class="text-sm text-gray-700">Многопользовательский доступ</span>
+            </div>
+            <div class="flex items-center">
+              <div class="w-8 h-8 bg-cyan-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-chart-line text-cyan-600 text-sm"></i>
+              </div>
+              <span class="text-sm text-gray-700">Аналитика использования</span>
+            </div>
+          </div>
+        </div>
 
-      <!-- Правая часть - социальные сети -->
-      <div class="mt-4 flex space-x-6 sm:mt-0">
-        <!-- GitHub -->
-        <a href="#" class="text-gray-700 hover:text-cyan-600" aria-label="GitHub">
-          <i class="fab fa-github text-2xl"></i>
-        </a>
+        <!-- Navigation Links -->
+        <div>
+          <h4 class="text-lg font-semibold text-cyan-800 mb-4">Навигация</h4>
+          <ul class="space-y-3">
+            <li>
+              <a href="#" class="text-gray-700 hover:text-cyan-600 transition-colors flex items-center">
+                <i class="fas fa-home mr-2 text-sm"></i>
+                Главная
+              </a>
+            </li>
+            <li>
+              <a href="#" class="text-gray-700 hover:text-cyan-600 transition-colors flex items-center">
+                <i class="fas fa-info-circle mr-2 text-sm"></i>
+                О нас
+              </a>
+            </li>
+            <li>
+              <a href="#" class="text-gray-700 hover:text-cyan-600 transition-colors flex items-center">
+                <i class="fas fa-dollar-sign mr-2 text-sm"></i>
+                Тарифы
+              </a>
+            </li>
+            <li>
+              <a href="#" class="text-gray-700 hover:text-cyan-600 transition-colors flex items-center">
+                <i class="fas fa-headset mr-2 text-sm"></i>
+                Поддержка
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('profile.edit') }}" class="text-gray-700 hover:text-cyan-600 transition-colors flex items-center">
+                <i class="fas fa-user mr-2 text-sm"></i>
+                Личный кабинет
+              </a>
+            </li>
+          </ul>
+        </div>
 
-        <!-- Telegram -->
-        <a href="#" class="text-gray-700 hover:text-cyan-600" aria-label="Telegram">
-          <i class="fab fa-telegram-plane text-2xl"></i>
-        </a>
+        <!-- Support & Contact -->
+        <div>
+          <h4 class="text-lg font-semibold text-cyan-800 mb-4">Поддержка</h4>
+          <div class="space-y-4">
+            <!-- Telegram Support -->
+            <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+              <div class="flex items-center mb-2">
+                <i class="fab fa-telegram-plane text-cyan-500 text-lg mr-2"></i>
+                <span class="font-medium text-gray-800">Telegram</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-3">Быстрая поддержка 24/7</p>
+              <a href="#" target="_blank" 
+                 class="inline-flex items-center text-sm bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-3 py-2 rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-colors">
+                Написать
+                <i class="fas fa-external-link-alt ml-1 text-xs"></i>
+              </a>
+            </div>
 
-        <!-- VK -->
-        <a href="#" class="text-gray-700 hover:text-cyan-600" aria-label="VK">
-          <i class="fab fa-vk text-2xl"></i>
-        </a>
+            <!-- Email Support -->
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <i class="fas fa-envelope text-gray-500 mr-2"></i>
+                <span class="text-sm text-gray-700">support@okolo.com</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-phone text-gray-500 mr-2"></i>
+                <span class="text-sm text-gray-700">+7 (800) 123-45-67</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="border-t border-gray-200 py-6">
+      <div class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
+        <!-- Copyright -->
+        <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <span class="text-sm text-gray-700">
+            © 2025
+            <a href="#" class="font-medium text-cyan-600 hover:text-cyan-800">Okolo™</a>. 
+            Все права защищены.
+          </span>
+          <div class="hidden sm:block text-gray-400">•</div>
+          <div class="flex space-x-4 text-sm">
+            <a href="#" class="text-gray-600 hover:text-cyan-600 transition-colors">
+              Политика конфиденциальности
+            </a>
+            <a href="#" class="text-gray-600 hover:text-cyan-600 transition-colors">
+              Условия использования
+            </a>
+          </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="flex items-center space-x-4">
+          <span class="text-sm text-gray-600">Мы в соцсетях:</span>
+          <div class="flex space-x-3">
+            <!-- GitHub -->
+            <a href="#" 
+               class="w-10 h-10 bg-gray-100 hover:bg-cyan-100 rounded-lg flex items-center justify-center transition-colors group" 
+               aria-label="GitHub">
+              <i class="fab fa-github text-gray-600 group-hover:text-cyan-600 text-lg"></i>
+            </a>
+
+            <!-- Telegram -->
+            <a href="#" 
+               class="w-10 h-10 bg-gray-100 hover:bg-cyan-100 rounded-lg flex items-center justify-center transition-colors group" 
+               aria-label="Telegram">
+              <i class="fab fa-telegram-plane text-gray-600 group-hover:text-cyan-600 text-lg"></i>
+            </a>
+
+            <!-- VK -->
+            <a href="#" 
+               class="w-10 h-10 bg-gray-100 hover:bg-cyan-100 rounded-lg flex items-center justify-center transition-colors group" 
+               aria-label="VK">
+              <i class="fab fa-vk text-gray-600 group-hover:text-cyan-600 text-lg"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security Badge -->
+    <div class="border-t border-gray-200 py-4">
+      <div class="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-6 text-xs text-gray-500">
+        <div class="flex items-center">
+          <i class="fas fa-shield-check text-green-500 mr-1"></i>
+          SSL защищено
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-lock text-blue-500 mr-1"></i>
+          RSA-256 шифрование
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-server text-purple-500 mr-1"></i>
+          99.9% аптайм
+        </div>
       </div>
     </div>
   </div>
 </footer>
-
-
-
-
-<!-- <footer class="bg-gray-900 p-4 sm:p-6">
-  <div class="mx-auto max-w-screen-xl">
-    <div class="sm:flex sm:items-center sm:justify-between">
-      <span class="text-sm text-violet-200 sm:text-center">© 2022 <a href="https://nikita.dergunov.info"
-          class="text-violet-200 hover:text-violet-400">Lorem™</a>. All Rights Reserved.
-      </span>
-      <div class="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
-        <a href="#" class="text-violet-200 hover:text-violet-400">
-          <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill-rule="evenodd"
-              d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-              clip-rule="evenodd" />
-          </svg>
-        </a>
-        <a href="#" class="text-violet-200 hover:text-violet-400">
-          <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill-rule="evenodd"
-              d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
-              clip-rule="evenodd" />
-          </svg>
-        </a>
-        <a href="#" class="text-violet-200 hover:text-violet-400">
-          <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-          </svg>
-        </a>
-        <a href="#" class="text-violet-200 hover:text-violet-400">
-          <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill-rule="evenodd"
-              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-              clip-rule="evenodd" />
-          </svg>
-        </a>
-        <a href="#" class="text-violet-200 hover:text-violet-400">
-          <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill-rule="evenodd"
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.51 0 10-4.48 10-10S17.51 2 12 2zm6.605 4.61a8.502 8.502 0 011.93 5.314c-.281-.054-3.101-.629-5.943-.271-.065-.141-.12-.293-.184-.445a25.416 25.416 0 00-.564-1.236c3.145-1.28 4.577-3.124 4.761-3.362zM12 3.475c2.17 0 4.154.813 5.662 2.148-.152.216-1.443 1.941-4.48 3.08-1.399-2.57-2.95-4.675-3.189-5A8.687 8.687 0 0112 3.475zm-3.633.803a53.896 53.896 0 013.167 4.935c-3.992 1.063-7.517 1.04-7.896 1.04a8.581 8.581 0 014.729-5.975zM3.453 12.01v-.26c.37.01 4.512.065 8.775-1.215.25.477.477.965.694 1.453-.109.033-.228.065-.336.098-4.404 1.42-6.747 5.303-6.942 5.629a8.522 8.522 0 01-2.19-5.705zM12 20.547a8.482 8.482 0 01-5.239-1.8c.152-.315 1.888-3.656 6.703-5.337.022-.01.033-.01.054-.022a35.318 35.318 0 011.823 6.475 8.4 8.4 0 01-3.341.684zm4.761-1.465c-.086-.52-.542-3.015-1.659-6.084 2.679-.423 5.022.271 5.314.369a8.468 8.468 0 01-3.655 5.715z"
-              clip-rule="evenodd" />
-          </svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</footer> -->
