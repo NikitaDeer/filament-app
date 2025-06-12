@@ -247,10 +247,18 @@
                 <button 
                     type="submit"
                     class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
+                    id="deleteSubmitButton"
                 >
                     Удалить аккаунт
                 </button>
             </div>
+        </form>
+        
+        <!-- Альтернативная форма без AJAX -->
+        <form method="POST" action="{{ route('profile.destroy') }}" class="hidden" id="simpleDeleteForm">
+            @csrf
+            @method('delete')
+            <input type="password" name="password" id="simple_password" required>
         </form>
     </div>
 </div>
@@ -312,12 +320,11 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
     }
 });
 
-// Обработка формы удаления с AJAX для лучшего UX
+// Обработка формы удаления с улучшенной логикой
 document.getElementById('deleteForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const formData = new FormData(this);
-    const password = formData.get('password');
+    const password = document.getElementById('delete_password').value;
     
     if (!password) {
         showDeletePasswordError('Пожалуйста, введите пароль');
@@ -325,12 +332,14 @@ document.getElementById('deleteForm').addEventListener('submit', function(e) {
     }
     
     // Блокируем кнопку отправки
-    const submitButton = this.querySelector('button[type="submit"]');
+    const submitButton = document.getElementById('deleteSubmitButton');
     const originalText = submitButton.innerHTML;
     submitButton.disabled = true;
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Удаление...';
     
-    // Отправляем AJAX запрос
+    // Пробуем AJAX запрос
+    const formData = new FormData(this);
+    
     fetch(this.action, {
         method: 'POST',
         headers: {
@@ -342,36 +351,36 @@ document.getElementById('deleteForm').addEventListener('submit', function(e) {
     })
     .then(response => {
         console.log('Response status:', response.status);
-        console.log('Response ok:', response.ok);
         
-        if (response.ok) {
+        if (response.status === 200 || response.status === 302) {
             // Успешное удаление
-            return response.json().then(data => {
-                console.log('Success data:', data);
-                showNotification('Аккаунт успешно удален', 'success');
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 1000);
-            }).catch(() => {
-                // Если JSON не парсится, значит сервер вернул редирект
-                console.log('No JSON response, redirecting...');
+            showNotification('Аккаунт успешно удален', 'success');
+            setTimeout(() => {
                 window.location.href = '/';
-            });
-        } else if (response.status === 422) {
+            }, 1000);
+            return;
+        }
+        
+        if (response.status === 422) {
             // Ошибка валидации
             return response.json().then(data => {
-                console.log('Validation errors:', data);
                 if (data.errors && data.errors.password) {
                     showDeletePasswordError(data.errors.password[0]);
                 }
             });
-        } else {
-            throw new Error('Server error: ' + response.status);
         }
+        
+        throw new Error('Unexpected response status: ' + response.status);
     })
     .catch(error => {
-        console.error('Error:', error);
-        showDeletePasswordError('Произошла ошибка. Попробуйте еще раз.');
+        console.error('AJAX Error:', error);
+        
+        // Если AJAX не работает, используем обычную отправку формы
+        console.log('Falling back to regular form submission');
+        
+        // Копируем пароль в скрытую форму и отправляем её
+        document.getElementById('simple_password').value = password;
+        document.getElementById('simpleDeleteForm').submit();
     })
     .finally(() => {
         // Разблокируем кнопку
@@ -379,6 +388,15 @@ document.getElementById('deleteForm').addEventListener('submit', function(e) {
         submitButton.innerHTML = originalText;
     });
 });
+
+// Добавляем обработчик для простой формы как запасной вариант
+function submitSimpleDelete() {
+    const password = document.getElementById('delete_password').value;
+    if (password) {
+        document.getElementById('simple_password').value = password;
+        document.getElementById('simpleDeleteForm').submit();
+    }
+}
 
 // Скрываем ошибку при вводе в поле пароля
 document.getElementById('delete_password').addEventListener('input', function() {
