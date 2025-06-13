@@ -24,6 +24,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\NumberColumn;
 use Filament\Tables\Columns\IconColumn;
+use Spatie\Permission\Models\Role;
 
 class UserResource extends Resource
 {
@@ -46,7 +47,10 @@ class UserResource extends Resource
                 ->required(),
             Forms\Components\TextInput::make('password')
                 ->password()
-                ->required(),
+                ->required()
+                ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                ->dehydrated(fn ($state) => filled($state))
+                ->hiddenOn('edit'),
             Forms\Components\Select::make('current_tariff_id')
                 ->relationship('currentTariff', 'title'),
             Forms\Components\Select::make('tariff_status')
@@ -55,6 +59,18 @@ class UserResource extends Resource
                     'expired' => 'Expired',
                     'paused' => 'Paused'
                 ]),
+            
+            // Добавляем поле для выбора ролей
+            Forms\Components\Select::make('roles')
+                ->label('Роли')
+                ->multiple()
+                ->relationship('roles', 'name')
+                ->options(function () {
+                    return Role::all()->pluck('name', 'id')->toArray();
+                })
+                ->preload()
+                ->searchable()
+                ->helperText('Выберите роли для пользователя'),
           ])
       ]);
   }
@@ -65,6 +81,18 @@ class UserResource extends Resource
       ->columns([
         Tables\Columns\TextColumn::make('email')
         ->searchable(),
+        
+        // Добавляем колонку с ролями
+        Tables\Columns\BadgeColumn::make('roles')
+        ->label('Роли')
+        ->getStateUsing(function ($record) {
+            return $record->roles->pluck('name')->toArray();
+        })
+        ->colors([
+            'danger' => 'Admin',
+            'primary' => 'User',
+        ]),
+        
         Tables\Columns\TextColumn::make('currentTariff.title')
         ->label('Текущий тариф'),
         
@@ -73,6 +101,8 @@ class UserResource extends Resource
         ->label('Статус подписки')
         ->getStateUsing(function ($record) {
             $subscriptionStatus = $record->getSubscriptionStatus();
+
+            
             return $subscriptionStatus['status'];
         })
         ->colors([
@@ -136,13 +166,64 @@ class UserResource extends Resource
                         break;
                 }
             });
-          })
+          }),
+          
+        // Добавляем фильтр по ролям
+        Tables\Filters\SelectFilter::make('roles')
+          ->label('Роль')
+          ->relationship('roles', 'name')
+          ->options(function () {
+              return Role::all()->pluck('name', 'name')->toArray();
+          }),
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
+        
+        // Добавляем быстрое действие для смены роли
+        Tables\Actions\Action::make('change_role')
+            ->label('Изменить роль')
+            ->icon('heroicon-o-shield-check')
+            ->form([
+                Select::make('role')
+                    ->label('Роль')
+                    ->options(function () {
+                        return Role::all()->pluck('name', 'name')->toArray();
+                    })
+                    ->required()
+                    ->default(function ($record) {
+                        return $record->roles->first()?->name;
+                    }),
+            ])
+            ->action(function (array $data, $record): void {
+                $record->syncRoles([$data['role']]);
+            })
+            ->requiresConfirmation()
+            ->modalHeading('Изменить роль пользователя')
+            ->modalSubheading('Вы уверены, что хотите изменить роль этого пользователя?'),
       ])
       ->bulkActions([
         Tables\Actions\DeleteBulkAction::make(),
+        
+        // Добавляем массовое действие для назначения роли
+        Tables\Actions\BulkAction::make('assign_role')
+            ->label('Назначить роль')
+            ->icon('heroicon-o-shield-check')
+            ->form([
+                Select::make('role')
+                    ->label('Роль')
+                    ->options(function () {
+                        return Role::all()->pluck('name', 'name')->toArray();
+                    })
+                    ->required(),
+            ])
+            ->action(function (array $data, $records): void {
+                foreach ($records as $record) {
+                    $record->syncRoles([$data['role']]);
+                }
+            })
+            ->requiresConfirmation()
+            ->modalHeading('Назначить роль выбранным пользователям')
+            ->modalSubheading('Вы уверены, что хотите назначить роль выбранным пользователям?'),
       ]);
   }
 
