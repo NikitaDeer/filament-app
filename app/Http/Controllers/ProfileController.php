@@ -147,48 +147,80 @@ class ProfileController extends Controller
     public function destroy(Request $request)
     {
         try {
+            // Валидация пароля с правильным именем поля
             $request->validateWithBag('userDeletion', [
                 'password' => ['required', 'current_password'],
             ]);
     
             $user = $request->user();
     
-            // Используем строковое значение вместо константы
-            $user->subscriptions()->update(['status' => 'cancelled']);
-            
-            // Деактивируем ключи доступа
-            if ($user->accessKeys()->exists()) {
-                $user->accessKeys()->update(['is_active' => false]);
-            }
+            // Начинаем транзакцию для безопасности
+            \DB::beginTransaction();
     
-            // Логируем удаление аккаунта
-            \Log::info('User account deleted', [
-                'user_id' => $user->id,
-                'email' => $user->email,
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-            ]);
+            try {
+                // Деактивируем подписки
+                if ($user->subscriptions()->exists()) {
+                    $user->subscriptions()->update([
+                        'status' => 'cancelled',
+                        'end_date' => now(),
+                    ]);
+                }
+                
+                // Деактивируем ключи доступа
+                if ($user->accessKeys()->exists()) {
+                    $user->accessKeys()->update([
+                        'is_active' => false,
+                    ]);
+                }
     
-            Auth::logout();
-            
-            $user->delete();
+                // Деактивируем заказы если есть
+                if (method_exists($user, 'orders') && $user->orders()->exists()) {
+                    $user->orders()->update([
+                        'status' => 'cancelled'
+                    ]);
+                }
     
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-    
-            // Если это AJAX запрос, возвращаем JSON
-            if ($request->ajax() || $request->wantsJson()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Аккаунт успешно удален',
-                    'redirect' => '/'
+                // Логируем удаление аккаунта
+                \Log::info('User account deleted', [
+                    'user_id' => $user->id,
+                    'email' => $user->email,
+                    'ip' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'timestamp' => now(),
                 ]);
-            }
     
-            return Redirect::to('/')->with('status', 'account-deleted');
+                // Выходим из системы
+                Auth::logout();
+                
+                // Удаляем пользователя
+                $user->delete();
+    
+                // Подтверждаем транзакцию
+                \DB::commit();
+    
+                // Инвалидируем сессию
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+    
+                // Если это AJAX запрос, возвращаем JSON
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Аккаунт успешно удален',
+                        'redirect' => '/'
+                    ]);
+                }
+    
+                return Redirect::to('/')->with('status', 'account-deleted');
+    
+            } catch (\Exception $e) {
+                // Откатываем транзакцию при ошибке
+                \DB::rollBack();
+                throw $e;
+            }
     
         } catch (ValidationException $e) {
-            // Если это AJAX запрос, возвращаем JSON с ошибками
+            // Если это AJAX запрос, возвращаем JSON с ошибками валидации
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => false,
@@ -196,13 +228,18 @@ class ProfileController extends Controller
                 ], 422);
             }
     
-            // Для обычных запросов возвращаем как обычно
-            throw $e;
+            // Для обычных запросов возвращаем назад с ошибками
+            return back()->withErrors($e->errors(), 'userDeletion');
+            
         } catch (\Exception $e) {
-            // Логируем ошибку
-            \Log::error('Error deleting user account: ' . $e->getMessage(), [
+            // Логируем ошибку с полной информацией
+            \Log::error('Error deleting user account', [
                 'user_id' => $request->user()?->id,
-                'trace' => $e->getTraceAsString()
+                'email' => $request->user()?->email,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
             ]);
     
             if ($request->ajax() || $request->wantsJson()) {
@@ -212,7 +249,7 @@ class ProfileController extends Controller
                 ], 500);
             }
     
-            return back()->withErrors(['password' => 'Произошла ошибка при удалении аккаунта.']);
+            return back()->withErrors(['password' => 'Произошла ошибка при удалении аккаунта.'], 'userDeletion');
         }
     }
 }

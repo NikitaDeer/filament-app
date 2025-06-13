@@ -673,7 +673,6 @@ document.addEventListener('DOMContentLoaded', function() {
             { regex: /.{8,}/, text: 'минимум 8 символов' },
             { regex: /[a-z]/, text: 'строчные буквы' },
             { regex: /[A-Z]/, text: 'заглавные буквы' },
-            { regex: /\d/, text: 'цифры' },
             { regex: /[!@#$%^&*(),.?":{}|<>]/, text: 'специальные символы' }
         ];
 
@@ -758,7 +757,7 @@ function togglePassword(fieldId) {
     }
 }
 
-// Функции для модального окна
+// Функции для модального окна удаления аккаунта
 function openDeleteModal() {
     document.getElementById('deleteModal').classList.remove('hidden');
     document.getElementById('deleteModal').classList.add('flex');
@@ -776,128 +775,171 @@ function closeDeleteModal() {
 
 function showDeletePasswordError(message) {
     const errorDiv = document.getElementById('delete-password-error');
-    errorDiv.textContent = message;
-    errorDiv.classList.remove('hidden');
+    if (errorDiv) {
+        errorDiv.textContent = message;
+        errorDiv.classList.remove('hidden');
+    }
     
     // Добавляем красную границу к полю ввода
     const passwordField = document.getElementById('delete_password');
-    passwordField.classList.add('border-red-500');
+    if (passwordField) {
+        passwordField.classList.add('border-red-500');
+        passwordField.classList.remove('border-gray-300');
+    }
 }
 
 function hideDeletePasswordError() {
     const errorDiv = document.getElementById('delete-password-error');
-    errorDiv.classList.add('hidden');
+    if (errorDiv) {
+        errorDiv.classList.add('hidden');
+    }
     
     // Убираем красную границу
     const passwordField = document.getElementById('delete_password');
-    passwordField.classList.remove('border-red-500');
+    if (passwordField) {
+        passwordField.classList.remove('border-red-500');
+        passwordField.classList.add('border-gray-300');
+    }
 }
 
-// Закрытие модального окна при клике вне его
-document.getElementById('deleteModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeDeleteModal();
-    }
-});
+// Функция для показа уведомлений
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+    const icon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <i class="${icon} mr-2"></i>
+            ${message}
+        </div>
+    `;
+    notification.className = `fixed bottom-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300`;
+    
+    document.body.appendChild(notification);
+    
+    // Показываем уведомление
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Скрываем уведомление через 4 секунды
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => notification.remove(), 300);
+    }, 4000);
+}
 
-// Обработка формы удаления с улучшенной логикой
-document.getElementById('deleteForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+// Инициализация после загрузки DOM
+document.addEventListener('DOMContentLoaded', function() {
     
-    const password = document.getElementById('delete_password').value;
-    
-    if (!password) {
-        showDeletePasswordError('Пожалуйста, введите пароль');
-        return;
+    // Закрытие модального окна при клике вне его
+    const deleteModal = document.getElementById('deleteModal');
+    if (deleteModal) {
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
     }
-    
-    // Блокируем кнопку отправки
-    const submitButton = document.getElementById('deleteSubmitButton');
-    const originalText = submitButton.innerHTML;
-    submitButton.disabled = true;
-    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Удаление...';
-    
-    // Пробуем AJAX запрос
-    const formData = new FormData(this);
-    
-    fetch(this.action, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': formData.get('_token'),
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-        },
-        body: formData
-    })
-    .then(response => {
-        console.log('Response status:', response.status);
-        
-        if (response.status === 200 || response.status === 302) {
-            // Успешное удаление
-            showNotification('Аккаунт успешно удален', 'success');
-            setTimeout(() => {
-                window.location.href = '/';
-            }, 1000);
-            return;
-        }
-        
-        if (response.status === 422) {
-            // Ошибка валидации
-            return response.json().then(data => {
-                if (data.errors && data.errors.password) {
-                    showDeletePasswordError(data.errors.password[0]);
+
+    // Скрываем ошибку при вводе в поле пароля
+    const deletePasswordField = document.getElementById('delete_password');
+    if (deletePasswordField) {
+        deletePasswordField.addEventListener('input', function() {
+            hideDeletePasswordError();
+        });
+    }
+
+    // Обработка формы удаления
+    const deleteForm = document.getElementById('deleteForm');
+    if (deleteForm) {
+        deleteForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('delete_password').value.trim();
+            
+            if (!password) {
+                showDeletePasswordError('Пожалуйста, введите пароль');
+                document.getElementById('delete_password').focus();
+                return;
+            }
+            
+            // Блокируем кнопку отправки
+            const submitButton = document.getElementById('deleteSubmitButton');
+            const originalText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Удаление...';
+            
+            // Создаем FormData для отправки
+            const formData = new FormData(this);
+            
+            fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: formData
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json().then(data => ({ status: response.status, data }));
+            })
+            .then(({ status, data }) => {
+                if (status === 200 && data.success) {
+                    // Успешное удаление
+                    showNotification('Аккаунт успешно удален', 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect || '/';
+                    }, 1500);
+                    return;
                 }
+                
+                if (status === 422 && data.errors) {
+                    // Ошибка валидации
+                    if (data.errors.password) {
+                        showDeletePasswordError(data.errors.password[0]);
+                    } else {
+                        showDeletePasswordError('Неверный пароль');
+                    }
+                    return;
+                }
+                
+                // Другие ошибки
+                showDeletePasswordError(data.message || 'Произошла ошибка');
+            })
+            .catch(error => {
+                console.error('AJAX Error:', error);
+                showDeletePasswordError('Произошла ошибка при удалении аккаунта');
+            })
+            .finally(() => {
+                // Разблокируем кнопку
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
             });
-        }
-        
-        throw new Error('Unexpected response status: ' + response.status);
-    })
-    .catch(error => {
-        console.error('AJAX Error:', error);
-        
-        // Если AJAX не работает, используем обычную отправку формы
-        console.log('Falling back to regular form submission');
-        
-        // Копируем пароль в скрытую форму и отправляем её
-        document.getElementById('simple_password').value = password;
-        document.getElementById('simpleDeleteForm').submit();
-    })
-    .finally(() => {
-        // Разблокируем кнопку
-        submitButton.disabled = false;
-        submitButton.innerHTML = originalText;
-    });
-});
-
-// Добавляем обработчик для простой формы как запасной вариант
-function submitSimpleDelete() {
-    const password = document.getElementById('delete_password').value;
-    if (password) {
-        document.getElementById('simple_password').value = password;
-        document.getElementById('simpleDeleteForm').submit();
+        });
     }
-}
 
-// Скрываем ошибку при вводе в поле пароля
-document.getElementById('delete_password').addEventListener('input', function() {
-    hideDeletePasswordError();
-});
-
-// Показ уведомлений при успешном обновлении
-@if(session('status') === 'profile-updated')
-    showNotification('Профиль успешно обновлен!', 'success');
-@endif
-
-@if(session('status') === 'password-updated')
-    showNotification('Пароль успешно изменен!', 'success');
-@endif
-
-// Автоматическое открытие модального окна при ошибке валидации пароля
-@if($errors->userDeletion->has('password'))
-    document.addEventListener('DOMContentLoaded', function() {
+    // Автоматическое открытие модального окна при ошибке валидации пароля
+    @if($errors->userDeletion->has('password'))
         openDeleteModal();
-    });
-@endif
+    @endif
+
+    // Показ уведомлений при успешном обновлении
+    @if(session('status') === 'profile-updated')
+        showNotification('Профиль успешно обновлен!', 'success');
+    @endif
+
+    @if(session('status') === 'password-updated')
+        showNotification('Пароль успешно изменен!', 'success');
+    @endif
+
+    @if(session('status') === 'account-deleted')
+        showNotification('Аккаунт успешно удален!', 'success');
+    @endif
+});
 
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
