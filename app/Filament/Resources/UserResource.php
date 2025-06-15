@@ -35,6 +35,8 @@ class UserResource extends Resource
 
   protected static ?string $navigationLabel = 'Пользователи';
 
+
+  
   public static function form(Form $form): Form
   {
     return $form
