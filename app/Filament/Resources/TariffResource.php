@@ -87,14 +87,14 @@ class TariffResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -102,5 +102,5 @@ class TariffResource extends Resource
             'create' => Pages\CreateTariff::route('/create'),
             'edit' => Pages\EditTariff::route('/{record}/edit'),
         ];
-    }    
+    }
 }

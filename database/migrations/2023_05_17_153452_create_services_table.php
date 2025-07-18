@@ -14,8 +14,8 @@ return new class extends Migration
     Schema::create('services', function (Blueprint $table) {
       $table->id();
 
-      $table->string('name')->default('Лечение');
-      $table->decimal('price', 9, 1);
+      $table->string('name');
+      $table->decimal('price', 9, 1)->nullable();
       $table->text('description')->default('Описание услуги');
 
       $table->boolean('is_published')->default(false);
