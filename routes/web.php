@@ -25,21 +25,21 @@ Route::get('/test-encryption', function() {
   try {
       $service = new \App\Services\RsaEncryptionService();
       $testData = 'Hello, this is test data!';
-      
+
       echo "Исходные данные: " . $testData . "<br>";
-      
+
       $encrypted = $service->encrypt($testData);
       echo "Зашифровано: " . substr($encrypted, 0, 100) . "...<br>";
-      
+
       $decrypted = $service->decrypt($encrypted);
       echo "Расшифровано: " . $decrypted . "<br>";
-      
+
       if ($testData === $decrypted) {
           echo "<strong style='color: green;'>✅ ТЕСТ ПРОШЕЛ УСПЕШНО!</strong>";
       } else {
           echo "<strong style='color: red;'>❌ ТЕСТ НЕ ПРОШЕЛ!</strong>";
       }
-      
+
   } catch (\Exception $e) {
       echo "<strong style='color: red;'>Ошибка: " . $e->getMessage() . "</strong><br>";
       echo "Trace: <pre>" . $e->getTraceAsString() . "</pre>";
@@ -52,12 +52,13 @@ Route::get('/dashboard', function () {
   return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::post('/order', [\App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
 
 Route::middleware('auth')->group(function () {
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-  
+
   Route::post('/profile/validate-current-password', [ProfileController::class, 'validateCurrentPassword'])
   ->name('profile.validate-current-password');
 

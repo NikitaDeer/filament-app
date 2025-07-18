@@ -13,19 +13,13 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnDelete();
-            $table->foreignId('tariff_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
-            $table->enum('duration', ['1_month', '3_months', '12_months']);
-            $table->decimal('final_price', 10, 2);
-
-            $table->enum('order_status', ['active', 'non-active', 'paused'])->default('active');
-
+            $table->string('name');
+            $table->string('phone');
+            $table->string('email');
+            $table->string('from_address');
+            $table->string('to_address');
+            $table->decimal('distance', 8, 2);
+            $table->decimal('cost', 8, 2);
             $table->timestamps();
         });
     }

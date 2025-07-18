@@ -3,93 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\Service;
-use Illuminate\View\View;
+use App\Mail\NewOrderMail;
 use Illuminate\Http\Request;
-use App\Notifications\NewOrderNotification;
-use App\Http\Requests\Order\StoreOrderRequest;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   */
-  public function index()
-  {
-    // $orders = Order::all();
-    // return view('orders.index', compact('orders'));
-  }
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'from_address' => 'required|string',
+            'to_address' => 'required|string',
+            'distance' => 'required|numeric',
+            'cost' => 'required|numeric',
+        ]);
 
-  /**
-   * Show the form for creating a new resource.
-   */
-  public function create(): View
-  {
-    $services = Service::where('is_published', 1)->get();
-    // dd($services[1]->name);
-    return view('order', compact('services'));
-  }
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()->first()]);
+        }
 
-  /**
-   * Store a newly created resource in storage.
-   */
-  public function store(StoreOrderRequest $request)
-  {
+        $order = Order::create($validator->validated());
 
-    $data = $request->validated();
-    $data['user_id'] = auth()->id();
+        // Отправляем письмо администратору
+        // Убедитесь, что в .env указан MAIL_FROM_ADDRESS
+        try {
+            Mail::to(config('mail.from.address'))->send(new NewOrderMail($order));
+        } catch (\Exception $e) {
+            // Можно добавить логирование ошибки, если письмо не отправилось
+            return response()->json(['success' => false, 'message' => 'Не удалось отправить заявку. Пожалуйста, попробуйте позже.']);
+        }
 
-    // Order::firstOrCreate($data);
-    Order::create($data);
-
-    $order = Order::create($data);
-
-    // return to_route('')
-    //   ->withSuccess("Товар создан");
-
-    // Отправьте уведомление
-    $user = auth()->user();
-    $user->notify(new NewOrderNotification($order, $user));
-
-    return to_route('home')->with('success', 'Заявка отправлена успешно');
-  }
-
-  /**
-   * Display the specified resource.
-   */
-  public function show(Order $order)
-  {
-    // return view('orders.show', compact('order'));
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(Order $order)
-  {
-    // $services = Service::where('is_published', 1)->get();
-    // return view('orders.edit', compact('order', 'services'));
-  }
-
-  /**
-   * Update the specified resource in storage.
-   */
-  public function update(Request $request, Order $order)
-  {
-    // $data = $request->validated();
-
-    // $order->update($data);
-
-    // return redirect()->route('orders.index')->with('success', 'Order updated successfully');
-  }
-
-  /**
-   * Remove the specified resource from storage.
-   */
-  public function destroy(Order $order)
-  {
-    // $order->delete();
-
-    // return redirect()->route('orders.index')->with('success', 'Order deleted successfully');
-  }
+        return response()->json(['success' => true, 'message' => 'Ваша заявка успешно отправлена!']);
+    }
 }
