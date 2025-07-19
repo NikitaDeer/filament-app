@@ -1,7 +1,7 @@
 <div class="p-4 sm:p-6 lg:p-8">
-  <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+  <div class="grid grid-cols-1 gap-8 md:grid-cols-3" id="calculator-container">
     {{-- Левая колонка с формами --}}
-    <div class="space-y-6 md:col-span-2">
+    <div class="space-y-6 md:col-span-2" id="form-container">
       {{-- Форма калькулятора --}}
       <div class="rounded-lg bg-white p-6 shadow-md">
         <h2 class="mb-4 text-xl font-semibold">Калькулятор стоимости</h2>
@@ -58,7 +58,7 @@
 
     {{-- Правая колонка с картой --}}
     <div class="md:col-span-1">
-      <div wire:ignore id="map" class="h-96 w-full rounded-lg shadow-md md:h-full"></div>
+      <div wire:ignore id="map" class="w-full rounded-lg shadow-md"></div>
     </div>
   </div>
 </div>
@@ -72,18 +72,26 @@
       let myMap;
       let routePoints = [];
 
+      function adjustMapHeight() {
+        const formContainer = document.getElementById('form-container');
+        const mapElem = document.getElementById('map');
+        if (window.innerWidth > 768) { // md breakpoint
+          mapElem.style.height = `${formContainer.offsetHeight}px`;
+        } else {
+          mapElem.style.height = '400px'; // default height for mobile
+        }
+      }
+
       function initMap() {
         if (document.getElementById('map')) {
           myMap = new ymaps.Map("map", {
-            center: [55.76, 37.64],
+            center: [59.9342802, 30.3350986], // Санкт-Петербург
             zoom: 10
           });
 
-          // Подсказки для полей ввода
           new ymaps.SuggestView('from');
           new ymaps.SuggestView('to');
 
-          // Обработчик клика по карте
           myMap.events.add('click', function(e) {
             const coords = e.get('coords');
 
@@ -108,18 +116,29 @@
                 myMap.geoObjects.add(new ymaps.Placemark(coords, {
                   iconCaption: 'Б'
                 }));
-                Livewire.emit('calculate'); // Вызываем метод calculate в Livewire
+                @this.call('calculate');
               }
             });
           });
+
+          adjustMapHeight();
         }
       }
 
       ymaps.ready(initMap);
 
+      window.addEventListener('resize', adjustMapHeight);
+
+      // Перерисовываем карту и подгоняем высоту, когда Livewire обновил DOM
+      Livewire.on('updated', () => {
+        setTimeout(adjustMapHeight, 1);
+      });
+
+
       window.addEventListener('calculate-route', event => {
         const from = event.detail.from;
         const to = event.detail.to;
+        const pricePerKm = event.detail.price_per_km;
 
         if (!from || !to) return;
 
@@ -128,7 +147,6 @@
         ymaps.route([from, to]).then(function(route) {
           myMap.geoObjects.add(route);
           const distance = route.getLength() / 1000;
-          const pricePerKm = 50;
           const cost = Math.round(distance * pricePerKm);
 
           @this.set('distance', distance);

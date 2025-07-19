@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Order;
+use App\Models\Rate;
 use App\Mail\NewOrderMail;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
@@ -16,6 +17,21 @@ class YandexMapCalculator extends Component
     public $email = '';
     public $distance;
     public $cost;
+    public $rate;
+
+    public function mount()
+    {
+        // Получаем активный тариф при инициализации
+        $this->rate = Rate::where('is_active', true)->first();
+        if (!$this->rate) {
+            // Создаем тариф по умолчанию, если ни одного нет
+            $this->rate = Rate::create([
+                'name' => 'Базовый',
+                'price_per_km' => 50,
+                'is_active' => true,
+            ]);
+        }
+    }
 
     public function calculate()
     {
@@ -24,7 +40,12 @@ class YandexMapCalculator extends Component
             'to' => 'required|string',
         ]);
 
-        $this->dispatchBrowserEvent('calculate-route', ['from' => $this->from, 'to' => $this->to]);
+        // Передаем цену за км в браузер
+        $this->dispatchBrowserEvent('calculate-route', [
+            'from' => $this->from,
+            'to' => $this->to,
+            'price_per_km' => $this->rate->price_per_km
+        ]);
     }
 
     public function submitOrder()
