@@ -7,7 +7,7 @@
   <x-site.info :$page />
 
   {{-- map section --}}
-  <x-yandex-map />
+  @livewire('yandex-map-calculator')
 
   {{-- main section --}}
   <x-site.main :$page />

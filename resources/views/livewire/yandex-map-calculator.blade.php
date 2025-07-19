@@ -1,0 +1,142 @@
+<div class="p-4 sm:p-6 lg:p-8">
+  <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+    {{-- Левая колонка с формами --}}
+    <div class="space-y-6 md:col-span-2">
+      {{-- Форма калькулятора --}}
+      <div class="rounded-lg bg-white p-6 shadow-md">
+        <h2 class="mb-4 text-xl font-semibold">Калькулятор стоимости</h2>
+        <div class="space-y-4">
+          <input wire:model.debounce.500ms="from" type="text" id="from" placeholder="Откуда"
+            class="w-full rounded-md border px-4 py-2">
+          <input wire:model.debounce.500ms="to" type="text" id="to" placeholder="Куда"
+            class="w-full rounded-md border px-4 py-2">
+          <button wire:click="calculate"
+            class="w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Рассчитать</button>
+        </div>
+        @if ($distance)
+          <div class="mt-4 text-gray-700">
+            <p><strong>Расстояние:</strong> {{ number_format($distance, 2) }} км.</p>
+            <p><strong>Примерная стоимость:</strong> {{ number_format($cost) }} руб.</p>
+          </div>
+        @endif
+      </div>
+
+      {{-- Форма заказа --}}
+      @if ($distance)
+        <div class="rounded-lg bg-white p-6 shadow-md">
+          <h2 class="mb-4 text-xl font-semibold">Оформить заявку</h2>
+          <form wire:submit.prevent="submitOrder" class="space-y-4">
+            <input wire:model.defer="name" type="text" placeholder="Ваше имя" required
+              class="w-full rounded-md border px-4 py-2">
+            @error('name')
+              <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
+
+            <input wire:model.defer="phone" type="tel" placeholder="Ваш телефон" required
+              class="w-full rounded-md border px-4 py-2">
+            @error('phone')
+              <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
+
+            <input wire:model.defer="email" type="email" placeholder="Ваш Email" required
+              class="w-full rounded-md border px-4 py-2">
+            @error('email')
+              <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
+
+            <button type="submit"
+              class="w-full rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600">Отправить заявку</button>
+          </form>
+          @if (session()->has('message'))
+            <div class="mt-4 text-green-600">
+              {{ session('message') }}
+            </div>
+          @endif
+        </div>
+      @endif
+    </div>
+
+    {{-- Правая колонка с картой --}}
+    <div class="md:col-span-1">
+      <div wire:ignore id="map" class="h-96 w-full rounded-lg shadow-md md:h-full"></div>
+    </div>
+  </div>
+</div>
+
+@push('scripts')
+  <script
+    src="https://api-maps.yandex.ru/2.1/?apikey={{ config('services.yandex_maps.key') }}&lang=ru_RU&load=package.full"
+    type="text/javascript"></script>
+  <script>
+    document.addEventListener('livewire:load', function() {
+      let myMap;
+      let routePoints = [];
+
+      function initMap() {
+        if (document.getElementById('map')) {
+          myMap = new ymaps.Map("map", {
+            center: [55.76, 37.64],
+            zoom: 10
+          });
+
+          // Подсказки для полей ввода
+          new ymaps.SuggestView('from');
+          new ymaps.SuggestView('to');
+
+          // Обработчик клика по карте
+          myMap.events.add('click', function(e) {
+            const coords = e.get('coords');
+
+            if (routePoints.length >= 2) {
+              routePoints = [];
+              myMap.geoObjects.removeAll();
+            }
+
+            ymaps.geocode(coords).then(function(res) {
+              const firstGeoObject = res.geoObjects.get(0);
+              const address = firstGeoObject.getAddressLine();
+
+              if (routePoints.length === 0) {
+                @this.set('from', address);
+                routePoints.push(coords);
+                myMap.geoObjects.add(new ymaps.Placemark(coords, {
+                  iconCaption: 'А'
+                }));
+              } else {
+                @this.set('to', address);
+                routePoints.push(coords);
+                myMap.geoObjects.add(new ymaps.Placemark(coords, {
+                  iconCaption: 'Б'
+                }));
+                Livewire.emit('calculate'); // Вызываем метод calculate в Livewire
+              }
+            });
+          });
+        }
+      }
+
+      ymaps.ready(initMap);
+
+      window.addEventListener('calculate-route', event => {
+        const from = event.detail.from;
+        const to = event.detail.to;
+
+        if (!from || !to) return;
+
+        myMap.geoObjects.removeAll();
+
+        ymaps.route([from, to]).then(function(route) {
+          myMap.geoObjects.add(route);
+          const distance = route.getLength() / 1000;
+          const pricePerKm = 50;
+          const cost = Math.round(distance * pricePerKm);
+
+          @this.set('distance', distance);
+          @this.set('cost', cost);
+        }, function(error) {
+          console.error('Ошибка построения маршрута: ', error.message);
+        });
+      });
+    });
+  </script>
+@endpush

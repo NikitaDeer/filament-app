@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Order;
+use App\Mail\NewOrderMail;
+use Illuminate\Support\Facades\Mail;
+use Livewire\Component;
+
+class YandexMapCalculator extends Component
+{
+    public $from = '';
+    public $to = '';
+    public $name = '';
+    public $phone = '';
+    public $email = '';
+    public $distance;
+    public $cost;
+
+    public function calculate()
+    {
+        $this->validate([
+            'from' => 'required|string',
+            'to' => 'required|string',
+        ]);
+
+        $this->dispatchBrowserEvent('calculate-route', ['from' => $this->from, 'to' => $this->to]);
+    }
+
+    public function submitOrder()
+    {
+        $validatedData = $this->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'from' => 'required|string',
+            'to' => 'required|string',
+            'distance' => 'required|numeric',
+            'cost' => 'required|numeric',
+        ]);
+
+        $orderData = [
+            'name' => $validatedData['name'],
+            'phone' => $validatedData['phone'],
+            'email' => $validatedData['email'],
+            'from_address' => $validatedData['from'],
+            'to_address' => $validatedData['to'],
+            'distance' => $validatedData['distance'],
+            'cost' => $validatedData['cost'],
+        ];
+
+        $order = Order::create($orderData);
+
+        try {
+            Mail::to(config('mail.from.address'))->send(new NewOrderMail($order));
+            session()->flash('message', 'Ваша заявка успешно отправлена!');
+            $this->reset('name', 'phone', 'email', 'from', 'to', 'distance', 'cost');
+        } catch (\Exception $e) {
+            session()->flash('message', 'Не удалось отправить заявку. Пожалуйста, попробуйте позже.');
+        }
+    }
+
+    public function render()
+    {
+        return view('livewire.yandex-map-calculator');
+    }
+}
