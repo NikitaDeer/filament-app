@@ -89,6 +89,9 @@ class DatabaseSeeder extends Seeder
     // Создание демо-контента
     Page::factory(3)->create();
     Advantage::factory(6)->create();
+    
+    // Создание каналов уведомлений
+    $this->call(NotificationChannelSeeder::class);
 
     // Создание 50 тестовых пользователей
     User::factory(50)->create()->each(function ($user) use ($basicTariff) {

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Order;
 use App\Models\Rate;
+use App\Models\NotificationChannel;
 use App\Mail\NewOrderMail;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
@@ -73,7 +74,19 @@ class YandexMapCalculator extends Component
         $order = Order::create($orderData);
 
         try {
-            Mail::to(config('mail.from.address'))->send(new NewOrderMail($order));
+            // Получаем все активные email каналы уведомлений
+            $emailChannels = NotificationChannel::getEmailChannels();
+            
+            // Если нет настроенных каналов, используем адрес по умолчанию для тестирования
+            if ($emailChannels->isEmpty()) {
+                Mail::to('nikita@dergunov.info')->send(new NewOrderMail($order));
+            } else {
+                // Отправляем уведомление на все настроенные email адреса
+                foreach ($emailChannels as $channel) {
+                    Mail::to($channel->value)->send(new NewOrderMail($order));
+                }
+            }
+            
             session()->flash('message', 'Ваша заявка успешно отправлена!');
             $this->reset('name', 'phone', 'email', 'from', 'to', 'distance', 'cost');
             
