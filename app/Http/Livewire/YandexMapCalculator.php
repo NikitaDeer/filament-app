@@ -76,6 +76,9 @@ class YandexMapCalculator extends Component
             Mail::to(config('mail.from.address'))->send(new NewOrderMail($order));
             session()->flash('message', 'Ваша заявка успешно отправлена!');
             $this->reset('name', 'phone', 'email', 'from', 'to', 'distance', 'cost');
+            
+            // Отправляем событие для обновления карты
+            $this->emit('orderSubmitted');
         } catch (\Exception $e) {
             session()->flash('message', 'Не удалось отправить заявку. Пожалуйста, попробуйте позже.');
         }

@@ -80,23 +80,28 @@
         } else {
           mapElem.style.height = '400px'; // default height for mobile
         }
+        
+        // Если карта инициализирована, обновляем её размер
+        if (myMap) {
+          myMap.container.fitToViewport();
+        }
       }
 
       function initMap() {
         if (document.getElementById('map')) {
           // Сначала устанавливаем высоту карты перед инициализацией
           adjustMapHeight();
-          
+
           myMap = new ymaps.Map("map", {
             center: [59.9342802, 30.3350986], // Санкт-Петербург
             zoom: 10
           });
-          
+
           // Обработчик события готовности карты
           myMap.events.add('sizechange', function() {
             myMap.container.fitToViewport();
           });
-          
+
           // Вызываем обновление размера карты после инициализации
           setTimeout(() => {
             myMap.container.fitToViewport();
@@ -152,12 +157,30 @@
       Livewire.on('updated', () => {
         setTimeout(() => {
           adjustMapHeight();
-          if (myMap) {
-            myMap.container.fitToViewport();
-          }
         }, 100);
       });
       
+      // Обработчик события для обновления карты при отправке формы заказа
+      Livewire.on('orderSubmitted', () => {
+        setTimeout(() => {
+          adjustMapHeight();
+        }, 200);
+      });
+      
+      // Используем MutationObserver для отслеживания изменений в DOM
+      const formContainer = document.getElementById('form-container');
+      if (formContainer) {
+        const observer = new MutationObserver(function(mutations) {
+          setTimeout(adjustMapHeight, 100);
+        });
+        
+        observer.observe(formContainer, {
+          childList: true,
+          subtree: true,
+          attributes: false
+        });
+      }
+
       // Дополнительная проверка после полной загрузки страницы
       window.addEventListener('load', function() {
         if (myMap) {
@@ -183,6 +206,9 @@
 
           @this.set('distance', distance);
           @this.set('cost', cost);
+          
+          // Обновляем размер карты после расчета маршрута
+          setTimeout(adjustMapHeight, 200);
         }, function(error) {
           console.error('Ошибка построения маршрута: ', error.message);
         });
