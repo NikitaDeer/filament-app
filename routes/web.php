@@ -5,6 +5,10 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Services\RsaEncryptionService;
 use App\Http\Controllers\SubscriptionController;
+use App\Models\Order;
+use App\Mail\NewOrderMail;
+use Illuminate\Support\Facades\Mail;
+use App\Models\NotificationChannel;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +24,37 @@ use App\Http\Controllers\SubscriptionController;
 // Route::get('/', function () {
 //   return view('main');
 // });
+
+// Тестовый маршрут для проверки отправки email
+Route::get('/test-email', function () {
+    // Создаем тестовый заказ
+    $order = new Order();
+    $order->name = 'Тестовый клиент';
+    $order->phone = '+7 999 123-45-67';
+    $order->email = 'test@example.com';
+    $order->from_address = 'Москва, Красная площадь';
+    $order->to_address = 'Санкт-Петербург, Невский проспект';
+    $order->distance = 700;
+    $order->cost = 35000;
+    $order->save();
+
+    try {
+        // Получаем активный email канал уведомлений
+        $emailChannel = NotificationChannel::where('type', 'email')
+            ->where('is_active', true)
+            ->first();
+
+        // Если нет настроенного канала, используем адрес по умолчанию
+        $emailTo = $emailChannel ? $emailChannel->value : 'nikita@dergunov.info';
+
+        // Отправляем уведомление на email администратора
+        Mail::to($emailTo)->send(new NewOrderMail($order));
+
+        return 'Email успешно отправлен на адрес: ' . $emailTo . ' с информацией о заказе #' . $order->id;
+    } catch (\Exception $e) {
+        return 'Ошибка отправки email: ' . $e->getMessage();
+    }
+});
 
 Route::get('/test-encryption', function() {
   try {

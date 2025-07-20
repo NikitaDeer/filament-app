@@ -37,8 +37,13 @@ class YandexMapCalculator extends Component
     public function calculate()
     {
         $this->validate([
-            'from' => 'required|string',
-            'to' => 'required|string',
+            'from' => 'required|string|min:3|max:255',
+            'to' => 'required|string|min:3|max:255',
+        ], [
+            'from.required' => 'Пожалуйста, укажите адрес отправления',
+            'from.min' => 'Адрес отправления должен содержать не менее 3 символов',
+            'to.required' => 'Пожалуйста, укажите адрес назначения',
+            'to.min' => 'Адрес назначения должен содержать не менее 3 символов',
         ]);
 
         // Передаем цену за км в браузер
@@ -52,13 +57,27 @@ class YandexMapCalculator extends Component
     public function submitOrder()
     {
         $validatedData = $this->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'from' => 'required|string',
-            'to' => 'required|string',
-            'distance' => 'required|numeric',
-            'cost' => 'required|numeric',
+            'name' => 'required|string|min:2|max:255',
+            'phone' => 'required|string|min:10|max:20|regex:/^[0-9+\-\s()]*$/',
+            'email' => 'required|email:rfc,dns|max:255',
+            'from' => 'required|string|min:3|max:255',
+            'to' => 'required|string|min:3|max:255',
+            'distance' => 'required|numeric|min:0.1',
+            'cost' => 'required|numeric|min:1',
+        ], [
+            'name.required' => 'Пожалуйста, укажите ваше имя',
+            'name.min' => 'Имя должно содержать не менее 2 символов',
+            'phone.required' => 'Пожалуйста, укажите ваш номер телефона',
+            'phone.min' => 'Номер телефона должен содержать не менее 10 символов',
+            'phone.regex' => 'Номер телефона может содержать только цифры, пробелы и символы +()-',
+            'email.required' => 'Пожалуйста, укажите ваш email',
+            'email.email' => 'Пожалуйста, укажите корректный email адрес',
+            'from.required' => 'Пожалуйста, укажите адрес отправления',
+            'to.required' => 'Пожалуйста, укажите адрес назначения',
+            'distance.required' => 'Расстояние не рассчитано. Пожалуйста, выполните расчет маршрута',
+            'distance.min' => 'Расстояние должно быть больше 0',
+            'cost.required' => 'Стоимость не рассчитана. Пожалуйста, выполните расчет маршрута',
+            'cost.min' => 'Стоимость должна быть больше 0',
         ]);
 
         $orderData = [
@@ -74,26 +93,33 @@ class YandexMapCalculator extends Component
         $order = Order::create($orderData);
 
         try {
-            // Получаем все активные email каналы уведомлений
-            $emailChannels = NotificationChannel::getEmailChannels();
+            // Получаем активный email канал уведомлений
+            $emailChannel = NotificationChannel::where('type', 'email')
+                ->where('is_active', true)
+                ->first();
             
-            // Если нет настроенных каналов, используем адрес по умолчанию для тестирования
-            if ($emailChannels->isEmpty()) {
-                Mail::to('nikita@dergunov.info')->send(new NewOrderMail($order));
-            } else {
-                // Отправляем уведомление на все настроенные email адреса
-                foreach ($emailChannels as $channel) {
-                    Mail::to($channel->value)->send(new NewOrderMail($order));
-                }
-            }
+            // Если нет настроенного канала, используем адрес по умолчанию
+            $emailTo = $emailChannel ? $emailChannel->value : 'nikita@dergunov.info';
             
-            session()->flash('message', 'Ваша заявка успешно отправлена!');
+            // Отправляем уведомление на email администратора
+            Mail::to($emailTo)->send(new NewOrderMail($order));
+            
+            // Успешное уведомление
+            session()->flash('message_type', 'success');
+            session()->flash('message', 'Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.');
+            
+            // Сбрасываем форму
             $this->reset('name', 'phone', 'email', 'from', 'to', 'distance', 'cost');
             
             // Отправляем событие для обновления карты
             $this->emit('orderSubmitted');
         } catch (\Exception $e) {
-            session()->flash('message', 'Не удалось отправить заявку. Пожалуйста, попробуйте позже.');
+            // Ошибка отправки
+            session()->flash('message_type', 'error');
+            session()->flash('message', 'Не удалось отправить заявку. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.');
+            
+            // Логируем ошибку
+            \Log::error('Ошибка отправки заявки: ' . $e->getMessage());
         }
     }
 
