@@ -58,7 +58,7 @@
 
     {{-- Правая колонка с картой --}}
     <div class="md:col-span-1">
-      <div wire:ignore id="map" class="w-full rounded-lg shadow-md"></div>
+      <div wire:ignore id="map" class="w-full rounded-lg shadow-md" style="min-height: 400px;"></div>
     </div>
   </div>
 </div>
@@ -84,10 +84,23 @@
 
       function initMap() {
         if (document.getElementById('map')) {
+          // Сначала устанавливаем высоту карты перед инициализацией
+          adjustMapHeight();
+          
           myMap = new ymaps.Map("map", {
             center: [59.9342802, 30.3350986], // Санкт-Петербург
             zoom: 10
           });
+          
+          // Обработчик события готовности карты
+          myMap.events.add('sizechange', function() {
+            myMap.container.fitToViewport();
+          });
+          
+          // Вызываем обновление размера карты после инициализации
+          setTimeout(() => {
+            myMap.container.fitToViewport();
+          }, 100);
 
           new ymaps.SuggestView('from');
           new ymaps.SuggestView('to');
@@ -127,11 +140,30 @@
 
       ymaps.ready(initMap);
 
-      window.addEventListener('resize', adjustMapHeight);
+      // Обработчик изменения размера окна
+      window.addEventListener('resize', function() {
+        adjustMapHeight();
+        if (myMap) {
+          myMap.container.fitToViewport();
+        }
+      });
 
       // Перерисовываем карту и подгоняем высоту, когда Livewire обновил DOM
       Livewire.on('updated', () => {
-        setTimeout(adjustMapHeight, 1);
+        setTimeout(() => {
+          adjustMapHeight();
+          if (myMap) {
+            myMap.container.fitToViewport();
+          }
+        }, 100);
+      });
+      
+      // Дополнительная проверка после полной загрузки страницы
+      window.addEventListener('load', function() {
+        if (myMap) {
+          adjustMapHeight();
+          myMap.container.fitToViewport();
+        }
       });
 
 
