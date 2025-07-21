@@ -322,7 +322,7 @@
   <div class="m-auto max-w-xl bg-gray-50 p-4">
     <div class="mb-4 rounded-lg bg-white p-6 shadow">
       <div class="mb-6 border-b border-gray-200 pb-4 text-center">
-        <img src="{{ $message->embed(public_path('images/logo.png')) }}" alt="Логотип" class="max-w-150 m-auto mb-4">
+        {{-- <img src="{{ $message->embed(public_path('images/logo.png')) }}" alt="Логотип" class="m-auto mb-4 max-w-150"> --}}
         <h1 class="m-0 text-2xl font-bold text-blue-700">Новая заявка №{{ $order->id }}</h1>
         <p class="mt-2 text-gray-600">Заявка поступила во время: {{ $order->created_at->format('d.m.Y H:i') }}</p>
       </div>
