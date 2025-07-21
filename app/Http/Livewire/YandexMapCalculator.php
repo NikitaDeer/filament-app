@@ -22,6 +22,7 @@ class YandexMapCalculator extends Component
   public $rate;
   public $comment = '';
   public $orderSubmittedSuccessfully = false;
+  public $showError = false;
 
   public function mount()
   {
@@ -128,11 +129,23 @@ class YandexMapCalculator extends Component
       Log::info('New order notification sent to: ' . $emailTo, ['order_id' => $order->id]);
 
       $this->orderSubmittedSuccessfully = true;
+      $this->showError = false;
 
     } catch (\Exception $e) {
       Log::error('Ошибка отправки заявки: ' . $e->getMessage(), ['order_id' => $order->id]);
-      $this->addError('general', 'Не удалось отправить заявку. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.');
+      $this->showError = true;
     }
+  }
+
+  public function resetForm()
+  {
+    $this->showError = false;
+  }
+
+  public function newOrder()
+  {
+    $this->reset();
+    $this->orderSubmittedSuccessfully = false;
   }
 
   public function render()
