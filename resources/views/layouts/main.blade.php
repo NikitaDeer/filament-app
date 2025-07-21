@@ -9,9 +9,9 @@
   <title>{{ config('app.name', 'Laravel') }}</title>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.bunny.net ">
-  <link href="https://fonts.bunny.net/css?family=figtree :wght@400;500;600&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css " rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
 
   <!-- Scripts -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -23,7 +23,7 @@
     {{ $slot }}
   </div>
 
-  <script src="https://unpkg.com/flowbite @1.4.7/dist/flowbite.js"></script>
+  <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.js"></script>
   @livewireScripts
   @stack('scripts')
 </body>

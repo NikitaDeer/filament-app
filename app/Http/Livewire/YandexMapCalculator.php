@@ -88,7 +88,7 @@ class YandexMapCalculator extends Component
             'cost.required' => 'Стоимость не рассчитана. Пожалуйста, выполните расчет маршрута',
             'cost.min' => 'Стоимость должна быть больше 0',
         ]);
-
+        
         $orderData = [
             'name' => $validatedData['name'],
             'phone' => $validatedData['phone'],
@@ -97,6 +97,7 @@ class YandexMapCalculator extends Component
             'to_address' => $validatedData['to'],
             'distance' => $validatedData['distance'],
             'cost' => $validatedData['cost'],
+            'rate_id' => $this->rate->id,
         ];
 
         $order = Order::create($orderData);
@@ -111,6 +112,7 @@ class YandexMapCalculator extends Component
             $emailTo = $emailChannel ? $emailChannel->value : 'nikita@dergunov.info';
             
             // Отправляем уведомление на email администратора
+            // Используем send вместо queue, так как в .env QUEUE_CONNECTION=sync
             Mail::to($emailTo)->send(new NewOrderMail($order));
             
             // Успешное уведомление
@@ -120,13 +122,26 @@ class YandexMapCalculator extends Component
             // Сбрасываем форму
             $this->reset('name', 'phone', 'email', 'from', 'to', 'distance', 'cost');
             
-            // Отправляем событие для обновления карты
+            // Отправляем событие для обновления карты и уведомления
             $this->emit('orderSubmitted');
             $this->dispatchBrowserEvent('updated');
+            $this->dispatchBrowserEvent('show-notification', [
+                'type' => 'success',
+                'message' => 'Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.'
+            ]);
+            
+            // Логируем успешную отправку
+            \Log::info('Заявка успешно отправлена: ' . $order->id . ' на адрес ' . $emailTo);
         } catch (\Exception $e) {
             // Ошибка отправки
             session()->flash('message_type', 'error');
             session()->flash('message', 'Не удалось отправить заявку. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.');
+            
+            // Отправляем событие для уведомления об ошибке
+            $this->dispatchBrowserEvent('show-notification', [
+                'type' => 'error',
+                'message' => 'Не удалось отправить заявку. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.'
+            ]);
             
             // Логируем ошибку
             \Log::error('Ошибка отправки заявки: ' . $e->getMessage());
