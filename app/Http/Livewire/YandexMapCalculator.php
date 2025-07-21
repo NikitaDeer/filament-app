@@ -62,7 +62,7 @@ class YandexMapCalculator extends Component
     $validatedData = $this->validate([
       'name' => 'required|string|min:2|max:255',
       'phone' => 'required|string|min:10|max:20|regex:/^[0-9+\-\s()]*$/',
-      'email' => 'required|email:rfc,dns|max:255',
+      'email' => 'required|email:rfc|max:255',
       'from' => 'required|string|min:3|max:255',
       'to' => 'required|string|min:3|max:255',
       'distance' => 'required|numeric|min:0.1',
@@ -110,11 +110,16 @@ class YandexMapCalculator extends Component
         ->first();
 
       // Если нет настроенного канала, используем адрес по умолчанию
-      $emailTo = $emailChannel ? $emailChannel->value : 'nikita@dergunov.info';
+      $emailTo = $emailChannel ? $emailChannel->value : config('mail.from.address');
 
       Notification::route('mail', $emailTo)->notify(new NewOrderNotification($order));
 
-      session()->flash('success', 'Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.');
+      Log::info('New order notification sent to: ' . $emailTo, ['order_id' => $order->id]);
+
+      $this->dispatchBrowserEvent('show-notification', [
+        'type' => 'success',
+        'message' => 'Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.'
+      ]);
 
       // Сбрасываем форму
       $this->reset('name', 'phone', 'email', 'from', 'to', 'distance', 'cost');
@@ -122,8 +127,11 @@ class YandexMapCalculator extends Component
       $this->emit('orderSubmitted');
 
     } catch (\Exception $e) {
-      session()->flash('error', 'Не удалось отправить заявку. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.');
       Log::error('Ошибка отправки заявки: ' . $e->getMessage());
+      $this->dispatchBrowserEvent('show-notification', [
+        'type' => 'error',
+        'message' => 'Не удалось отправить заявку. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.'
+      ]);
     }
   }
 

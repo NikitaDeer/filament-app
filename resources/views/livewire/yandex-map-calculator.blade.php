@@ -27,26 +27,26 @@
           <h2 class="mb-4 text-xl font-semibold">Оформить заявку</h2>
           <form wire:submit.prevent="submitOrder" class="space-y-4">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <input type="text" wire:model.defer="from" id="from_address" class="w-full rounded-md border px-4 py-2"
-                placeholder="Откуда" readonly>
+              <div class="hidden">
+                <input type="text" wire:model.defer="from" id="from_address"
+                  class="w-full rounded-md border px-4 py-2" placeholder="Откуда" readonly>
+                <input type="text" wire:model.defer="to" id="to_address" class="w-full rounded-md border px-4 py-2"
+                  placeholder="Куда" readonly>
+                <input type="text" wire:model.defer="distance" id="distance"
+                  class="w-full rounded-md border px-4 py-2" placeholder="Расстояние" readonly>
+                <input type="text" wire:model.defer="cost" id="cost" class="w-full rounded-md border px-4 py-2"
+                  placeholder="Стоимость" readonly>
+              </div>
+
               @error('from')
                 <span class="text-sm text-red-500 md:col-span-2">{{ $message }}</span>
               @enderror
-
-              <input type="text" wire:model.defer="to" id="to_address" class="w-full rounded-md border px-4 py-2"
-                placeholder="Куда" readonly>
               @error('to')
                 <span class="text-sm text-red-500 md:col-span-2">{{ $message }}</span>
               @enderror
-
-              <input type="text" wire:model.defer="distance" id="distance"
-                class="w-full rounded-md border px-4 py-2" placeholder="Расстояние" readonly>
               @error('distance')
                 <span class="text-sm text-red-500 md:col-span-2">{{ $message }}</span>
               @enderror
-
-              <input type="text" wire:model.defer="cost" id="cost" class="w-full rounded-md border px-4 py-2"
-                placeholder="Стоимость" readonly>
               @error('cost')
                 <span class="text-sm text-red-500 md:col-span-2">{{ $message }}</span>
               @enderror
@@ -64,13 +64,16 @@
               @enderror
 
               <input type="email" wire:model.defer="email" class="w-full rounded-md border px-4 py-2"
-                placeholder="Ваш email (необязательно)">
+                placeholder="Ваш email" required>
               @error('email')
                 <span class="text-sm text-red-500">{{ $message }}</span>
               @enderror
             </div>
-            <button type="submit"
-              class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Оформить заказ</button>
+            <button type="submit" class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              wire:loading.attr="disabled" wire:target="submitOrder">
+              <span wire:loading.remove wire:target="submitOrder">Оформить заказ</span>
+              <span wire:loading wire:target="submitOrder">Отправка...</span>
+            </button>
           </form>
 
           @if (session()->has('success'))
