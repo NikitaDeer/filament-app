@@ -40,17 +40,8 @@ class NewOrderNotification extends Notification
   public function toMail(object $notifiable): MailMessage
   {
     return (new MailMessage)
-      ->subject('Новая заявка на перевозку')
-      ->greeting('Здравствуйте!')
-      ->line('Поступила новая заявка на перевозку.')
-      ->line('Имя клиента: ' . $this->order->name)
-      ->line('Телефон: ' . $this->order->phone)
-      ->line('Email: ' . $this->order->email)
-      ->line('Маршрут: ' . $this->order->from_address . ' - ' . $this->order->to_address)
-      ->line('Расстояние: ' . $this->order->distance . ' км')
-      ->line('Стоимость: ' . $this->order->cost . ' руб.')
-      ->action('Просмотреть заказ в админ-панели', url('/admin/orders/' . $this->order->id))
-      ->line('Спасибо за использование нашего сервиса!');
+      ->subject('Новая заявка на перевозку №' . $this->order->id)
+      ->markdown('emails.new-order', ['order' => $this->order]);
   }
 
   /**
