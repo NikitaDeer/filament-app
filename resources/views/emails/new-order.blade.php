@@ -1,3 +1,6 @@
+@php
+  use App\Filament\Resources\OrderResource;
+@endphp
 <!DOCTYPE html>
 <html>
 
@@ -279,6 +282,39 @@
       background-color: #2563eb;
       color: #ffffff;
     }
+
+    .text-sm {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+
+    .italic {
+      font-style: italic;
+    }
+
+    .text-gray-400 {
+      color: #9ca3af;
+    }
+
+    .max-w-150 {
+      max-width: 150px;
+    }
+
+    .info-table {
+      width: 100%;
+    }
+
+    .info-table td {
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      vertical-align: top;
+    }
+
+    .info-table td:first-child {
+      width: 140px;
+      font-weight: 600;
+      color: #4b5563;
+    }
   </style>
 </head>
 
@@ -286,66 +322,73 @@
   <div class="m-auto max-w-xl bg-gray-50 p-4">
     <div class="mb-4 rounded-lg bg-white p-6 shadow">
       <div class="mb-6 border-b border-gray-200 pb-4 text-center">
-        {{-- <img src="{{ $message->embed(public_path('images/logo.png')) }}" alt="Логотип" class="m-auto mb-4" style="max-width: 150px;"> --}}
+        <img src="{{ $message->embed(public_path('images/logo.png')) }}" alt="Логотип" class="max-w-150 m-auto mb-4">
         <h1 class="m-0 text-2xl font-bold text-blue-700">Новая заявка №{{ $order->id }}</h1>
-        <p class="mt-2 text-gray-600">{{ $order->created_at->format('d.m.Y H:i') }}</p>
+        <p class="mt-2 text-gray-600">Заявка поступила во время: {{ $order->created_at->format('d.m.Y H:i') }}</p>
       </div>
 
-      <div class="mb-6">
-        <h2 class="mb-2 border-b border-gray-200 pb-2 text-lg font-semibold text-gray-800">Информация о клиенте</h2>
-        <div class="mb-2 flex">
-          <div class="w-32 font-semibold text-gray-600">Имя:</div>
-          <div>{{ $order->name }}</div>
-        </div>
-        <div class="mb-2 flex">
-          <div class="w-32 font-semibold text-gray-600">Телефон:</div>
-          <div><a href="tel:{{ $order->phone }}" class="text-blue-600">{{ $order->phone }}</a></div>
-        </div>
-        <div class="mb-2 flex">
-          <div class="w-32 font-semibold text-gray-600">Email:</div>
-          <div><a href="mailto:{{ $order->email }}" class="text-blue-600">{{ $order->email }}</a></div>
-        </div>
+      <div class="mb-8">
+        <h2 class="mb-4 border-b border-gray-200 pb-2 text-lg font-semibold text-gray-800">Информация о клиенте</h2>
+        <table class="info-table">
+          <tr>
+            <td>Имя:</td>
+            <td>{{ $order->name }}</td>
+          </tr>
+          <tr>
+            <td>Телефон:</td>
+            <td><a href="tel:{{ $order->phone }}" class="text-blue-600">{{ $order->phone }}</a></td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <td><a href="mailto:{{ $order->email }}" class="text-blue-600">{{ $order->email }}</a></td>
+          </tr>
+        </table>
       </div>
 
-      <div class="mb-6">
-        <h2 class="mb-2 border-b border-gray-200 pb-2 text-lg font-semibold text-gray-800">Детали заказа</h2>
-        <div class="mt-4 rounded-md border-l-4 border-blue-500 bg-blue-50 p-4">
-          <div class="mb-2 flex">
-            <div class="w-32 font-semibold text-gray-600">Откуда:</div>
-            <div>{{ $order->from_address }}</div>
-          </div>
-          <div class="mb-2 flex">
-            <div class="w-32 font-semibold text-gray-600">Куда:</div>
-            <div>{{ $order->to_address }}</div>
-          </div>
-          <div class="mb-2 flex">
-            <div class="w-32 font-semibold text-gray-600">Расстояние:</div>
-            <div>{{ number_format($order->distance, 2) }} км</div>
-          </div>
+      <div class="mb-8">
+        <h2 class="mb-4 border-b border-gray-200 pb-2 text-lg font-semibold text-gray-800">Детали заказа</h2>
+        <div class="rounded-md border-l-4 border-blue-500 bg-blue-50 p-4">
+          <table class="info-table">
+            <tr>
+              <td>Откуда:</td>
+              <td>{{ $order->from_address }}</td>
+            </tr>
+            <tr>
+              <td>Куда:</td>
+              <td>{{ $order->to_address }}</td>
+            </tr>
+            <tr>
+              <td>Расстояние:</td>
+              <td>{{ number_format($order->distance, 2) }} км</td>
+            </tr>
+          </table>
         </div>
 
         <div class="mt-4 rounded-md border-l-4 border-green-500 bg-green-50 p-4">
-          <div class="mb-2 flex">
-            <div class="w-32 font-semibold text-gray-600">Стоимость:</div>
-            <div class="text-xl font-bold">{{ number_format($order->cost, 0, '.', ' ') }} руб.</div>
-          </div>
+          <table class="info-table">
+            <tr>
+              <td>Стоимость:</td>
+              <td class="text-xl font-bold">{{ number_format($order->cost, 0, '.', ' ') }} руб.</td>
+            </tr>
+          </table>
         </div>
       </div>
 
       @if ($order->comment)
-        <div class="mb-6">
-          <h2 class="mb-2 border-b border-gray-200 pb-2 text-lg font-semibold text-gray-800">Комментарий клиента</h2>
+        <div class="mb-8">
+          <h2 class="mb-4 border-b border-gray-200 pb-2 text-lg font-semibold text-gray-800">Комментарий клиента</h2>
           <div class="mt-2 text-gray-700">
-            <p>{{ $order->comment }}</p>
+            <p class="italic">{{ $order->comment }}</p>
           </div>
         </div>
       @endif
 
       <div class="mt-6 text-center">
-        <a href="{{ url('/admin/orders/' . $order->id) }}" class="btn btn-primary">Просмотреть заказ в админ-панели</a>
+        <a href="{{ OrderResource::getUrl('edit', ['record' => $order]) }}" class="btn btn-primary">Просмотреть заказ в
+          админ-панели</a>
       </div>
 
-      <div class="mt-6 border-t border-gray-200 pt-2 text-center text-base text-gray-500">
+      <div class="mt-8 border-t border-gray-200 pt-4 text-center text-sm italic text-gray-400">
         <p>Это автоматическое уведомление. Пожалуйста, не отвечайте на это письмо.</p>
       </div>
     </div>
