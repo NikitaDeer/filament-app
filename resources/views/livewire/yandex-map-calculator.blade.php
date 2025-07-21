@@ -27,17 +27,20 @@
           <h2 class="mb-4 text-xl font-semibold">Оформить заявку</h2>
           <div class="relative">
             @if ($orderSubmittedSuccessfully)
-              <div class="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-gray-500 bg-opacity-75">
-                <svg class="h-24 w-24 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              <div
+                class="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-lg bg-gray-500 bg-opacity-75 p-4 text-center text-white transition-opacity duration-300 ease-in-out">
+                <svg class="mb-4 h-16 w-16 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
+                <h3 class="mb-2 text-2xl font-bold">Заявка успешно отправлена!</h3>
+                <p>Мы скоро с вами свяжемся.</p>
               </div>
             @endif
 
             <form wire:submit.prevent="submitOrder"
-              class="{{ $orderSubmittedSuccessfully ? 'opacity-50' : '' }} space-y-4">
+              class="{{ $orderSubmittedSuccessfully ? 'opacity-50 pointer-events-none' : '' }} space-y-4">
               <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div class="hidden">
                   <input type="text" wire:model.defer="from" readonly>
@@ -70,7 +73,8 @@
                   <span class="text-sm text-red-500 md:col-span-2">{{ $message }}</span>
                 @enderror
               </div>
-              <button type="submit" class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              <button type="submit"
+                class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white transition-colors duration-300 hover:bg-blue-600"
                 wire:loading.attr="disabled" :disabled="$orderSubmittedSuccessfully">
                 <span wire:loading.remove>Оформить заказ</span>
                 <span wire:loading>Отправка...</span>
