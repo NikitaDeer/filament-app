@@ -25,72 +25,64 @@
       @if ($distance)
         <div class="rounded-lg bg-white p-6 shadow-md">
           <h2 class="mb-4 text-xl font-semibold">Оформить заявку</h2>
-          <form wire:submit.prevent="submitOrder" class="space-y-4">
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div class="hidden">
-                <input type="text" wire:model.defer="from" id="from_address"
-                  class="w-full rounded-md border px-4 py-2" placeholder="Откуда" readonly>
-                <input type="text" wire:model.defer="to" id="to_address" class="w-full rounded-md border px-4 py-2"
-                  placeholder="Куда" readonly>
-                <input type="text" wire:model.defer="distance" id="distance"
-                  class="w-full rounded-md border px-4 py-2" placeholder="Расстояние" readonly>
-                <input type="text" wire:model.defer="cost" id="cost" class="w-full rounded-md border px-4 py-2"
-                  placeholder="Стоимость" readonly>
+          <div class="relative">
+            @if ($orderSubmittedSuccessfully)
+              <div class="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-gray-500 bg-opacity-75">
+                <svg class="h-24 w-24 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
               </div>
+            @endif
 
-              @error('from')
-                <span class="text-sm text-red-500 md:col-span-2">{{ $message }}</span>
-              @enderror
-              @error('to')
-                <span class="text-sm text-red-500 md:col-span-2">{{ $message }}</span>
-              @enderror
-              @error('distance')
-                <span class="text-sm text-red-500 md:col-span-2">{{ $message }}</span>
-              @enderror
-              @error('cost')
-                <span class="text-sm text-red-500 md:col-span-2">{{ $message }}</span>
-              @enderror
+            <form wire:submit.prevent="submitOrder"
+              class="{{ $orderSubmittedSuccessfully ? 'opacity-50' : '' }} space-y-4">
+              <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div class="hidden">
+                  <input type="text" wire:model.defer="from" readonly>
+                  <input type="text" wire:model.defer="to" readonly>
+                  <input type="text" wire:model.defer="distance" readonly>
+                  <input type="text" wire:model.defer="cost" readonly>
+                </div>
 
-              <input type="text" wire:model.defer="name" class="w-full rounded-md border px-4 py-2"
-                placeholder="Ваше имя" required>
-              @error('name')
-                <span class="text-sm text-red-500">{{ $message }}</span>
-              @enderror
+                <input type="text" wire:model.defer="name" class="w-full rounded-md border px-4 py-2"
+                  placeholder="Ваше имя*" required :disabled="$orderSubmittedSuccessfully">
+                @error('name')
+                  <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
 
-              <input type="tel" wire:model.defer="phone" class="w-full rounded-md border px-4 py-2"
-                placeholder="Ваш телефон" required>
-              @error('phone')
-                <span class="text-sm text-red-500">{{ $message }}</span>
-              @enderror
+                <input type="tel" wire:model.defer="phone" class="w-full rounded-md border px-4 py-2"
+                  placeholder="Ваш телефон*" required :disabled="$orderSubmittedSuccessfully">
+                @error('phone')
+                  <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
 
-              <input type="email" wire:model.defer="email" class="w-full rounded-md border px-4 py-2"
-                placeholder="Ваш email" required>
-              @error('email')
-                <span class="text-sm text-red-500">{{ $message }}</span>
-              @enderror
-            </div>
-            <button type="submit" class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-              wire:loading.attr="disabled" wire:target="submitOrder">
-              <span wire:loading.remove wire:target="submitOrder">Оформить заказ</span>
-              <span wire:loading wire:target="submitOrder">Отправка...</span>
-            </button>
-          </form>
+                <input type="email" wire:model.defer="email" class="w-full rounded-md border px-4 py-2"
+                  placeholder="Ваш email*" required :disabled="$orderSubmittedSuccessfully">
+                @error('email')
+                  <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
 
-          @if (session()->has('success'))
-            <div class="mt-4 rounded border border-green-400 bg-green-100 p-4 text-green-700" x-data="{ show: true }"
-              x-show="show" x-init="setTimeout(() => show = false, 5000)">
-              {{ session('success') }}
-            </div>
-          @endif
+                <textarea wire:model.defer="comment" class="w-full rounded-md border px-4 py-2 md:col-span-2" placeholder="Комментарий"
+                  :disabled="$orderSubmittedSuccessfully"></textarea>
+                @error('comment')
+                  <span class="text-sm text-red-500 md:col-span-2">{{ $message }}</span>
+                @enderror
+              </div>
+              <button type="submit" class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                wire:loading.attr="disabled" :disabled="$orderSubmittedSuccessfully">
+                <span wire:loading.remove>Оформить заказ</span>
+                <span wire:loading>Отправка...</span>
+              </button>
+            </form>
 
-          @if (session()->has('error'))
-            <div class="mt-4 rounded border border-red-400 bg-red-100 p-4 text-red-700" x-data="{ show: true }"
-              x-show="show" x-init="setTimeout(() => show = false, 5000)">
-              {{ session('error') }}
-            </div>
-          @endif
-
-          <div id="notification-container" class="sticky bottom-4 z-50 mt-4"></div>
+            @error('general')
+              <div class="mt-4 rounded border border-red-400 bg-red-100 p-4 text-red-700">
+                {{ $message }}
+              </div>
+            @enderror
+          </div>
         </div>
       @endif
     </div>

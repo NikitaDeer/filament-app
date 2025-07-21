@@ -30,6 +30,7 @@ class OrderResource extends Resource
         Forms\Components\TextInput::make('to_address')->label('Конечная точка')->disabled(),
         Forms\Components\TextInput::make('distance')->label('Километраж')->disabled(),
         Forms\Components\TextInput::make('cost')->label('Стоимость')->disabled(),
+        Forms\Components\Textarea::make('comment')->label('Комментарий')->disabled(),
       ]);
   }
 
@@ -44,6 +45,7 @@ class OrderResource extends Resource
         Tables\Columns\TextColumn::make('to_address')->label('Конечная точка'),
         Tables\Columns\TextColumn::make('distance')->label('Километраж')->sortable(),
         Tables\Columns\TextColumn::make('cost')->label('Стоимость')->sortable(),
+        Tables\Columns\TextColumn::make('comment')->label('Комментарий')->limit(50),
         Tables\Columns\TextColumn::make('created_at')->label('Дата заказа')->dateTime('d-m-Y H:i'),
       ])
       ->filters([

@@ -20,6 +20,8 @@ class YandexMapCalculator extends Component
   public $distance;
   public $cost;
   public $rate;
+  public $comment = '';
+  public $orderSubmittedSuccessfully = false;
 
   public function mount()
   {
@@ -67,6 +69,7 @@ class YandexMapCalculator extends Component
       'to' => 'required|string|min:3|max:255',
       'distance' => 'required|numeric|min:0.1',
       'cost' => 'required|numeric|min:1',
+      'comment' => 'nullable|string|max:1000',
     ], [
       'name.required' => 'Пожалуйста, укажите ваше имя',
       'name.min' => 'Имя должно содержать не менее 2 символов',
@@ -88,6 +91,7 @@ class YandexMapCalculator extends Component
       'distance.min' => 'Расстояние должно быть больше 0',
       'cost.required' => 'Стоимость не рассчитана. Пожалуйста, выполните расчет маршрута',
       'cost.min' => 'Стоимость должна быть больше 0',
+      'comment.max' => 'Комментарий не должен превышать 1000 символов',
     ]);
 
     $orderData = [
@@ -98,40 +102,36 @@ class YandexMapCalculator extends Component
       'to_address' => $validatedData['to'],
       'distance' => $validatedData['distance'],
       'cost' => $validatedData['cost'],
+      'comment' => $validatedData['comment'],
       'rate_id' => $this->rate->id,
     ];
 
     $order = Order::create($orderData);
 
     try {
-      // Получаем активный email канал уведомлений
+      // Ищем сначала канал по умолчанию, затем любой активный
       $emailChannel = NotificationChannel::where('type', 'email')
+        ->where('is_default', true)
         ->where('is_active', true)
         ->first();
 
-      // Если нет настроенного канала, используем адрес по умолчанию
+      if (!$emailChannel) {
+        $emailChannel = NotificationChannel::where('type', 'email')
+          ->where('is_active', true)
+          ->first();
+      }
+
       $emailTo = $emailChannel ? $emailChannel->value : config('mail.from.address');
 
       Notification::route('mail', $emailTo)->notify(new NewOrderNotification($order));
 
       Log::info('New order notification sent to: ' . $emailTo, ['order_id' => $order->id]);
 
-      $this->dispatchBrowserEvent('show-notification', [
-        'type' => 'success',
-        'message' => 'Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.'
-      ]);
-
-      // Сбрасываем форму
-      $this->reset('name', 'phone', 'email', 'from', 'to', 'distance', 'cost');
-
-      $this->emit('orderSubmitted');
+      $this->orderSubmittedSuccessfully = true;
 
     } catch (\Exception $e) {
-      Log::error('Ошибка отправки заявки: ' . $e->getMessage());
-      $this->dispatchBrowserEvent('show-notification', [
-        'type' => 'error',
-        'message' => 'Не удалось отправить заявку. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.'
-      ]);
+      Log::error('Ошибка отправки заявки: ' . $e->getMessage(), ['order_id' => $order->id]);
+      $this->addError('general', 'Не удалось отправить заявку. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.');
     }
   }
 
