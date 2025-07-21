@@ -360,4 +360,24 @@
       });
     });
   </script>
+  <script>
+    document.addEventListener('livewire:load', function() {
+      window.addEventListener('show-notification', event => {
+        const container = document.getElementById('notification-container');
+        if (!container) return;
+
+        const notification = document.createElement('div');
+        const typeClass = event.detail.type === 'success' ? 'bg-green-500' : 'bg-red-500';
+
+        notification.className = `p-4 rounded-lg text-white ${typeClass} shadow-lg animate-fade-in-up mb-2`;
+        notification.textContent = event.detail.message;
+
+        container.appendChild(notification);
+
+        setTimeout(() => {
+          notification.remove();
+        }, 5000);
+      });
+    });
+  </script>
 @endpush

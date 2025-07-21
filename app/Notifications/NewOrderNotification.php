@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
+// use Illuminate\Contracts\Queue\ShouldQueue; // Убираем, чтобы отправлять синхронно
 use Illuminate\Notifications\Messages\MailMessage;
 
 class NewOrderNotification extends Notification
