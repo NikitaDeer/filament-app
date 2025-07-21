@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Mail\NewOrderMail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\NotificationChannel;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
