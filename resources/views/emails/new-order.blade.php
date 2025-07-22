@@ -315,6 +315,29 @@
       font-weight: 600;
       color: #4b5563;
     }
+
+    .bg-purple-50 {
+      background-color: #faf5ff;
+    }
+
+    .border-purple-500 {
+      border-color: #9333ea;
+    }
+
+    .text-purple-700 {
+      color: #7e22ce;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 2px;
+      display: block;
+    }
+
+    .info-value {
+      color: #111827;
+    }
   </style>
 </head>
 
@@ -329,18 +352,18 @@
 
       <div class="mb-8">
         <h2 class="mb-4 border-b border-gray-200 pb-2 text-lg font-semibold text-gray-800">Информация о клиенте</h2>
-        <table class="info-table">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td>Имя:</td>
-            <td>{{ $order->name }}</td>
+            <td class="pb-3"><span class="info-label">Имя:</span><span class="info-value">{{ $order->name }}</span>
+            </td>
           </tr>
           <tr>
-            <td>Телефон:</td>
-            <td><a href="tel:{{ $order->phone }}" class="text-blue-600">{{ $order->phone }}</a></td>
+            <td class="pb-3"><span class="info-label">Телефон:</span><span class="info-value"><a
+                  href="tel:{{ $order->phone }}" class="text-blue-600">{{ $order->phone }}</a></span></td>
           </tr>
           <tr>
-            <td>Email:</td>
-            <td><a href="mailto:{{ $order->email }}" class="text-blue-600">{{ $order->email }}</a></td>
+            <td><span class="info-label">Email:</span><span class="info-value"><a href="mailto:{{ $order->email }}"
+                  class="text-blue-600">{{ $order->email }}</a></span></td>
           </tr>
         </table>
       </div>
@@ -348,27 +371,27 @@
       <div class="mb-8">
         <h2 class="mb-4 border-b border-gray-200 pb-2 text-lg font-semibold text-gray-800">Детали заказа</h2>
         <div class="rounded-md border-l-4 border-blue-500 bg-blue-50 p-4">
-          <table class="info-table">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
-              <td>Откуда:</td>
-              <td>{{ $order->from_address }}</td>
+              <td class="pb-3"><span class="info-label">Откуда:</span><span
+                  class="info-value">{{ $order->from_address }}</span></td>
             </tr>
             <tr>
-              <td>Куда:</td>
-              <td>{{ $order->to_address }}</td>
+              <td class="pb-3"><span class="info-label">Куда:</span><span
+                  class="info-value">{{ $order->to_address }}</span></td>
             </tr>
             <tr>
-              <td>Расстояние:</td>
-              <td>{{ number_format($order->distance, 2) }} км</td>
+              <td><span class="info-label">Расстояние:</span><span
+                  class="info-value">{{ number_format($order->distance, 2) }} км</span></td>
             </tr>
           </table>
         </div>
 
         <div class="mt-4 rounded-md border-l-4 border-green-500 bg-green-50 p-4">
-          <table class="info-table">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
-              <td>Стоимость:</td>
-              <td class="text-xl font-bold">{{ number_format($order->cost, 0, '.', ' ') }} руб.</td>
+              <td><span class="info-label">Стоимость:</span><span
+                  class="info-value text-xl font-bold">{{ number_format($order->cost, 0, '.', ' ') }} руб.</span></td>
             </tr>
           </table>
         </div>
@@ -377,13 +400,13 @@
       @if ($order->comment)
         <div class="mb-8">
           <h2 class="mb-4 border-b border-gray-200 pb-2 text-lg font-semibold text-gray-800">Комментарий клиента</h2>
-          <div class="mt-2 text-gray-700">
-            <p class="italic">{{ $order->comment }}</p>
+          <div class="rounded-md border-l-4 border-purple-500 bg-purple-50 p-4">
+            <p class="italic text-purple-700">{{ $order->comment }}</p>
           </div>
         </div>
       @endif
 
-      <div class="mt-6 text-center">
+      <div class="mt-10 text-center">
         <a href="{{ OrderResource::getUrl('edit', ['record' => $order]) }}" class="btn btn-primary">Просмотреть заказ в
           админ-панели</a>
       </div>
