@@ -16,8 +16,32 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:255'],
-            'email' => ['email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
+                'required', 
+                'string', 
+                'lowercase', 
+                'email', 
+                'max:255', 
+                Rule::unique(User::class)->ignore($this->user()->id)
+            ],
+            'telegram_id' => ['nullable', 'integer', 'min:1'],
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Имя обязательно для заполнения.',
+            'name.max' => 'Имя не должно превышать 255 символов.',
+            'email.required' => 'Email обязателен для заполнения.',
+            'email.email' => 'Введите корректный email адрес.',
+            'email.unique' => 'Пользователь с таким email уже существует.',
+            'telegram_id.integer' => 'Telegram ID должен быть числом.',
+            'telegram_id.min' => 'Telegram ID должен быть положительным числом.',
         ];
     }
 }

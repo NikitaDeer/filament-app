@@ -1,33 +1,51 @@
-import defaultTheme from 'tailwindcss/defaultTheme';
-import forms from '@tailwindcss/forms';
-import typography from '@tailwindcss/typography'
-import colors from 'tailwindcss/colors' 
+const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
 
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
+    darkMode: 'class',
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './app/Http/Livewire/**/*.php',
+        './app/Filament/**/*.php',
     ],
-    darkMode: 'class',
+
     theme: {
         extend: {
+            fontFamily: {
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
+            },
             colors: {
-                danger: colors.rose,
-                primary: colors.violet,
+                primary: colors.blue,
+                secondary: colors.gray,
+                accent: colors.teal,
+                neutral: colors.gray,
+                info: colors.sky,
                 success: colors.green,
                 warning: colors.yellow,
+                danger: colors.red,
+                // Светлая тема
+                'base-100': '#FFFFFF',
+                'base-content': '#1F2937',
+                // Темная тема
+                'dark-base-100': '#111827',
+                'dark-base-content': '#D1D5DB',
             },
-
-            fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            fontWeight: {
+                'extralight': 200,
+                'light': 300,
+                'normal': 400,
+                'medium': 500,
+                'semibold': 600,
+                'bold': 700,
             },
         },
     },
 
     plugins: [
-        forms, 
-        typography, 
-        ],
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/typography'),
+    ],
 };

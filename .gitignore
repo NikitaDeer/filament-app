@@ -44,3 +44,6 @@ public/mix-manifest.json
 
 ### Vite
 /public/build
+
+# YoYo AI version control directory
+.yoyo/

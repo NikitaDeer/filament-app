@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Цветовая палитра */
+@layer utilities {
+    .text-primary-500 {
+        color: #0ea5e9;
+    }
+    .bg-primary-500 {
+        background-color: #0ea5e9;
+    }
+    .text-primary-700 {
+        color: #0284c7;
+    }
+    .bg-primary-100 {
+        background-color: #f0f9ff;
+    }
+}
+
+
+.hidden {
+    display: none;
+}

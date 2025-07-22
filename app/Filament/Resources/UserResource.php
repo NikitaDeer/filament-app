@@ -19,55 +19,60 @@ use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\RelationManagers;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\NumberColumn;
+use Filament\Tables\Columns\IconColumn;
+use Spatie\Permission\Models\Role;
 
 class UserResource extends Resource
 {
   protected static ?string $model = User::class;
 
   protected static ?string $navigationIcon = 'heroicon-o-users';
-  protected static ?string $navigationGroup = 'Управление пользователями';
+  protected static ?string $navigationGroup = 'Управление авторизованными в системе пользователями';
 
   protected static ?string $navigationLabel = 'Пользователи';
 
+
+  
   public static function form(Form $form): Form
   {
     return $form
       ->schema([
         Card::make()
           ->schema([
-            TextInput::make('name')
-              ->required()
-              ->maxLength(255)
-              ->label('Имя'),
-            TextInput::make('email')
-              ->email()
-              ->required()
-              ->unique(ignoreRecord: true)
-              ->label('Email'),
-            TextInput::make('password')
-              ->password()
-              ->required(fn ($livewire) => $livewire instanceof Pages\CreateUser)
-              ->minLength(8)
-              ->label('Пароль')
-              ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-              ->visible(fn ($livewire) => $livewire instanceof Pages\CreateUser),
-            TextInput::make('email_verified_at')
-              ->disabled()
-              ->label('Дата подтверждения email')
-              ->formatStateUsing(fn ($state) => $state ? date('d.m.Y H:i', strtotime($state)) : 'Не подтвержден')
-              ->visible(fn ($livewire) => !($livewire instanceof Pages\CreateUser)),
+            Forms\Components\TextInput::make('name'),
+            Forms\Components\TextInput::make('email')
+                ->email()
+                ->required(),
+            Forms\Components\TextInput::make('password')
+                ->password()
+                ->required()
+                ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                ->dehydrated(fn ($state) => filled($state))
+                ->hiddenOn('edit'),
             Forms\Components\Select::make('current_tariff_id')
-              ->relationship('currentTariff', 'title')
-              ->label('Текущий тариф')
-              ->visible(fn ($livewire) => !($livewire instanceof Pages\CreateUser)),
+                ->relationship('currentTariff', 'title'),
             Forms\Components\Select::make('tariff_status')
-              ->options([
-                'active' => 'Активен',
-                'non-active' => 'Не активен',
-                'paused' => 'Приостановлен'
-              ])
-              ->label('Статус тарифа')
-              ->visible(fn ($livewire) => !($livewire instanceof Pages\CreateUser)),
+                ->options([
+                    'active' => 'Active',
+                    'expired' => 'Expired',
+                    'paused' => 'Paused'
+                ]),
+            
+            // Добавляем поле для выбора ролей
+            Forms\Components\Select::make('roles')
+                ->label('Роли')
+                ->multiple()
+                ->relationship('roles', 'name')
+                ->options(function () {
+                    return Role::all()->pluck('name', 'id')->toArray();
+                })
+                ->preload()
+                ->searchable()
+                ->helperText('Выберите роли для пользователя'),
           ])
       ]);
   }
@@ -76,73 +81,151 @@ class UserResource extends Resource
   {
     return $table
       ->columns([
-        TextColumn::make('name')
-          ->searchable()
-          ->sortable()
-          ->label('Имя'),
-        TextColumn::make('email')
-          ->searchable()
-          ->sortable()
-          ->label('Email'),
-        TextColumn::make('currentTariff.title')
-          ->label('Текущий тариф')
-          ->default('Нет тарифа'),
-        TextColumn::make('orders')
-          ->label('Срок тарифа')
-          ->formatStateUsing(function ($record) {
-            $activeOrder = $record->orders()
-              ->where('order_status', 'active')
-              ->latest()
-              ->first();
-            
-            if (!$activeOrder) {
-              return 'Нет активного тарифа';
-            }
+        Tables\Columns\TextColumn::make('email')
+        ->searchable(),
+        
+        // Добавляем колонку с ролями
+        Tables\Columns\BadgeColumn::make('roles')
+        ->label('Роли')
+        ->getStateUsing(function ($record) {
+            return $record->roles->pluck('name')->toArray();
+        })
+        ->colors([
+            'danger' => 'Admin',
+            'primary' => 'User',
+        ]),
+        
+        Tables\Columns\TextColumn::make('currentTariff.title')
+        ->label('Текущий тариф'),
+        
+        // Заменяем колонку tariff_status на динамическую колонку, основанную на реальном статусе подписки
+        Tables\Columns\BadgeColumn::make('subscription_status')
+        ->label('Статус подписки')
+        ->getStateUsing(function ($record) {
+            $subscriptionStatus = $record->getSubscriptionStatus();
 
-            return match ($activeOrder->duration) {
-              '1_month' => '1 месяц',
-              '3_months' => '3 месяца',
-              '12_months' => '12 месяцев',
-              default => 'Не указан'
-            };
-          }),
-        BadgeColumn::make('tariff_status')
-          ->label('Статус тарифа')
-          ->enum([
-            'active' => 'Активен',
-            'non-active' => 'Не активен',
-            'paused' => 'Приостановлен'
-          ])
-          ->colors([
+            
+            return $subscriptionStatus['status'];
+        })
+        ->colors([
             'success' => 'active',
-            'danger' => 'non-active',
-            'warning' => 'paused',
-          ]),
-        TextColumn::make('roles.name')
-          ->label('Роль')
-          ->formatStateUsing(fn (string $state): string => match ($state) {
-            'Admin' => 'Администратор',
-            'User' => 'Пользователь',
-            default => $state
-          }),
-        TextColumn::make('created_at')
-          ->dateTime('d.m.Y H:i')
-          ->label('Дата регистрации'),
+            'warning' => 'trial', 
+            'danger' => 'inactive'
+        ])
+        ->formatStateUsing(function ($state) {
+            return match($state) {
+                'active' => 'Активна',
+                'trial' => 'Пробный период',
+                'inactive' => 'Не активна',
+                default => 'Неизвестно'
+            };
+        }),
+        
+        // Добавляем колонку с датой окончания
+        Tables\Columns\TextColumn::make('subscription_end_date')
+        ->label('Окончание подписки')
+        ->getStateUsing(function ($record) {
+            $subscriptionStatus = $record->getSubscriptionStatus();
+            if (isset($subscriptionStatus['end_date'])) {
+                return $subscriptionStatus['end_date']->format('d.m.Y H:i');
+            }
+            return '-';
+        }),
       ])
       ->filters([
-        Tables\Filters\SelectFilter::make('tariff_status')
+        Tables\Filters\SelectFilter::make('subscription_status')
           ->options([
-            'active' => 'Активен',
-            'non-active' => 'Не активен',
-            'paused' => 'Приостановлен'
+            'active' => 'Активна',
+            'trial' => 'Пробный период',
+            'inactive' => 'Не активна'
           ])
-          ->label('Статус тарифа')
+          ->label('Статус подписки')
+          ->query(function (Builder $query, array $data): Builder {
+            if (!$data['value']) {
+                return $query;
+            }
+            
+            return $query->where(function ($query) use ($data) {
+                switch ($data['value']) {
+                    case 'active':
+                        $query->whereHas('subscriptions', function ($q) {
+                            $q->where('status', 'active')
+                              ->where('end_date', '>', now());
+                        });
+                        break;
+                    case 'trial':
+                        $query->where('trial_ends_at', '>', now());
+                        break;
+                    case 'inactive':
+                        $query->whereDoesntHave('subscriptions', function ($q) {
+                            $q->where('status', 'active')
+                              ->where('end_date', '>', now());
+                        })
+                        ->where(function ($q) {
+                            $q->whereNull('trial_ends_at')
+                              ->orWhere('trial_ends_at', '<=', now());
+                        });
+                        break;
+                }
+            });
+          }),
+          
+        // Добавляем фильтр по ролям
+        Tables\Filters\SelectFilter::make('roles')
+          ->label('Роль')
+          ->relationship('roles', 'name')
+          ->options(function () {
+              return Role::all()->pluck('name', 'name')->toArray();
+          }),
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
+        
+        // Добавляем быстрое действие для смены роли
+        Tables\Actions\Action::make('change_role')
+            ->label('Изменить роль')
+            ->icon('heroicon-o-shield-check')
+            ->form([
+                Select::make('role')
+                    ->label('Роль')
+                    ->options(function () {
+                        return Role::all()->pluck('name', 'name')->toArray();
+                    })
+                    ->required()
+                    ->default(function ($record) {
+                        return $record->roles->first()?->name;
+                    }),
+            ])
+            ->action(function (array $data, $record): void {
+                $record->syncRoles([$data['role']]);
+            })
+            ->requiresConfirmation()
+            ->modalHeading('Изменить роль пользователя')
+            ->modalSubheading('Вы уверены, что хотите изменить роль этого пользователя?'),
       ])
       ->bulkActions([
         Tables\Actions\DeleteBulkAction::make(),
+        
+        // Добавляем массовое действие для назначения роли
+        Tables\Actions\BulkAction::make('assign_role')
+            ->label('Назначить роль')
+            ->icon('heroicon-o-shield-check')
+            ->form([
+                Select::make('role')
+                    ->label('Роль')
+                    ->options(function () {
+                        return Role::all()->pluck('name', 'name')->toArray();
+                    })
+                    ->required(),
+            ])
+            ->action(function (array $data, $records): void {
+                foreach ($records as $record) {
+                    $record->syncRoles([$data['role']]);
+                }
+            })
+            ->requiresConfirmation()
+            ->modalHeading('Назначить роль выбранным пользователям')
+            ->modalSubheading('Вы уверены, что хотите назначить роль выбранным пользователям?'),
       ]);
   }
 

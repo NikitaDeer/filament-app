@@ -11,12 +11,9 @@ class MainController extends Controller
 {
   public function index()
   {
-    // $page = Page::latest()->first();
     $page = Page::where('is_published', 1)->latest()->first();
     $advantages = Advantage::where('is_published', 1)->get();
     $services = Service::where('is_published', 1)->get();
-    // $services = Service::all();
-    // $advantages = [];
 
     $tariffs = Tariff::where('is_published', 1)->get();
 

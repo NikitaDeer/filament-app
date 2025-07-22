@@ -23,7 +23,7 @@ class TariffResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
 
-    protected static ?string $navigationGroup = 'Управление услугами и заявками';
+    protected static ?string $navigationGroup = 'Управление подписками и тарифами';
 
     protected static ?string $navigationLabel = 'Предоставляемые тарифы';
 
@@ -33,18 +33,24 @@ class TariffResource extends Resource
             ->schema([
                 Section::make('Предоставляемый тариф')
                     ->schema([
-                        TextInput::make('title')
-                            ->label('Название тарифа')
-                            ->required(),
-                        Textarea::make('description')
-                            ->label('Описание'),
-                        TextInput::make('price')
-                            ->label('Базовая цена (месяц)')
-                            ->required()
-                            ->numeric()
-                            ->prefix('₽'),
-                        Toggle::make('is_published')
-                            ->label('Опубликовать'),
+                        Forms\Components\TextInput::make('title')
+                        ->required(),
+                    Forms\Components\Select::make('type')
+                        ->options([
+                            'trial' => 'Trial',
+                            'regular' => 'Regular'
+                        ])
+                        ->required(),
+                    Forms\Components\TextInput::make('duration_days')
+                        ->numeric()
+                        ->required(),
+                    Forms\Components\TextInput::make('price')
+                        ->numeric()
+                        ->prefix('RUB')
+                        ->required(),
+                    Forms\Components\TextInput::make('description'),
+                    Forms\Components\Toggle::make('is_renewable'),
+                    Forms\Components\Toggle::make('is_published')
                     ]),
             ]);
     }
@@ -53,21 +59,23 @@ class TariffResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')
+                Tables\Columns\TextColumn::make('title')
                     ->searchable()
-                    ->sortable()
                     ->label('Название'),
-                TextColumn::make('description')
-                    ->limit(25)
-                    ->label('Описание'),
-                TextColumn::make('price')
+                Tables\Columns\BadgeColumn::make('type')
+                    ->colors([
+                        'primary' => 'trial',
+                        'success' => 'regular'
+                    ])
+                    ->label('Тип'),
+                Tables\Columns\TextColumn::make('duration_days')
+                    ->label('Длительность'),
+                Tables\Columns\TextColumn::make('price')
                     ->money('RUB')
-                    ->label('Базовая цена за месяц'),
-                ToggleColumn::make('is_published')
-                    ->label('Опубликован'),
-                TextColumn::make('created_at')
-                    ->dateTime('d.m.Y H:i')
-                    ->label('Создан'),
+                    ->label('Цена'),
+                Tables\Columns\IconColumn::make('is_published')
+                    ->label('Опубликован')
+                    ->boolean(),
             ])
             ->filters([
                 //
@@ -79,14 +87,14 @@ class TariffResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -94,5 +102,5 @@ class TariffResource extends Resource
             'create' => Pages\CreateTariff::route('/create'),
             'edit' => Pages\EditTariff::route('/{record}/edit'),
         ];
-    }    
+    }
 }

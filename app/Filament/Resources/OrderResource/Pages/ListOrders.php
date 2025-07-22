@@ -3,17 +3,11 @@
 namespace App\Filament\Resources\OrderResource\Pages;
 
 use App\Filament\Resources\OrderResource;
-use Filament\Pages\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\Page;
 
-class ListOrders extends ListRecords
+class ListOrders extends Page
 {
     protected static string $resource = OrderResource::class;
 
-    protected function getActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+    protected static string $view = 'filament.resources.order-resource.pages.list-orders';
 }

@@ -27,7 +27,7 @@ class PageResource extends Resource
   protected static ?string $model = Page::class;
 
   protected static ?string $navigationIcon = 'heroicon-o-document-text';
-  protected static ?string $navigationGroup = 'Управление web-страницей';
+  protected static ?string $navigationGroup = 'Управление отображаемой информации на web-странице';
 
   protected static ?string $navigationLabel = 'Публикуемая информация';
 

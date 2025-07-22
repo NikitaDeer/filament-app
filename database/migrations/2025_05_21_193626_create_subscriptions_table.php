@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('subscriptions');
+        
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('tariff_id')->constrained()->cascadeOnDelete();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->enum('status', ['active', 'expired', 'pending'])->default('active');
+            $table->enum('status', ['active', 'expired', 'pending', 'cancelled'])->default('active');
             $table->decimal('final_price', 10, 2);
             $table->timestamps();
     

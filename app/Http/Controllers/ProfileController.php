@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
+use App\Models\AccessKey;
+use App\Models\Subscription;
+use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
 {
@@ -16,9 +22,58 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
+        $user = auth()->user();
+        
+        // Загружаем пользователя с нужными связями
+        $user->load([
+            'currentTariff',
+            'activeSubscription.tariff',
+            'activeAccessKey',
+            'subscriptions.tariff'
         ]);
+        
+        // Получаем активный ключ с проверкой
+        $accessKey = $user->activeAccessKey;
+        
+        // Получаем все подписки пользователя
+        $subscriptions = $user->subscriptions()
+            ->with('tariff')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Получаем статус подписки
+        $subscriptionStatus = $user->getSubscriptionStatus();
+    
+        return view('profile.edit', [
+            'user' => $user,
+            'accessKey' => $accessKey,
+            'subscriptions' => $subscriptions,
+            'subscriptionStatus' => $subscriptionStatus,
+        ]);
+    }
+
+    /**
+     * Validate current password via AJAX
+     */
+    public function validateCurrentPassword(Request $request)
+    {
+        try {
+            $request->validate([
+                'current_password' => ['required', 'string']
+            ]);
+
+            $isValid = Hash::check($request->current_password, $request->user()->password);
+
+            return response()->json([
+                'valid' => $isValid
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'valid' => false,
+                'error' => 'Произошла ошибка при проверке пароля'
+            ], 500);
+        }
     }
 
     /**
@@ -38,23 +93,163 @@ class ProfileController extends Controller
     }
 
     /**
+     * Update the user's password.
+     */
+    public function updatePassword(UpdatePasswordRequest $request): RedirectResponse
+    {
+        try {
+            $validated = $request->validated();
+            
+            // Дополнительная проверка текущего пароля
+            if (!Hash::check($validated['current_password'], $request->user()->password)) {
+                throw ValidationException::withMessages([
+                    'current_password' => ['Текущий пароль неверен.'],
+                ]);
+            }
+            
+            // Проверяем, что новый пароль отличается от текущего
+            if (Hash::check($validated['password'], $request->user()->password)) {
+                throw ValidationException::withMessages([
+                    'password' => ['Новый пароль должен отличаться от текущего.'],
+                ]);
+            }
+            
+            // Обновляем пароль
+            $request->user()->update([
+                'password' => Hash::make($validated['password']),
+            ]);
+            
+            // Логируем изменение пароля для безопасности
+            \Log::info('Password updated for user', [
+                'user_id' => $request->user()->id,
+                'email' => $request->user()->email,
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+
+            return back()->with('status', 'password-updated');
+            
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            \Log::error('Error updating password: ' . $e->getMessage(), [
+                'user_id' => $request->user()?->id,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return back()->withErrors(['password' => 'Произошла ошибка при обновлении пароля.']);
+        }
+    }
+
+    /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request)
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        try {
+            // Валидация пароля с правильным именем поля
+            $request->validateWithBag('userDeletion', [
+                'password' => ['required', 'current_password'],
+            ]);
+    
+            $user = $request->user();
+    
+            // Начинаем транзакцию для безопасности
+            \DB::beginTransaction();
+    
+            try {
+                // Деактивируем подписки
+                if ($user->subscriptions()->exists()) {
+                    $user->subscriptions()->update([
+                        'status' => 'cancelled',
+                        'end_date' => now(),
+                    ]);
+                }
+                
+                // Деактивируем ключи доступа
+                if ($user->accessKeys()->exists()) {
+                    $user->accessKeys()->update([
+                        'is_active' => false,
+                    ]);
+                }
+    
+                // Деактивируем заказы если есть
+                if (method_exists($user, 'orders') && $user->orders()->exists()) {
+                    $user->orders()->update([
+                        'status' => 'cancelled'
+                    ]);
+                }
+    
+                // Логируем удаление аккаунта
+                \Log::info('User account deleted', [
+                    'user_id' => $user->id,
+                    'email' => $user->email,
+                    'ip' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'timestamp' => now(),
+                ]);
+    
+                // Выходим из системы
+                Auth::logout();
+                
+                // Удаляем пользователя
+                $user->delete();
+    
+                // Подтверждаем транзакцию
+                \DB::commit();
+    
+                // Инвалидируем сессию
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+    
+                // Если это AJAX запрос, возвращаем JSON
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Аккаунт успешно удален',
+                        'redirect' => '/'
+                    ]);
+                }
+    
+                return Redirect::to('/')->with('status', 'account-deleted');
+    
+            } catch (\Exception $e) {
+                // Откатываем транзакцию при ошибке
+                \DB::rollBack();
+                throw $e;
+            }
+    
+        } catch (ValidationException $e) {
+            // Если это AJAX запрос, возвращаем JSON с ошибками валидации
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $e->errors()
+                ], 422);
+            }
+    
+            // Для обычных запросов возвращаем назад с ошибками
+            return back()->withErrors($e->errors(), 'userDeletion');
+            
+        } catch (\Exception $e) {
+            // Логируем ошибку с полной информацией
+            \Log::error('Error deleting user account', [
+                'user_id' => $request->user()?->id,
+                'email' => $request->user()?->email,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+    
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Произошла ошибка при удалении аккаунта. Попробуйте позже.'
+                ], 500);
+            }
+    
+            return back()->withErrors(['password' => 'Произошла ошибка при удалении аккаунта.'], 'userDeletion');
+        }
     }
 }

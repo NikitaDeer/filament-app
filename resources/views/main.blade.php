@@ -6,6 +6,9 @@
   {{-- start info section --}}
   <x-site.info :$page />
 
+  {{-- map section --}}
+  @livewire('yandex-map-calculator')
+
   {{-- main section --}}
   <x-site.main :$page />
   <x-site.service :$services :$tariffs />
