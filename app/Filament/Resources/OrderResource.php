@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
@@ -59,10 +60,18 @@ class OrderResource extends Resource
       ]);
   }
 
+  public static function getRelations(): array
+  {
+    return [
+      //
+    ];
+  }
+
   public static function getPages(): array
   {
     return [
-      'index' => Pages\ManageOrders::route('/'),
+      'index' => Pages\ListOrders::route('/'),
+      'edit' => Pages\EditOrder::route('/{record}/edit'),
     ];
   }
 }
