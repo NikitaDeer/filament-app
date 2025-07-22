@@ -150,7 +150,7 @@
         </section>
 
         <!-- Section: How to Customize -->
-        <section>
+        <section class="mb-12">
             <h2 class="text-3xl font-semibold mb-6">How to Customize</h2>
             <div class="bg-gray-50 dark:bg-neutral-800 p-6 rounded-lg prose prose-lg max-w-none dark:prose-invert">
                 <p>
@@ -177,6 +177,298 @@
                 <p>
                     Например, чтобы изменить основной цвет на фиолетовый, вы можете заменить <code>primary: colors.blue</code> на <code>primary: colors.violet</code>.
                 </p>
+            </div>
+        </section>
+
+        <!-- Section: Tailwind Default Colors -->
+        <section>
+            <h2 class="text-3xl font-semibold mb-6">Tailwind Default Colors</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Slate</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-slate-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-slate-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-slate-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-slate-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-slate-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-slate-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-slate-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-slate-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-slate-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-slate-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Gray</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-gray-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-gray-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-gray-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-gray-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-gray-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-gray-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-gray-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-gray-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-gray-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-gray-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Red</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-red-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-red-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-red-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-red-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-red-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-red-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-red-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-red-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-red-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-red-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Orange</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-orange-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-orange-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-orange-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-orange-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-orange-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-orange-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-orange-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-orange-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-orange-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-orange-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Amber</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-amber-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-amber-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-amber-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-amber-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-amber-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-amber-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-amber-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-amber-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-amber-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-amber-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Yellow</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-yellow-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-yellow-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-yellow-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-yellow-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-yellow-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-yellow-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-yellow-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-yellow-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-yellow-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-yellow-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Lime</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-lime-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-lime-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-lime-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-lime-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-lime-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-lime-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-lime-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-lime-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-lime-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-lime-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Green</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-green-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-green-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-green-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-green-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-green-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-green-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-green-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-green-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-green-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-green-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Emerald</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-emerald-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-emerald-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-emerald-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-emerald-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-emerald-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-emerald-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-emerald-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-emerald-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-emerald-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-emerald-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Teal</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-teal-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-teal-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-teal-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-teal-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-teal-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-teal-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-teal-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-teal-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-teal-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-teal-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Cyan</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-cyan-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-cyan-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-cyan-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-cyan-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-cyan-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-cyan-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-cyan-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-cyan-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-cyan-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-cyan-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Sky</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-sky-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-sky-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-sky-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-sky-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-sky-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-sky-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-sky-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-sky-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-sky-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-sky-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Blue</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-blue-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-blue-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-blue-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-blue-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-blue-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-blue-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-blue-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-blue-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-blue-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-blue-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Indigo</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-indigo-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-indigo-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-indigo-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-indigo-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-indigo-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-indigo-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-indigo-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-indigo-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-indigo-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-indigo-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Violet</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-violet-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-violet-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-violet-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-violet-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-violet-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-violet-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-violet-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-violet-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-violet-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-violet-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Purple</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-purple-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-purple-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-purple-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-purple-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-purple-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-purple-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-purple-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-purple-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-purple-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-purple-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Fuchsia</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-fuchsia-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-fuchsia-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-fuchsia-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-fuchsia-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-fuchsia-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-fuchsia-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-fuchsia-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-fuchsia-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-fuchsia-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-fuchsia-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Pink</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-pink-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-pink-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-pink-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-pink-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-pink-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-pink-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-pink-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-pink-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-pink-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-pink-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 capitalize">Rose</h3>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-rose-50 mb-1"></div><p class="text-xs opacity-80">50</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-rose-100 mb-1"></div><p class="text-xs opacity-80">100</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-rose-200 mb-1"></div><p class="text-xs opacity-80">200</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-rose-300 mb-1"></div><p class="text-xs opacity-80">300</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-rose-400 mb-1"></div><p class="text-xs opacity-80">400</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-rose-500 mb-1"></div><p class="text-xs opacity-80">500</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-rose-600 mb-1"></div><p class="text-xs opacity-80">600</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-rose-700 mb-1"></div><p class="text-xs opacity-80">700</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-rose-800 mb-1"></div><p class="text-xs opacity-80">800</p></div>
+                        <div class="text-center"><div class="w-full h-12 rounded-lg bg-rose-900 mb-1"></div><p class="text-xs opacity-80">900</p></div>
+                    </div>
+                </div>
             </div>
         </section>
 
