@@ -129,6 +129,7 @@ class YandexMapCalculator extends Component
       Log::info('New order notification sent to: ' . $emailTo, ['order_id' => $order->id]);
 
       $this->orderSubmittedSuccessfully = true;
+      $this->reset('name', 'phone', 'email', 'comment');
       $this->showError = false;
 
     } catch (\Exception $e) {
