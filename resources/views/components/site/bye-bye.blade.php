@@ -1,18 +1,18 @@
-<section class="bg-gradient-to-t from-white via-cyan-50 to-white">
+<section class="bg-gray-50 dark:bg-neutral-900">
   <div class="mx-auto max-w-screen-xl py-12 px-6 sm:py-16 lg:px-8">
     <div class="mx-auto max-w-screen-md text-center">
       <!-- Заголовок -->
-      <h2 class="mb-4 text-4xl font-extrabold leading-tight text-cyan-600">
+      <h2 class="mb-4 text-4xl font-extrabold leading-tight text-primary-600 dark:text-primary-400">
         Остались вопросы?
       </h2>
 
       <!-- Описание -->
-      <p class="mb-8 text-lg font-light text-gray-700">
+      <p class="mb-8 text-lg font-light text-gray-700 dark:text-gray-300">
         Если у вас есть вопросы, мы готовы помочь! Напишите в нашу техподдержку через Telegram, и мы быстро решим любую проблему!
       </p>
 
       <!-- Кнопка -->
-      <a href="#" target="_blank" class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 px-6 py-3 text-base font-medium text-white shadow-lg hover:from-cyan-500 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2">
+      <a href="#" target="_blank" class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-primary-500 to-blue-500 px-6 py-3 text-base font-medium text-white shadow-lg hover:from-primary-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 5.572a10.028 10.028 0 00-12.857 0 10.026 10.026 0 000 14.142 10.026 10.026 0 0014.142 0 10.026 10.026 0 000-14.142zM12 10.5l3.5 2.5-1-4.5 3.5-3-4.5-.5-2-4.5-2 4.5-4.5.5 3 3-1 4.5 3.5-2.5z" />
         </svg>
@@ -21,35 +21,3 @@
     </div>
   </div>
 </section>
-
-
-<!-- <section class="bg-slate-800">
-  <div class="mx-auto max-w-screen-xl py-8 px-10 sm:py-16 lg:px-6">
-    <div class="mx-auto max-w-screen-sm text-center">
-      <h2 class="mb-4 text-4xl font-extrabold leading-tight text-violet-200">Остались вопросы?</h2>
-      <p class="mb-6 font-light text-violet-200 md:text-lg">Если у вас остались вопросы, не стесняйтесь обращаться в нашу техподдержку через Telegram. Мы всегда на связи!</p>
-
-      <a href="https://t.me/your_support_channel" target="_blank" class="mr-2 mb-2 flex items-center justify-center rounded-lg bg-violet-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-700">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 5.572a10.028 10.028 0 00-12.857 0 10.026 10.026 0 000 14.142 10.026 10.026 0 0014.142 0 10.026 10.026 0 000-14.142zM12 10.5l3.5 2.5-1-4.5 3.5-3-4.5-.5-2-4.5-2 4.5-4.5.5 3 3-1 4.5 3.5-2.5z" />
-        </svg>
-        Написать в техподдержку
-      </a>
-    </div>
-  </div>
-</section> -->
-
-
-<!-- <section class="bg-gray-800">
-  <div class="mx-auto max-w-screen-xl py-8 px-10 sm:py-16 lg:px-6">
-    <div class="mx-auto max-w-screen-sm text-center">
-      <h2 class="mb-4 text-4xl font-extrabold leading-tight text-violet-200">Мы Вам позвоним!
-      </h2>
-      <p class="mb-6 font-light text-violet-200 md:text-lg">После того как вы оставите номер телефона, мы обязательно
-        позвоним.</p>
-
-      <a href="#"
-        class="mr-2 mb-2 rounded-lg bg-violet-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-700">Консультация</a>
-    </div>
-  </div>
-</section> -->

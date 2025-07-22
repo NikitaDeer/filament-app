@@ -131,4 +131,8 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::get('/style-guide', function () {
+    return view('style-guide');
+})->name('style-guide');
+
 require __DIR__ . '/auth.php';

@@ -3,18 +3,18 @@
     {{-- Левая колонка с формами --}}
     <div class="space-y-6 md:col-span-2" id="form-container">
       {{-- Форма калькулятора --}}
-      <div class="rounded-lg bg-white p-6 shadow-md">
+      <div class="rounded-lg bg-gray-50 dark:bg-neutral-800 p-6 shadow-md">
         <h2 class="mb-4 text-xl font-semibold">Калькулятор стоимости</h2>
         <div class="space-y-4">
           <input wire:model.debounce.500ms="from" type="text" id="from" placeholder="Откуда"
-            class="w-full rounded-md border px-4 py-2">
+            class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500">
           <input wire:model.debounce.500ms="to" type="text" id="to" placeholder="Куда"
-            class="w-full rounded-md border px-4 py-2">
+            class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500">
           <button wire:click="calculate"
-            class="w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Рассчитать</button>
+            class="w-full rounded-md bg-primary-500 px-4 py-2 text-white hover:bg-primary-600">Рассчитать</button>
         </div>
         @if ($distance)
-          <div class="mt-4 text-gray-700">
+          <div class="mt-4">
             <p><strong>Расстояние:</strong> {{ number_format($distance, 2) }} км.</p>
             <p><strong>Примерная стоимость:</strong> {{ number_format($cost) }} руб.</p>
           </div>
@@ -23,7 +23,7 @@
 
       {{-- Форма заказа --}}
       @if ($distance)
-        <div class="rounded-lg bg-white p-6 shadow-md">
+        <div class="rounded-lg bg-gray-50 dark:bg-neutral-800 p-6 shadow-md">
           <h2 class="mb-4 text-xl font-semibold">Оформить заявку</h2>
           <div class="relative">
             @if ($orderSubmittedSuccessfully)
@@ -37,7 +37,7 @@
                 <h3 class="mb-2 text-2xl font-bold">Заявка успешно отправлена!</h3>
                 <p class="mb-4">Мы скоро с вами свяжемся.</p>
                 <button wire:click="newOrder"
-                  class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600">
+                  class="rounded bg-primary-500 px-4 py-2 font-bold text-white hover:bg-primary-600">
                   Оформить новую заявку
                 </button>
               </div>
@@ -53,30 +53,30 @@
                   <input type="text" wire:model.defer="cost" readonly>
                 </div>
 
-                <input type="text" wire:model.defer="name" class="w-full rounded-md border px-4 py-2"
+                <input type="text" wire:model.defer="name" class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500"
                   placeholder="Ваше имя*" required>
                 @error('name')
-                  <span class="text-sm text-red-500">{{ $message }}</span>
+                  <span class="text-sm text-danger-500">{{ $message }}</span>
                 @enderror
 
-                <input type="tel" wire:model.defer="phone" class="w-full rounded-md border px-4 py-2"
+                <input type="tel" wire:model.defer="phone" class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500"
                   placeholder="Ваш телефон*" required>
                 @error('phone')
-                  <span class="text-sm text-red-500">{{ $message }}</span>
+                  <span class="text-sm text-danger-500">{{ $message }}</span>
                 @enderror
 
-                <input type="email" wire:model.defer="email" class="w-full rounded-md border px-4 py-2"
+                <input type="email" wire:model.defer="email" class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500"
                   placeholder="Ваш email*" required>
                 @error('email')
-                  <span class="text-sm text-red-500">{{ $message }}</span>
+                  <span class="text-sm text-danger-500">{{ $message }}</span>
                 @enderror
 
-                <textarea wire:model.defer="comment" class="w-full rounded-md border px-4 py-2 md:col-span-2" placeholder="Комментарий"></textarea>
+                <textarea wire:model.defer="comment" class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 md:col-span-2 focus:ring-primary-500 focus:border-primary-500" placeholder="Комментарий"></textarea>
                 @error('comment')
-                  <span class="text-sm text-red-500 md:col-span-2">{{ $message }}</span>
+                  <span class="text-sm text-danger-500 md:col-span-2">{{ $message }}</span>
                 @enderror
               </div>
-              <button type="submit" class="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              <button type="submit" class="mt-4 w-full rounded-md bg-primary-500 px-4 py-2 text-white hover:bg-primary-600"
                 wire:loading.attr="disabled">
                 <span wire:loading.remove>Оформить заказ</span>
                 <span wire:loading>Отправка...</span>
@@ -85,10 +85,10 @@
 
             @if ($showError)
               <div
-                class="mt-4 flex items-center justify-between rounded border border-red-400 bg-red-100 p-4 text-red-700">
+                class="mt-4 flex items-center justify-between rounded border border-danger-400 bg-danger-100 p-4 text-danger-700">
                 <span>Не удалось отправить заявку. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.</span>
                 <button wire:click="resetForm"
-                  class="rounded bg-red-500 px-3 py-1 font-bold text-white hover:bg-red-600">
+                  class="rounded bg-danger-500 px-3 py-1 font-bold text-white hover:bg-danger-600">
                   Попробовать снова
                 </button>
               </div>
