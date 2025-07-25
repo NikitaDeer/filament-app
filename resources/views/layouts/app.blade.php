@@ -16,6 +16,7 @@
 
   <!-- Scripts -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @livewireStyles
 
   <script>
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -62,14 +63,7 @@
       @include('components.site.footer')
     </main>
   </div>
-
-  <script>
-    document.getElementById('mobile-menu-button').addEventListener('click', function() {
-      const mobileMenu = document.getElementById('mobile-menu');
-      mobileMenu.classList.toggle('hidden');
-    });
-  </script>
-
+  @livewireScripts
   <script>
     var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
     var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
@@ -113,7 +107,7 @@
 
     });
   </script>
-
+  @stack('scripts')
 </body>
 
 </html>
