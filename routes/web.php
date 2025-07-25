@@ -82,7 +82,9 @@ Route::get('/test-encryption', function () {
   }
 })->name('test.encryption');
 
-Route::get('/', [MainController::class, 'index'])->name('main.index');
+Route::get('/', function () {
+    return view('home');
+})->name('home');
 
 Route::get('/dashboard', function () {
   return view('dashboard');
