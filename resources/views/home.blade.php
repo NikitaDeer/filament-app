@@ -24,9 +24,6 @@
             <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-primary-400"></i>Поддержка 24/7</li>
           </ul>
         </div>
-        <div>
-          @livewire('yandex-map-calculator')
-        </div>
       </div>
     </div>
   </section>
