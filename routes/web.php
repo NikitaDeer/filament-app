@@ -83,8 +83,28 @@ Route::get('/test-encryption', function () {
 })->name('test.encryption');
 
 Route::get('/', function () {
-    return view('home');
+  return view('home');
 })->name('home');
+
+Route::get('/about', function () {
+  return view('about');
+})->name('about');
+
+Route::get('/pricing', function () {
+  return view('pricing');
+})->name('pricing');
+
+Route::get('/calculator', function () {
+  return view('calculator');
+})->name('calculator');
+
+Route::get('/reviews', function () {
+  return view('reviews');
+})->name('reviews');
+
+Route::get('/contact', function () {
+  return view('contact');
+})->name('contact');
 
 Route::get('/services', [MainController::class, 'index'])->name('services');
 
@@ -136,7 +156,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/style-guide', function () {
-    return view('style-guide');
+  return view('style-guide');
 })->name('style-guide');
 
 require __DIR__ . '/auth.php';

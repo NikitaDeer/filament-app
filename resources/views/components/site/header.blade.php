@@ -11,19 +11,25 @@
       <div class="hidden lg:block">
         <ul class="flex space-x-6">
           <li>
-            <a href="/" class="hover:text-primary-500">Главная</a>
+            <a href="{{ route('home') }}" class="hover:text-primary-500">Главная</a>
           </li>
           <li>
-            <a href="/services" class="hover:text-primary-500">Услуги</a>
+            <a href="{{ route('services') }}" class="hover:text-primary-500">Услуги</a>
           </li>
           <li>
-            <a href="#" class="hover:text-primary-500">О компании</a>
+            <a href="{{ route('about') }}" class="hover:text-primary-500">О компании</a>
           </li>
           <li>
-            <a href="#" class="hover:text-primary-500">Отзывы</a>
+            <a href="{{ route('pricing') }}" class="hover:text-primary-500">Цены</a>
           </li>
           <li>
-            <a href="#" class="hover:text-primary-500">Контакты</a>
+            <a href="{{ route('calculator') }}" class="hover:text-primary-500">Калькулятор</a>
+          </li>
+          <li>
+            <a href="{{ route('reviews') }}" class="hover:text-primary-500">Отзывы</a>
+          </li>
+          <li>
+            <a href="{{ route('contact') }}" class="hover:text-primary-500">Контакты</a>
           </li>
         </ul>
       </div>
