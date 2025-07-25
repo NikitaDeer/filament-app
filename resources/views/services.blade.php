@@ -1,7 +1,4 @@
-<x-main-layout>
-  {{-- Header --}}
-  <x-site.header />
-
+<x-app-layout>
   {{-- Hero Section --}}
   <section class="bg-base-100 py-16 dark:bg-dark-base-100 sm:py-24">
     <div class="container mx-auto px-4 text-center sm:px-6 lg:px-8">
@@ -63,7 +60,7 @@
             </div>
 
             <!-- Кнопка -->
-            <a href="#calculator"
+            <a href="{{ route('calculator') }}"
               class="inline-block w-full rounded-lg bg-gradient-to-r from-primary-500 to-blue-500 px-6 py-3 text-center font-semibold text-white transition-all duration-300 hover:from-primary-600 hover:to-blue-600">
               Рассчитать стоимость
             </a>
@@ -80,6 +77,13 @@
     </div>
   </section>
 
-  {{-- Footer --}}
-  <x-site.footer />
-</x-main-layout>
+  {{-- Calculator Section --}}
+  <section class="py-16 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 text-center">
+        <h2 class="text-3xl font-bold sm:text-4xl">Рассчитайте стоимость</h2>
+      </div>
+      @livewire('yandex-map-calculator')
+    </div>
+  </section>
+</x-app-layout>

@@ -1,18 +1,32 @@
 <x-app-layout>
-  {{-- Hero Section --}}
-  <section class="bg-base-100 py-20 dark:bg-dark-base-100">
-    <div class="container mx-auto px-4 text-center">
-      <h1 class="text-4xl font-bold text-gray-800 dark:text-white sm:text-5xl lg:text-6xl">
-        Надежные грузоперевозки по Санкт-Петербургу и ЛО
-      </h1>
-      <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-300">
-        Быстрый расчет стоимости, онлайн-заказ и отслеживание вашего груза в реальном времени.
-      </p>
-      <div class="mt-10">
-        <a href="{{ route('calculator') }}"
-          class="btn rounded-lg bg-primary-500 px-8 py-3 text-lg font-medium text-white transition-colors hover:bg-primary-600">
-          Рассчитать стоимость
-        </a>
+  {{-- Hero Section with Calculator --}}
+  <section class="relative bg-gray-800 py-20 text-white">
+    <div class="absolute inset-0">
+      <img
+        src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80"
+        alt="Грузоперевозки" class="h-full w-full object-cover opacity-40">
+    </div>
+    <div class="container relative mx-auto px-4">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div class="prose prose-lg text-white">
+          <h1 class="text-4xl font-bold text-white sm:text-5xl">Ваш надежный партнер в области грузоперевозок</h1>
+          <p class="mt-4">
+            Swift Logistics предлагает надежные и эффективные услуги по перевозке грузов с учетом ваших потребностей. От
+            местных доставок до международных перевозок, мы гарантируем, что ваш груз прибудет в целости и сохранности.
+          </p>
+          <ul class="mt-6 list-none space-y-2 p-0">
+            <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-primary-400"></i>Собственный автопарк
+            </li>
+            <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-primary-400"></i>Страхование грузов
+            </li>
+            <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-primary-400"></i>Отслеживание в
+              реальном времени</li>
+            <li class="flex items-center"><i class="fas fa-check-circle mr-2 text-primary-400"></i>Поддержка 24/7</li>
+          </ul>
+        </div>
+        <div>
+          @livewire('yandex-map-calculator')
+        </div>
       </div>
     </div>
   </section>
