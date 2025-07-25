@@ -1,8 +1,8 @@
-<header class="bg-base-100 dark:bg-dark-base-100 shadow-md">
+<header class="bg-base-100 shadow-md dark:bg-dark-base-100">
   <nav class="container mx-auto px-4 py-4 lg:px-6">
     <div class="flex items-center justify-between">
       <!-- Логотип -->
-      <a href="/" class="text-primary-500 text-2xl font-bold">Okolo</a>
+      <a href="/" class="text-2xl font-bold text-primary-500">Okolo</a>
 
       <!-- Мобильное меню -->
       <x-site.hamburger />
@@ -11,13 +11,16 @@
       <div class="hidden lg:block">
         <ul class="flex space-x-6">
           <li>
-            <a href="#" class="hover:text-primary-500">Главная</a>
+            <a href="/" class="hover:text-primary-500">Главная</a>
           </li>
           <li>
-            <a href="#" class="hover:text-primary-500">Тарифы</a>
+            <a href="/services" class="hover:text-primary-500">Услуги</a>
           </li>
           <li>
-            <a href="#" class="hover:text-primary-500">О нас</a>
+            <a href="#" class="hover:text-primary-500">О компании</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-primary-500">Отзывы</a>
           </li>
           <li>
             <a href="#" class="hover:text-primary-500">Контакты</a>
@@ -29,7 +32,8 @@
       <div class="flex items-center space-x-4">
         @guest
           <a href="{{ route('login') }}" class="hover:text-primary-500">Войти</a>
-          <a href="{{ route('register') }}" class="bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600">Регистрация</a>
+          <a href="{{ route('register') }}"
+            class="rounded bg-primary-500 px-4 py-2 text-white hover:bg-primary-600">Регистрация</a>
         @endguest
 
         @auth

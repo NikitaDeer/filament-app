@@ -86,6 +86,8 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('/services', [MainController::class, 'index'])->name('services');
+
 Route::get('/dashboard', function () {
   return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -108,7 +110,7 @@ Route::middleware('auth')->group(function () {
   // resource routes
   Route::resources(
     [
-      'orders' => App\Http\Controllers\OrderController::class,
+      // 'orders' => App\Http\Controllers\OrderController::class,
     ]
   );
 

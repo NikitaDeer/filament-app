@@ -17,6 +17,6 @@ class MainController extends Controller
 
     $tariffs = Tariff::where('is_published', 1)->get();
 
-    return view('main', compact('page', 'advantages', 'services', 'tariffs'));
+    return view('services', compact('page', 'advantages', 'services', 'tariffs'));
   }
 }
