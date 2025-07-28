@@ -79,7 +79,9 @@ class ServiceResource extends Resource
   public static function getPages(): array
   {
     return [
-      'index' => Pages\ManageServices::route('/'),
+      'index' => Pages\ListServices::route('/'),
+      'create' => Pages\CreateService::route('/create'),
+      'edit' => Pages\EditService::route('/{record}/edit'),
     ];
   }
 }
