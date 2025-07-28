@@ -42,7 +42,7 @@ class ServiceResource extends Resource
           ->label('Особенности услуги')
           ->keyLabel('ID')
           ->valueLabel('Текст особенности')
-          ->addActionLabel('Добавить особенность')
+          ->addButtonLabel('Добавить особенность')
           ->columnSpan('full'),
         Forms\Components\Toggle::make('is_published')
           ->label('Опубликовано')
