@@ -47,6 +47,9 @@ class ServiceResource extends Resource
         Forms\Components\Toggle::make('is_published')
           ->label('Опубликовано')
           ->default(true),
+        Forms\Components\Toggle::make('is_popular')
+          ->label('Популярная услуга')
+          ->default(false),
       ]);
   }
 
@@ -57,6 +60,7 @@ class ServiceResource extends Resource
         Tables\Columns\TextColumn::make('name')->label('Название')->searchable(),
         Tables\Columns\TextColumn::make('price')->label('Цена'),
         Tables\Columns\IconColumn::make('is_published')->boolean()->label('Опубликовано'),
+        Tables\Columns\IconColumn::make('is_popular')->boolean()->label('Популярная'),
       ])
       ->filters([
         //

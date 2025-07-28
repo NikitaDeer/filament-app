@@ -171,7 +171,7 @@
         </p>
       </div>
       @php
-        $services = \App\Models\Service::where('is_published', true)->get();
+        $services = \App\Models\Service::where('is_published', true)->latest()->take(3)->get();
       @endphp
       <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         @foreach ($services as $service)
@@ -180,22 +180,27 @@
             <div class="flex items-start justify-between">
               <div>
                 <h3 class="text-xl font-bold text-gray-800 dark:text-white">{{ $service->name }}</h3>
-                <p class="mt-1 text-gray-500 dark:text-gray-400">{{ $service->price }}</p>
+                <p class="mt-1 text-gray-500 dark:text-gray-400">от {{ $service->price }} ₽</p>
               </div>
               <div class="rounded-lg bg-blue-100 p-2 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
                 </svg>
               </div>
             </div>
             <p class="mt-4 text-gray-600 dark:text-gray-300">{{ $service->description }}</p>
             <ul class="mt-4 space-y-2">
               @if (is_array($service->features))
-                @foreach ($service->features as $feature)
+                @foreach (array_slice($service->features, 0, 3) as $feature)
                   <li class="flex items-center text-gray-600 dark:text-gray-300">
-                    <span class="mr-3 h-2 w-2 rounded-full bg-blue-500"></span>
-                    {{ $feature }}
+                    <svg class="mr-2 h-5 w-5 flex-shrink-0 text-green-500" fill="none" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                      </path>
+                    </svg>
+                    <span>{{ $feature }}</span>
                   </li>
                 @endforeach
               @endif
@@ -204,8 +209,8 @@
         @endforeach
       </div>
       <div class="mt-12 text-center">
-        <a href="#"
-          class="inline-flex items-center font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500">
+        <a href="{{ route('services.index') }}"
+          class="inline-flex items-center rounded-full border border-blue-600 px-6 py-3 font-semibold text-blue-600 transition-colors hover:text-blue-700 dark:border-blue-400 dark:text-blue-400 dark:hover:text-blue-500">
           Все услуги
           <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg">
