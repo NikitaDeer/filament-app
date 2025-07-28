@@ -1,186 +1,68 @@
-<footer class="bg-gray-50 dark:bg-neutral-900 border-t border-gray-200 dark:border-neutral-800">
-  <div class="mx-auto max-w-screen-xl px-6 lg:px-16">
-    <!-- Main Footer Content -->
-    <div class="py-12 lg:py-16">
-      <div class="grid grid-cols-1 gap-8 lg:grid-cols-4">
-        
-        <!-- Company Info -->
-        <div class="lg:col-span-2">
-          <div class="mb-6">
-            <h3 class="text-2xl font-bold text-primary-800 dark:text-primary-200 mb-4">Okolo™</h3>
-            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-              Безопасный и надежный сервис для управления доступом к вашим ресурсам. 
-              Мы обеспечиваем высочайший уровень защиты данных с использованием современных 
-              технологий шифрования.
-            </p>
+<footer class="border-t bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+  <div class="container mx-auto px-6 py-12">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+      <!-- Company Info -->
+      <div>
+        <div class="flex items-center">
+          <div class="rounded-lg bg-blue-600 p-2 text-white">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+              </path>
+            </svg>
           </div>
-          
-          <!-- Features -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <div class="flex items-center">
-              <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mr-3">
-                <i class="fas fa-shield text-primary-600 dark:text-primary-400 text-sm"></i>
-              </div>
-              <span class="text-sm text-gray-700 dark:text-gray-300">256-битное шифрование</span>
-            </div>
-            <div class="flex items-center">
-              <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mr-3">
-                <i class="fas fa-clock text-primary-600 dark:text-primary-400 text-sm"></i>
-              </div>
-              <span class="text-sm text-gray-700 dark:text-gray-300">24/7 поддержка</span>
-            </div>
-            <div class="flex items-center">
-              <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mr-3">
-                <i class="fas fa-users text-primary-600 dark:text-primary-400 text-sm"></i>
-              </div>
-              <span class="text-sm text-gray-700 dark:text-gray-300">Многопользовательский доступ</span>
-            </div>
-            <div class="flex items-center">
-              <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mr-3">
-                <i class="fas fa-chart-line text-primary-600 dark:text-primary-400 text-sm"></i>
-              </div>
-              <span class="text-sm text-gray-700 dark:text-gray-300">Аналитика использования</span>
-            </div>
-          </div>
+          <h1 class="ml-3 text-xl font-bold text-gray-800 dark:text-white">СПБ Карго</h1>
         </div>
-
-        <!-- Navigation Links -->
-        <div>
-          <h4 class="text-lg font-semibold text-primary-800 dark:text-primary-200 mb-4">Навигация</h4>
-          <ul class="space-y-3">
-            <li>
-              <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center">
-                <i class="fas fa-home mr-2 text-sm"></i>
-                Главная
-              </a>
-            </li>
-            <li>
-              <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center">
-                <i class="fas fa-info-circle mr-2 text-sm"></i>
-                О нас
-              </a>
-            </li>
-            <li>
-              <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center">
-                <i class="fas fa-dollar-sign mr-2 text-sm"></i>
-                Тарифы
-              </a>
-            </li>
-            <li>
-              <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center">
-                <i class="fas fa-headset mr-2 text-sm"></i>
-                Поддержка
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('profile.edit') }}" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center">
-                <i class="fas fa-user mr-2 text-sm"></i>
-                Личный кабинет
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Support & Contact -->
-        <div>
-          <h4 class="text-lg font-semibold text-primary-800 dark:text-primary-200 mb-4">Поддержка</h4>
-          <div class="space-y-4">
-            <!-- Telegram Support -->
-            <div class="bg-base-100 dark:bg-neutral-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-neutral-700">
-              <div class="flex items-center mb-2">
-                <i class="fab fa-telegram-plane text-primary-500 dark:text-primary-400 text-lg mr-2"></i>
-                <span class="font-medium text-gray-800 dark:text-gray-200">Telegram</span>
-              </div>
-              <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Быстрая поддержка 24/7</p>
-              <a href="#" target="_blank" 
-                 class="inline-flex items-center text-sm bg-gradient-to-r from-primary-500 to-blue-500 text-white px-3 py-2 rounded-lg hover:from-primary-600 hover:to-blue-600 transition-colors">
-                Написать
-                <i class="fas fa-external-link-alt ml-1 text-xs"></i>
-              </a>
-            </div>
-
-            <!-- Email Support -->
-            <div class="space-y-2">
-              <div class="flex items-center">
-                <i class="fas fa-envelope text-gray-500 dark:text-gray-400 mr-2"></i>
-                <span class="text-sm text-gray-700 dark:text-gray-300">support@okolo.com</span>
-              </div>
-              <div class="flex items-center">
-                <i class="fas fa-phone text-gray-500 dark:text-gray-400 mr-2"></i>
-                <span class="text-sm text-gray-700 dark:text-gray-300">+7 (800) 123-45-67</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+          Надежные грузоперевозки в Санкт-Петербурге и Ленинградской области. Работаем с частными лицами и малым
+          бизнесом.
+        </p>
+      </div>
+      <!-- Services -->
+      <div>
+        <h3 class="font-semibold text-gray-800 dark:text-white">Услуги</h3>
+        <ul class="mt-4 space-y-2">
+          <li><a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">Квартирные переезды</a>
+          </li>
+          <li><a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">Офисные переезды</a></li>
+          <li><a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">Доставка мебели</a></li>
+          <li><a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">Грузчики</a></li>
+          <li><a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">Межгород</a></li>
+        </ul>
+      </div>
+      <!-- Contacts -->
+      <div>
+        <h3 class="font-semibold text-gray-800 dark:text-white">Контакты</h3>
+        <ul class="mt-4 space-y-3">
+          <li class="flex items-center text-gray-500 dark:text-gray-400">
+            <i class="fas fa-phone-alt mr-2 w-5 text-center"></i>
+            <a href="tel:+78121234567" class="hover:text-blue-600">+7 (812) 123-45-67</a>
+          </li>
+          <li class="flex items-center text-gray-500 dark:text-gray-400">
+            <i class="fas fa-envelope mr-2 w-5 text-center"></i>
+            <a href="mailto:info@spbcargo.ru" class="hover:text-blue-600">info@spbcargo.ru</a>
+          </li>
+          <li class="flex items-center text-gray-500 dark:text-gray-400">
+            <i class="fas fa-map-marker-alt mr-2 w-5 text-center"></i>
+            <span>Санкт-Петербург</span>
+          </li>
+        </ul>
+      </div>
+      <!-- Working Hours -->
+      <div>
+        <h3 class="font-semibold text-gray-800 dark:text-white">Режим работы</h3>
+        <ul class="mt-4 space-y-3">
+          <li class="flex items-center text-gray-500 dark:text-gray-400">
+            <i class="fas fa-clock mr-2 w-5 text-center"></i>
+            <span>Пн-Вс: 8:00 - 22:00</span>
+          </li>
+          <li class="text-sm text-gray-500 dark:text-gray-400">
+            Принимаем заявки круглосуточно
+          </li>
+        </ul>
       </div>
     </div>
-
-    <!-- Footer Bottom -->
-    <div class="border-t border-gray-200 dark:border-neutral-800 py-6">
-      <div class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
-        <!-- Copyright -->
-        <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
-          <span class="text-sm text-gray-700 dark:text-gray-300">
-            © 2025
-            <a href="#" class="font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-200">Okolo™</a>. 
-            Все права защищены.
-          </span>
-          <div class="hidden sm:block text-gray-400 dark:text-gray-600">•</div>
-          <div class="flex space-x-4 text-sm">
-            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-              Политика конфиденциальности
-            </a>
-            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-              Условия использования
-            </a>
-          </div>
-        </div>
-
-        <!-- Social Links -->
-        <div class="flex items-center space-x-4">
-          <span class="text-sm text-gray-600 dark:text-gray-400">Мы в соцсетях:</span>
-          <div class="flex space-x-3">
-            <!-- GitHub -->
-            <a href="#" 
-               class="w-10 h-10 bg-gray-100 dark:bg-neutral-800 hover:bg-primary-100 dark:hover:bg-primary-900 rounded-lg flex items-center justify-center transition-colors group" 
-               aria-label="GitHub">
-              <i class="fab fa-github text-gray-600 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 text-lg"></i>
-            </a>
-
-            <!-- Telegram -->
-            <a href="#" 
-               class="w-10 h-10 bg-gray-100 dark:bg-neutral-800 hover:bg-primary-100 dark:hover:bg-primary-900 rounded-lg flex items-center justify-center transition-colors group" 
-               aria-label="Telegram">
-              <i class="fab fa-telegram-plane text-gray-600 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 text-lg"></i>
-            </a>
-
-            <!-- VK -->
-            <a href="#" 
-               class="w-10 h-10 bg-gray-100 dark:bg-neutral-800 hover:bg-primary-100 dark:hover:bg-primary-900 rounded-lg flex items-center justify-center transition-colors group" 
-               aria-label="VK">
-              <i class="fab fa-vk text-gray-600 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 text-lg"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Security Badge -->
-    <div class="border-t border-gray-200 dark:border-neutral-800 py-4">
-      <div class="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-6 text-xs text-gray-500 dark:text-gray-400">
-        <div class="flex items-center">
-          <i class="fas fa-shield-check text-green-500 mr-1"></i>
-          SSL защищено
-        </div>
-        <div class="flex items-center">
-          <i class="fas fa-lock text-blue-500 mr-1"></i>
-          RSA-256 шифрование
-        </div>
-        <div class="flex items-center">
-          <i class="fas fa-server text-purple-500 mr-1"></i>
-          99.9% аптайм
-        </div>
-      </div>
+    <div class="mt-12 border-t pt-8 text-center text-sm text-gray-400">
+      <p>&copy; {{ date('Y') }} СПБ Карго. Все права защищены.</p>
     </div>
   </div>
 </footer>
