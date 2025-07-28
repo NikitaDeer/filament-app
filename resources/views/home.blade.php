@@ -160,6 +160,63 @@
     </div>
   </section>
 
+  {{-- Services Section --}}
+  <section class="bg-gray-50 py-16 dark:bg-neutral-900 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 text-center">
+        <h2 class="text-3xl font-bold sm:text-4xl">Наши услуги</h2>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
+          Предоставляем полный спектр услуг по грузоперевозкам и грузовым работам для частных лиц и малого бизнеса в
+          Санкт-Петербурге и области.
+        </p>
+      </div>
+      @php
+        $services = \App\Models\Service::where('is_published', true)->get();
+      @endphp
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        @foreach ($services as $service)
+          <div
+            class="transform rounded-lg bg-white p-6 shadow-lg transition-transform duration-300 hover:-translate-y-2 dark:bg-neutral-800">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white">{{ $service->name }}</h3>
+                <p class="mt-1 text-gray-500 dark:text-gray-400">{{ $service->price }}</p>
+              </div>
+              <div class="rounded-lg bg-blue-100 p-2 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+            </div>
+            <p class="mt-4 text-gray-600 dark:text-gray-300">{{ $service->description }}</p>
+            <ul class="mt-4 space-y-2">
+              @if (is_array($service->features))
+                @foreach ($service->features as $feature)
+                  <li class="flex items-center text-gray-600 dark:text-gray-300">
+                    <span class="mr-3 h-2 w-2 rounded-full bg-blue-500"></span>
+                    {{ $feature }}
+                  </li>
+                @endforeach
+              @endif
+            </ul>
+          </div>
+        @endforeach
+      </div>
+      <div class="mt-12 text-center">
+        <a href="#"
+          class="inline-flex items-center font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500">
+          Все услуги
+          <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3">
+            </path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
   {{-- Footer --}}
   <x-site.footer />
 
