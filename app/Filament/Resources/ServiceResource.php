@@ -38,11 +38,9 @@ class ServiceResource extends Resource
           ->label('Краткое описание')
           ->required()
           ->columnSpan('full'),
-        Forms\Components\KeyValue::make('features')
+        Forms\Components\TagsInput::make('features')
           ->label('Особенности услуги')
-          ->keyLabel('ID')
-          ->valueLabel('Текст особенности')
-          ->addButtonLabel('Добавить особенность')
+          ->placeholder('Добавьте особенность и нажмите Enter')
           ->columnSpan('full'),
         Forms\Components\Toggle::make('is_published')
           ->label('Опубликовано')
