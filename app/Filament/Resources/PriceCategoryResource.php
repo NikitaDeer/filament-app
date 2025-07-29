@@ -3,30 +3,33 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PriceCategoryResource\Pages;
-use App\Filament\Resources\PriceCategoryResource\RelationManagers;
 use App\Models\PriceCategory;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Table;
 
 class PriceCategoryResource extends Resource
 {
   protected static ?string $model = PriceCategory::class;
 
-  protected static ?string $navigationIcon = 'heroicon-o-collection';
+  protected static ?string $navigationIcon = 'heroicon-o-tag';
+
+  protected static ?string $navigationLabel = 'Категории цен';
+
+  protected static ?string $pluralModelLabel = 'Категории цен';
 
   public static function form(Form $form): Form
   {
     return $form
       ->schema([
         Forms\Components\TextInput::make('name')
+          ->label('Название')
           ->required()
           ->maxLength(255),
         Forms\Components\Textarea::make('description')
+          ->label('Описание')
           ->maxLength(65535)
           ->columnSpanFull(),
       ]);
@@ -36,12 +39,10 @@ class PriceCategoryResource extends Resource
   {
     return $table
       ->columns([
-        Tables\Columns\TextColumn::make('name'),
+        Tables\Columns\TextColumn::make('name')
+          ->label('Название'),
         Tables\Columns\TextColumn::make('created_at')
-          ->dateTime()
-          ->sortable()
-          ->toggleable(isToggledHiddenByDefault: true),
-        Tables\Columns\TextColumn::make('updated_at')
+          ->label('Дата создания')
           ->dateTime()
           ->sortable()
           ->toggleable(isToggledHiddenByDefault: true),
@@ -53,14 +54,16 @@ class PriceCategoryResource extends Resource
         Tables\Actions\EditAction::make(),
       ])
       ->bulkActions([
-        Tables\Actions\DeleteBulkAction::make(),
+        Tables\Actions\BulkActionGroup::make([
+          Tables\Actions\DeleteBulkAction::make(),
+        ]),
       ]);
   }
 
   public static function getRelations(): array
   {
     return [
-      RelationManagers\ItemsRelationManager::class,
+      //
     ];
   }
 
