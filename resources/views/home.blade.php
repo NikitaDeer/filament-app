@@ -102,26 +102,20 @@
     </div>
   </section>
 
-  {{-- Yandex Map Calculator Section --}}
-  <section id="calculator" class="bg-gray-50 py-16 dark:bg-neutral-900 sm:py-24">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-12 text-center text-3xl font-bold sm:text-4xl">
-        Онлайн-калькулятор
-      </h2>
-      @livewire('yandex-map-calculator')
-    </div>
-  </section>
+
 
   {{-- Advantages Section --}}
   <section class="bg-base-100 py-16 dark:bg-dark-base-100 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-12 text-center">
-        <h2 class="text-3xl font-bold sm:text-4xl">Наши преимущества</h2>
-        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">Почему клиенты выбирают нас</p>
+        <h2 class="text-3xl font-bold sm:text-4xl">Почему выбирают нас</h2>
+        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">Мы предоставляем качественные услуги по доступным ценам
+        </p>
       </div>
       <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
         <!-- Advantage 1 -->
-        <div class="rounded-lg bg-gray-50 p-6 text-center shadow-md dark:bg-neutral-800">
+        <div
+          class="rounded-lg bg-gray-50 p-6 text-center shadow-md transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-neutral-800">
           <div class="mb-4 inline-block">
             <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900">
               <i class="fas fa-shipping-fast text-3xl text-primary-600 dark:text-primary-400"></i>
@@ -133,7 +127,8 @@
           </p>
         </div>
         <!-- Advantage 2 -->
-        <div class="rounded-lg bg-gray-50 p-6 text-center shadow-md dark:bg-neutral-800">
+        <div
+          class="rounded-lg bg-gray-50 p-6 text-center shadow-md transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-neutral-800">
           <div class="mb-4 inline-block">
             <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900">
               <i class="fas fa-shield-alt text-3xl text-primary-600 dark:text-primary-400"></i>
@@ -145,7 +140,8 @@
           </p>
         </div>
         <!-- Advantage 3 -->
-        <div class="rounded-lg bg-gray-50 p-6 text-center shadow-md dark:bg-neutral-800">
+        <div
+          class="rounded-lg bg-gray-50 p-6 text-center shadow-md transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-neutral-800">
           <div class="mb-4 inline-block">
             <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900">
               <i class="fas fa-headset text-3xl text-primary-600 dark:text-primary-400"></i>
@@ -155,6 +151,69 @@
           <p class="text-gray-700 dark:text-gray-300">
             Наши менеджеры всегда на связи и готовы ответить на любые ваши вопросы.
           </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{-- About Us Section on Home Page --}}
+  <section class="bg-white py-16 dark:bg-gray-900 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-800 dark:text-white sm:text-4xl">О компании СПБ Карго</h2>
+        <p class="mx-auto mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
+          Мы специализируемся на грузоперевозках в Санкт-Петербурге и Ленинградской области. Наша миссия — сделать
+          перевозку грузов простой, надежной и доступной для каждого.
+        </p>
+      </div>
+
+      <div class="mt-16 grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white">5 лет на рынке грузоперевозок</h3>
+          <p class="mt-4 text-gray-600 dark:text-gray-400">
+            За это время мы выполнили более 10,000 заказов и заслужили доверие сотен клиентов. Мы понимаем, что каждый
+            груз важен, поэтому относимся к каждому заказу с максимальной ответственностью.
+          </p>
+          <p class="mt-4 text-gray-600 dark:text-gray-400">
+            Наша команда состоит из опытных профессионалов, которые знают город как свои пять пальцев и всегда найдут
+            оптимальный маршрут для вашего груза.
+          </p>
+          <ul class="mt-6 space-y-3">
+            <li class="flex items-center text-blue-600 dark:text-blue-400">
+              <span class="mr-3 h-2 w-2 rounded-full bg-blue-500"></span>
+              Лицензированная деятельность
+            </li>
+            <li class="flex items-center text-blue-600 dark:text-blue-400">
+              <span class="mr-3 h-2 w-2 rounded-full bg-blue-500"></span>
+              Собственный автопарк из 15+ машин
+            </li>
+            <li class="flex items-center text-blue-600 dark:text-blue-400">
+              <span class="mr-3 h-2 w-2 rounded-full bg-blue-500"></span>
+              Команда из 25+ специалистов
+            </li>
+          </ul>
+        </div>
+        <div class="grid grid-cols-2 gap-6">
+          <div
+            class="rounded-lg bg-gray-50 p-6 text-center transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-gray-800">
+            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">10K+</p>
+            <p class="mt-2 text-gray-500 dark:text-gray-400">Выполненных заказов</p>
+          </div>
+          <div
+            class="rounded-lg bg-gray-50 p-6 text-center transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-gray-800">
+            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">500+</p>
+            <p class="mt-2 text-gray-500 dark:text-gray-400">Постоянных клиентов</p>
+          </div>
+          <div
+            class="rounded-lg bg-gray-50 p-6 text-center transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-gray-800">
+            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">15+</p>
+            <p class="mt-2 text-gray-500 dark:text-gray-400">Единиц техники</p>
+          </div>
+          <div
+            class="rounded-lg bg-gray-50 p-6 text-center transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-gray-800">
+            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">5</p>
+            <p class="mt-2 text-gray-500 dark:text-gray-400">Лет на рынке</p>
+          </div>
         </div>
       </div>
     </div>
@@ -221,6 +280,18 @@
       </div>
     </div>
   </section>
+
+  {{-- Yandex Map Calculator Section --}}
+  <section id="calculator" class="bg-gray-50 py-16 dark:bg-neutral-900 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-12 text-center text-3xl font-bold sm:text-4xl">
+        Онлайн-калькулятор
+      </h2>
+      @livewire('yandex-map-calculator')
+    </div>
+  </section>
+
+  <x-site.cta />
 
   {{-- Footer --}}
   <x-site.footer />
