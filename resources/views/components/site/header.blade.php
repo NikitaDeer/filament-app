@@ -26,7 +26,8 @@
           class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">О нас</a>
         <a href="{{ route('services.index') }}"
           class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Услуги</a>
-        <a href="#" class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Цены</a>
+        <a href="{{ route('prices') }}"
+          class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Цены</a>
         <a href="{{ route('calculator.index') }}"
           class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Калькулятор</a>
         <a href="#"

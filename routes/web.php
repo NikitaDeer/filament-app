@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PriceController;
 
 Route::get('/', function () {
   return view('home');
@@ -21,5 +22,7 @@ Route::get('/about', function () {
 Route::get('/calculator', function () {
   return view('pages.calculator.index');
 })->name('calculator.index');
+
+Route::get('/prices', [PriceController::class, 'index'])->name('prices');
 
 require __DIR__ . '/auth.php';
