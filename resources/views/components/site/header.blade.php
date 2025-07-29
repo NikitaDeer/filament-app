@@ -27,7 +27,7 @@
         <a href="{{ route('services.index') }}"
           class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Услуги</a>
         <a href="#" class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Цены</a>
-        <a href="#"
+        <a href="{{ route('calculator.index') }}"
           class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Калькулятор</a>
         <a href="#"
           class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Контакты</a>
@@ -35,7 +35,7 @@
 
       <!-- Правая часть -->
       <div class="flex items-center">
-        <a href="#"
+        <a href="{{ route('calculator.index') }}"
           class="hidden rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 sm:inline-block">
           Оставить заявку
         </a>
