@@ -14,6 +14,10 @@ Route::get('/style-guide', function () {
   return view('style-guide');
 })->name('style-guide');
 
+Route::get('/about', function () {
+  return view('pages.about.index');
+})->name('about.index');
+
 Route::get('/calculator', function () {
   return view('pages.calculator.index');
 })->name('calculator.index');
