@@ -1,5 +1,11 @@
 # Rules for Geminis
 
+## Language Requirements
+
+- Always respond in Russian language, regardless of the input language
+- Use proper Russian grammar and punctuation
+- Maintain technical accuracy while using Russian terminology
+
 ## Design Guidelines
 
 - **Clarity and Simplicity**: Keep the design clean and uncluttered. Every element should have a clear purpose. Avoid unnecessary decorations that can distract users.
