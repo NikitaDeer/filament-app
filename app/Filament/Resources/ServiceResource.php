@@ -20,87 +20,70 @@ use App\Filament\Resources\ServiceResource\Pages;
 
 class ServiceResource extends Resource
 {
-    protected static ?string $model = Service::class;
+  protected static ?string $model = Service::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+  protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Section::make('Наши услуги')
-                    ->schema([
-                        TextInput::make('name')
-                            ->label('Название услуги')
-                            ->required()
-                            ->columnSpan(2),
+  public static function form(Form $form): Form
+  {
+    return $form
+      ->schema([
+        Forms\Components\TextInput::make('name')
+          ->label('Название услуги')
+          ->required(),
+        Forms\Components\TextInput::make('price')
+          ->label('Цена (например, "от 2,500 ₽" или "от 500 ₽/час")')
+          ->required(),
+        Forms\Components\Textarea::make('description')
+          ->label('Краткое описание')
+          ->required()
+          ->columnSpan('full'),
+        Forms\Components\TagsInput::make('features')
+          ->label('Особенности услуги')
+          ->placeholder('Добавьте особенность и нажмите Enter')
+          ->columnSpan('full'),
+        Forms\Components\Toggle::make('is_published')
+          ->label('Опубликовано')
+          ->default(true),
+        Forms\Components\Toggle::make('is_popular')
+          ->label('Популярная услуга')
+          ->default(false),
+      ]);
+  }
 
-                        Textarea::make('description')
-                            ->label('Описание услуги')
-                            ->required()
-                            ->columnSpan(2),
+  public static function table(Table $table): Table
+  {
+    return $table
+      ->columns([
+        Tables\Columns\TextColumn::make('name')->label('Название')->searchable(),
+        Tables\Columns\TextColumn::make('price')->label('Цена'),
+        Tables\Columns\IconColumn::make('is_published')->boolean()->label('Опубликовано'),
+        Tables\Columns\IconColumn::make('is_popular')->boolean()->label('Популярная'),
+      ])
+      ->filters([
+        //
+      ])
+      ->actions([
+        Tables\Actions\EditAction::make(),
+      ])
+      ->bulkActions([
+        Tables\Actions\DeleteBulkAction::make(),
+      ]);
+  }
 
-                        Toggle::make('is_published')
-                            ->label('Опубликована')
-                            ->default(true),
-                    ]),
-            ]);
-    }
+  public static function getRelations(): array
+  {
+    return [
+      //
+    ];
+  }
 
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Название услуги')
-                    ->searchable()
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('price')
-                    ->label('Цена')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('description')
-                    ->label('Описание')
-                    ->limit(50),
-
-                Tables\Columns\BooleanColumn::make('is_published')
-                    ->label('Опубликована'),
-            ])
-            ->filters([
-                Tables\Filters\SelectFilter::make('name')
-                    ->label('Название')
-                    ->searchable()
-                    ->options(Service::all()->pluck('name', 'id')),
-
-                Tables\Filters\SelectFilter::make('is_published')
-                    ->label('Статус')
-                    ->options([
-                        'Да' => true,
-                        'Нет' => false,
-                    ]),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListServices::route('/'),
-            'create' => Pages\CreateService::route('/create'),
-            'edit' => Pages\EditService::route('/{record}/edit'),
-        ];
-    }
+  public static function getPages(): array
+  {
+    return [
+      'index' => Pages\ListServices::route('/'),
+      'create' => Pages\CreateService::route('/create'),
+      'edit' => Pages\EditService::route('/{record}/edit'),
+    ];
+  }
 }

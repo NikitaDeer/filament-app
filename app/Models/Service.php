@@ -13,7 +13,15 @@ class Service extends Model
     'name',
     'price',
     'description',
+    'features',
     'is_published',
+    'is_popular',
+  ];
+
+  protected $casts = [
+    'features' => 'array',
+    'is_published' => 'boolean',
+    'is_popular' => 'boolean',
   ];
 
   public function product()
