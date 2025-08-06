@@ -26,4 +26,8 @@ Route::get('/contacts', function () {
   return view('pages.contacts.index');
 })->name('contacts.index');
 
+Route::get('/prices', function () {
+  return view('pages.prices.index');
+})->name('prices.index');
+
 require __DIR__ . '/auth.php';
