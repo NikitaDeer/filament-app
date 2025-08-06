@@ -29,7 +29,7 @@
         <a href="#" class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Цены</a>
         <a href="{{ route('calculator.index') }}"
           class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Калькулятор</a>
-        <a href="#"
+        <a href="{{ route('contacts.index') }}"
           class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Контакты</a>
       </div>
 
