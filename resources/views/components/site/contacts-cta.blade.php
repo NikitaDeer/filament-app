@@ -1,22 +1,16 @@
-<!-- resources/views/components/site/contacts-cta.blade.php -->
-<div class="bg-white">
-    <div class="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
-        <div class="relative isolate overflow-hidden bg-gray-900 px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16">
-            <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">Остались вопросы?</h2>
-            <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">Не стесняйтесь обращаться к нам с любыми вопросами, которые у вас могут возникнуть. Наша команда готова помочь вам.</p>
-            <div class="mt-10 flex items-center justify-center gap-x-6">
-                <a href="#" class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Связаться с нами</a>
-                <a href="{{ route('services.index') }}" class="text-sm font-semibold leading-6 text-white">Наши услуги <span aria-hidden="true">→</span></a>
-            </div>
-            <svg viewBox="0 0 1024 1024" class="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]" aria-hidden="true">
-                <circle cx="512" cy="512" r="512" fill="url(#827591b1-ce8c-4110-b064-7cb85a0b1217)" fill-opacity="0.7" />
-                <defs>
-                    <radialGradient id="827591b1-ce8c-4110-b064-7cb85a0b1217">
-                        <stop stop-color="#7775D6" />
-                        <stop offset="1" stop-color="#E935C1" />
-                    </radialGradient>
-                </defs>
-            </svg>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mt-24 rounded-lg bg-gray-100 p-12 text-center dark:bg-gray-800">
+        <h2 class="text-3xl font-bold">Нужна срочная консультация?</h2>
+        <p class="mx-auto mt-4 max-w-xl text-gray-600 dark:text-gray-400">Звоните прямо сейчас! Наши менеджеры работают круглосуточно и готовы ответить на все ваши вопросы.</p>
+        <div class="mt-8 flex justify-center gap-4">
+            <a href="tel:+74951234567"
+               class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-blue-700">
+                Позвонить
+            </a>
+            <a href="mailto:contact@example.com"
+               class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-8 py-3 font-semibold text-gray-800 transition-colors hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
+                Написать на почту
+            </a>
         </div>
     </div>
 </div>
