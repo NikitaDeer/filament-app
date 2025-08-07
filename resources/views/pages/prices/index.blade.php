@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-main-layout>
   <!-- Hero -->
   <section class="bg-base-100">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
@@ -174,4 +174,5 @@
       </div>
     </div>
   </section>
-</x-app-layout>
+ <x-site.footer />
+</x-main-layout>

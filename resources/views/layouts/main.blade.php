@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
   <!-- Scripts -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   @livewireStyles
@@ -24,13 +23,28 @@
 </head>
 <body class="font-sans antialiased bg-base-100 text-base-content dark:bg-dark-base-100 dark:text-dark-base-content">
   <div class="min-h-screen bg-base-100 dark:bg-dark-base-100">
-    <!-- УБРАНА дублирующая кнопка темы -->
-    {{ $slot }}
+    <!-- Page Content -->
+    <main>
+        @include('components.site.header')
+        {{ $slot }}
+    </main>
   </div>
-  <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.js"></script>
   @livewireScripts
   @stack('scripts')
   <script>
+      // Мобильное меню
+      document.addEventListener('DOMContentLoaded', function() {
+          const mobileMenuButton = document.getElementById('mobile-menu-button');
+          const mobileMenu = document.getElementById('mobile-menu');
+
+          if (mobileMenuButton && mobileMenu) {
+              mobileMenuButton.addEventListener('click', function() {
+                  mobileMenu.classList.toggle('hidden');
+              });
+          }
+      });
+
+      // Переключение темы
       document.addEventListener('DOMContentLoaded', function() {
           var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
           var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');

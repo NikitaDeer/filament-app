@@ -1,6 +1,4 @@
 <x-main-layout>
-  <x-site.header />
-
   <main class="py-16 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">

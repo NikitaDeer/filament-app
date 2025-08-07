@@ -1,5 +1,4 @@
 <x-main-layout>
-    <x-site.header />
     <x-site.contacts-main />
     <x-site.contacts-cta />
     <x-site.footer />
