@@ -1,6 +1,6 @@
-<button data-collapse-toggle="mobile-menu-2" type="button"
+<button id="mobile-menu-button" type="button"
   class="ml-1 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 lg:hidden"
-  aria-controls="mobile-menu-2" aria-expanded="false">
+  aria-expanded="false">
   <span class="sr-only">Open main menu</span>
   <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd"
