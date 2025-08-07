@@ -18,7 +18,7 @@
         </a>
       </div>
 
-      <!-- Навигация -->
+      <!-- Навигация для десктопа -->
       <div class="hidden lg:flex lg:items-center lg:space-x-8">
         <a href="{{ route('home') }}"
           class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Главная</a>
