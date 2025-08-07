@@ -47,7 +47,7 @@
         </button>
 
         <!-- Hamburger -->
-        <div class="ml-2 lg:hidden">
+        <div class="ml-4 lg:hidden">
           <x-site.hamburger />
         </div>
       </div>
