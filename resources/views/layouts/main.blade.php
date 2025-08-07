@@ -24,44 +24,51 @@
 </head>
 <body class="font-sans antialiased bg-base-100 text-base-content dark:bg-dark-base-100 dark:text-dark-base-content">
   <div class="min-h-screen bg-base-100 dark:bg-dark-base-100">
-    <!-- УБРАЛ дублирующую кнопку темы -->
+    <!-- УБРАНА дублирующая кнопка темы -->
     {{ $slot }}
   </div>
   <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.js"></script>
   @livewireScripts
   @stack('scripts')
   <script>
-      var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-      var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-      // Change the icons inside the button based on previous settings
-      if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          themeToggleLightIcon.classList.remove('hidden');
-      } else {
-          themeToggleDarkIcon.classList.remove('hidden');
-      }
-      var themeToggleBtn = document.getElementById('theme-toggle');
-      themeToggleBtn.addEventListener('click', function() {
-          // toggle icons inside button
-          themeToggleDarkIcon.classList.toggle('hidden');
-          themeToggleLightIcon.classList.toggle('hidden');
-          // if set via local storage previously
-          if (localStorage.getItem('color-theme')) {
-              if (localStorage.getItem('color-theme') === 'light') {
-                  document.documentElement.classList.add('dark');
-                  localStorage.setItem('color-theme', 'dark');
-              } else {
-                  document.documentElement.classList.remove('dark');
-                  localStorage.setItem('color-theme', 'light');
-              }
-          // if NOT set via local storage previously
+      document.addEventListener('DOMContentLoaded', function() {
+          var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+          var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+          // Change the icons inside the button based on previous settings
+          if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+              themeToggleLightIcon.classList.remove('hidden');
           } else {
-              if (document.documentElement.classList.contains('dark')) {
-                  document.documentElement.classList.remove('dark');
-                  localStorage.setItem('color-theme', 'light');
-              } else {
-                  document.documentElement.classList.add('dark');
-                  localStorage.setItem('color-theme', 'dark');
-              }
+              themeToggleDarkIcon.classList.remove('hidden');
+          }
+
+          var themeToggleBtn = document.getElementById('theme-toggle');
+          if (themeToggleBtn) {
+              themeToggleBtn.addEventListener('click', function() {
+                  // toggle icons inside button
+                  themeToggleDarkIcon.classList.toggle('hidden');
+                  themeToggleLightIcon.classList.toggle('hidden');
+
+                  // if set via local storage previously
+                  if (localStorage.getItem('color-theme')) {
+                      if (localStorage.getItem('color-theme') === 'light') {
+                          document.documentElement.classList.add('dark');
+                          localStorage.setItem('color-theme', 'dark');
+                      } else {
+                          document.documentElement.classList.remove('dark');
+                          localStorage.setItem('color-theme', 'light');
+                      }
+                  // if NOT set via local storage previously
+                  } else {
+                      if (document.documentElement.classList.contains('dark')) {
+                          document.documentElement.classList.remove('dark');
+                          localStorage.setItem('color-theme', 'light');
+                      } else {
+                          document.documentElement.classList.add('dark');
+                          localStorage.setItem('color-theme', 'dark');
+                      }
+                  }
+              });
           }
       });
   </script>
