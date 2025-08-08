@@ -11,7 +11,7 @@
           <input wire:model.debounce.500ms="to" type="text" id="to" placeholder="Куда"
             class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500">
           <button wire:click="calculate"
-            class="w-full rounded-md bg-primary-500 px-4 py-2 text-white hover:bg-primary-600">Рассчитать</button>
+            class="w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Рассчитать</button>
         </div>
         @if ($distance)
           <div class="mt-4">
@@ -76,7 +76,7 @@
                   <span class="text-sm text-danger-500 md:col-span-2">{{ $message }}</span>
                 @enderror
               </div>
-              <button type="submit" class="mt-4 w-full rounded-md bg-primary-500 px-4 py-2 text-white hover:bg-primary-600"
+              <button type="submit" class="mt-4 w-full rounded-md bg-accent-500 px-4 py-2 text-white hover:bg-accent-600"
                 wire:loading.attr="disabled">
                 <span wire:loading.remove>Оформить заказ</span>
                 <span wire:loading>Отправка...</span>

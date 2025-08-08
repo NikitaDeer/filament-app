@@ -4,7 +4,7 @@
         <p class="mx-auto mt-4 max-w-2xl text-base leading-7 text-gray-600 dark:text-gray-300">Звоните прямо сейчас! Наши менеджеры работают круглосуточно и готовы ответить на все ваши вопросы.</p>
         <div class="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             <a href="tel:+74951234567"
-               class="inline-flex items-center justify-center rounded-lg bg-primary-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800 sm:px-8">
+               class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800 sm:px-8">
                 Позвонить
             </a>
             <a href="mailto:contact@example.com"

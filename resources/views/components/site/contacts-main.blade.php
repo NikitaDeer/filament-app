@@ -1,9 +1,9 @@
 <!-- resources/views/components/site/contacts-main.blade.php -->
-<div class="bg-base-100 py-16 sm:py-24">
+<div class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-2xl text-center">
-            <h2 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Наши контакты</h2>
-            <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">Мы всегда на связи и готовы ответить на любые ваши вопросы. Вы можете связаться с нами любым удобным для вас способом.</p>
+            <h1 class="text-4xl font-bold text-gray-800 dark:text-white sm:text-5xl">Наши контакты</h1>
+            <p class="mx-auto mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">Мы всегда на связи и готовы ответить на любые ваши вопросы. Вы можете связаться с нами любым удобным для вас способом.</p>
         </div>
 
         <div class="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-8 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-4">
@@ -64,8 +64,8 @@
         <!-- Карта блока контактов -->
         <section class="mt-16">
             <div class="mx-auto max-w-3xl text-center">
-                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Мы на карте</h3>
-                <p class="mt-3 text-base text-gray-600 dark:text-gray-300">
+                <h2 class="text-3xl font-semibold text-gray-900 dark:text-white">Мы на карте</h2>
+                <p class="mt-3 text-lg text-gray-600 dark:text-gray-400">
                     Наш офис расположен в удобной транспортной доступности. Проложите маршрут и приезжайте в гости —
                     будем рады встретиться и обсудить детали вашего переезда.
                 </p>

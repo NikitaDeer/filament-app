@@ -1,12 +1,12 @@
 <x-main-layout>
   <!-- Hero -->
-  <section class="bg-base-100">
+  <section class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
       <div class="mx-auto max-w-2xl text-center">
-        <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+        <h1 class="text-4xl font-bold text-gray-800 dark:text-white sm:text-5xl">
           Цены и тарифы
         </h1>
-        <p class="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
+        <p class="mx-auto mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
           Прозрачные условия и понятные тарифы на грузоперевозки. Выберите подходящий вариант или
           оставьте заявку для индивидуального расчёта.
         </p>
@@ -15,7 +15,7 @@
   </section>
 
   <!-- Тарифные карточки -->
-  <section class="bg-base-100">
+  <section class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12">
       <div class="mx-auto max-w-6xl">
         <div class="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-3">
@@ -30,7 +30,7 @@
               <li class="flex items-center gap-2"><span class="inline-block h-1.5 w-1.5 rounded-full bg-primary-500"></span>Страховка груза базовая</li>
             </ul>
             <div class="mt-8">
-              <a href="{{ route('calculator.index') }}" class="inline-flex w-full items-center justify-center rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800">
+              <a href="{{ route('calculator.index') }}" class="inline-flex w-full items-center justify-center rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800">
                 Заказать расчет
               </a>
             </div>
@@ -48,7 +48,7 @@
               <li class="flex items-center gap-2"><span class="inline-block h-1.5 w-1.5 rounded-full bg-primary-500"></span>Страховка груза расширенная</li>
             </ul>
             <div class="mt-8">
-              <a href="{{ route('calculator.index') }}" class="inline-flex w-full items-center justify-center rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800">
+              <a href="{{ route('calculator.index') }}" class="inline-flex w-full items-center justify-center rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800">
                 Заказать расчет
               </a>
             </div>
@@ -76,7 +76,7 @@
   </section>
 
   <!-- Таблица сравнения -->
-  <section class="bg-base-100">
+  <section class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <div class="mx-auto max-w-6xl">
         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Сравнение тарифов</h2>
@@ -126,7 +126,7 @@
   </section>
 
   <!-- FAQ -->
-  <section class="bg-base-100">
+  <section class="bg-white py-16 dark:bg-gray-900">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <div class="mx-auto max-w-3xl">
         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Вопросы и ответы</h2>
@@ -158,13 +158,13 @@
   </section>
 
   <!-- CTA -->
-  <section class="bg-base-100">
+  <section class="bg-white py-16 dark:bg-gray-900">
     <div class="container mx-auto my-16 px-4 sm:my-20 sm:px-6 lg:my-24 lg:px-8">
       <div class="overflow-hidden rounded-2xl border border-neutral-200 bg-white p-10 text-center shadow-sm dark:border-neutral-700 dark:bg-neutral-800 sm:p-12">
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Готовы к переезду?</h2>
         <p class="mx-auto mt-4 max-w-2xl text-base leading-7 text-gray-600 dark:text-gray-300">Рассчитайте стоимость в нашем калькуляторе или оставьте заявку — мы предложим лучшее решение под вашу задачу.</p>
         <div class="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-          <a href="{{ route('calculator.index') }}" class="inline-flex items-center justify-center rounded-lg bg-primary-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800 sm:px-8">
+          <a href="{{ route('calculator.index') }}" class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800 sm:px-8">
             Перейти к калькулятору
           </a>
           <a href="{{ route('contacts.index') }}" class="inline-flex items-center justify-center rounded-lg border border-neutral-300 bg-white px-6 py-3 text-sm font-semibold text-gray-800 transition-colors hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white dark:hover:bg-neutral-600 dark:focus:ring-offset-neutral-800 sm:px-8">
