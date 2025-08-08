@@ -1,5 +1,4 @@
 <x-main-layout>
-  <x-site.header />
 
   <main class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">

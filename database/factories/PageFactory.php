@@ -34,9 +34,9 @@ class PageFactory extends Factory
       'footer_second_content' => $this->faker->paragraph($nb_sentences = 5, $variable_nb_sentences = False),
 
       //фотографии
-      'main_photo_path' => $this->createImage(),
-      'first_photo_path' => $this->createImage(),
-      'second_photo_path' => $this->createImage(),
+      // 'main_photo_path' => $this->createImage(),
+      // 'first_photo_path' => $this->createImage(),
+      // 'second_photo_path' => $this->createImage(),
     ];
   }
 
@@ -53,10 +53,11 @@ class PageFactory extends Factory
     );
 
     // $photo_path = file_get_contents('https://picsum.photos/640/480', false, $context);
-    $photo_path = file_get_contents('https://loremflickr.com/640/480', false, $context);
+    // $photo_path = file_get_contents('https://loremflickr.com/640/480', false, $context);
     $filename = '/images/' . Str::uuid() . '.jpg';
 
-    Storage::disk('public')->put($filename, $photo_path);
+    // Storage::disk('public')->put($filename, $photo_path);
+    
 
     return $filename;
   }

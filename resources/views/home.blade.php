@@ -1,8 +1,5 @@
 <x-main-layout>
 
-  {{-- Header --}}
-  <x-site.header />
-
   {{-- Hero Section --}}
   <section class="bg-white dark:bg-gray-900">
     <div class="container mx-auto grid grid-cols-1 items-center gap-12 px-6 py-16 lg:grid-cols-2 lg:py-24">
