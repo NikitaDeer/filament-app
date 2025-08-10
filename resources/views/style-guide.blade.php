@@ -7,11 +7,11 @@
         <section class="mb-12">
             <h2 class="text-3xl font-semibold mb-6">Colors</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                
+
                 <div class="text-center">
-                    <div class="w-full h-24 rounded-lg bg-primary-500 mb-2"></div>
+                    <div class="w-full h-24 rounded-lg bg-blue-600 mb-2"></div>
                     <p class="font-medium">Primary</p>
-                    <p class="text-sm opacity-70">bg-primary-500</p>
+                    <p class="text-sm opacity-70">bg-blue-600</p>
                 </div>
 
                 <div class="text-center">
@@ -73,7 +73,7 @@
         <section class="mb-12">
             <h2 class="text-3xl font-semibold mb-6">Buttons</h2>
             <div class="flex flex-wrap items-center gap-6">
-                <button class="btn bg-primary-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-primary-600 transition-colors">Primary Button</button>
+                <button class="btn bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-primary-600 transition-colors">Primary Button</button>
                 <button class="btn bg-secondary-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-secondary-600 transition-colors">Secondary Button</button>
                 <button class="btn bg-accent-500 text-black px-6 py-2 rounded-lg font-medium hover:bg-accent-600 transition-colors">Accent Button</button>
                 <button class="btn border border-danger-500 text-danger-500 px-6 py-2 rounded-lg font-medium hover:bg-danger-500 hover:text-white dark:hover:text-white transition-colors">Danger Button</button>
