@@ -34,24 +34,44 @@ class TariffResource extends Resource
                 Section::make('Предоставляемый тариф')
                     ->schema([
                         Forms\Components\TextInput::make('title')
-                        ->required(),
-                    Forms\Components\Select::make('type')
-                        ->options([
-                            'trial' => 'Trial',
-                            'regular' => 'Regular'
-                        ])
-                        ->required(),
-                    Forms\Components\TextInput::make('duration_days')
-                        ->numeric()
-                        ->required(),
-                    Forms\Components\TextInput::make('price')
-                        ->numeric()
-                        ->prefix('RUB')
-                        ->required(),
-                    Forms\Components\TextInput::make('description'),
-                    Forms\Components\Toggle::make('is_renewable'),
-                    Forms\Components\Toggle::make('is_published')
-                    ]),
+                            ->label('Название')
+                            ->required()
+                            ->maxLength(120),
+
+                        Forms\Components\Select::make('type')
+                            ->label('Тип')
+                            ->options([
+                                'trial' => 'Пробный (trial)',
+                                'regular' => 'Обычный (regular)'
+                            ])
+                            ->required(),
+
+                        Forms\Components\TextInput::make('duration_days')
+                            ->label('Длительность (дни)')
+                            ->numeric()
+                            ->minValue(1)
+                            ->required(),
+
+                        Forms\Components\TextInput::make('price')
+                            ->label('Цена, ₽')
+                            ->numeric()
+                            ->minValue(0)
+                            ->step(1)
+                            ->required(),
+
+                        Forms\Components\Textarea::make('description')
+                            ->label('Описание')
+                            ->rows(3)
+                            ->maxLength(1000),
+
+                        Forms\Components\Toggle::make('is_renewable')
+                            ->label('Продлеваемый')
+                            ->helperText('Разрешить продление тарифа'),
+
+                        Forms\Components\Toggle::make('is_published')
+                            ->label('Опубликован')
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -60,28 +80,53 @@ class TariffResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable()
-                    ->label('Название'),
+                    ->label('Название')
+                    ->limit(30)
+                    ->tooltip(fn ($record) => $record->title)
+                    ->searchable(),
+
                 Tables\Columns\BadgeColumn::make('type')
-                    ->colors([
-                        'primary' => 'trial',
-                        'success' => 'regular'
+                    ->label('Тип')
+                    ->enum([
+                        'trial' => 'Пробный',
+                        'regular' => 'Обычный',
                     ])
-                    ->label('Тип'),
+                    ->colors([
+                        'warning' => 'trial',
+                        'success' => 'regular',
+                    ]),
+
                 Tables\Columns\TextColumn::make('duration_days')
-                    ->label('Длительность'),
+                    ->label('Длительность')
+                    ->suffix(' дн.'),
+
                 Tables\Columns\TextColumn::make('price')
-                    ->money('RUB')
-                    ->label('Цена'),
+                    ->label('Цена')
+                    ->formatStateUsing(fn ($state) => number_format((float) $state, 0, '.', ' ') . ' ₽')
+                    ->sortable(),
+
                 Tables\Columns\IconColumn::make('is_published')
                     ->label('Опубликован')
                     ->boolean(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('type')
+                    ->label('Тип')
+                    ->options([
+                        'trial' => 'Пробный',
+                        'regular' => 'Обычный',
+                    ]),
+
+                Tables\Filters\TernaryFilter::make('is_published')
+                    ->label('Опубликован')
+                    ->placeholder('Все')
+                    ->trueLabel('Опубликованные')
+                    ->falseLabel('Скрытые')
+                    ->nullable(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalHeading('Редактировать тариф'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
