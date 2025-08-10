@@ -31,6 +31,9 @@ class PageResource extends Resource
 
   protected static ?string $navigationLabel = 'Публикуемая информация';
 
+  public static function getModelLabel(): string { return 'Страница'; }
+  public static function getPluralModelLabel(): string { return 'Страницы'; }
+
   public static function form(Form $form): Form
   {
     return $form

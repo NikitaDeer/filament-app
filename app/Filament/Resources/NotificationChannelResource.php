@@ -21,6 +21,18 @@ class NotificationChannelResource extends Resource
     protected static ?string $navigationGroup = 'Управление каналами уведомлений';
     protected static ?string $navigationLabel = 'Каналы уведомлений';
 
+    public static function getModelLabel(): string
+    {
+        return 'Канал уведомлений';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Каналы уведомлений';
+    }
+    protected static ?string $navigationGroup = 'Управление каналами уведомлений';
+    protected static ?string $navigationLabel = 'Каналы уведомлений';
+
     public static function form(Form $form): Form
     {
         return $form

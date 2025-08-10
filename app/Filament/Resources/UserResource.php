@@ -35,6 +35,9 @@ class UserResource extends Resource
 
   protected static ?string $navigationLabel = 'Пользователи';
 
+  public static function getModelLabel(): string { return 'Пользователь'; }
+  public static function getPluralModelLabel(): string { return 'Пользователи'; }
+
 
 
   public static function form(Form $form): Form

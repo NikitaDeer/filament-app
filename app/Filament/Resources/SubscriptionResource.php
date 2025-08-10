@@ -23,6 +23,9 @@ class SubscriptionResource extends Resource
 
     protected static ?string $navigationLabel = 'Подписки';
 
+    public static function getModelLabel(): string { return 'Подписка'; }
+    public static function getPluralModelLabel(): string { return 'Подписки'; }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -80,7 +83,7 @@ class SubscriptionResource extends Resource
                         'expired' => 'Expired',
                         'pending' => 'Pending'
                     ])
-                    ->label('Статус подписки'), 
+                    ->label('Статус подписки'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -89,14 +92,14 @@ class SubscriptionResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -104,5 +107,5 @@ class SubscriptionResource extends Resource
             'create' => Pages\CreateSubscription::route('/create'),
             'edit' => Pages\EditSubscription::route('/{record}/edit'),
         ];
-    }    
+    }
 }

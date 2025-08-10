@@ -19,6 +19,16 @@ class RateResource extends Resource
 
     protected static ?string $navigationLabel = 'Тарифы';
 
+    public static function getModelLabel(): string
+    {
+        return 'Тариф за км';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Тарифы за км';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

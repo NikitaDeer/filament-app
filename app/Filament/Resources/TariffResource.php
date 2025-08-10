@@ -27,6 +27,16 @@ class TariffResource extends Resource
 
     protected static ?string $navigationLabel = 'Предоставляемые тарифы';
 
+    public static function getModelLabel(): string
+    {
+        return 'Тариф';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Тарифы';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

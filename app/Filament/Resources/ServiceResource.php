@@ -24,6 +24,8 @@ class ServiceResource extends Resource
   protected static ?string $model = Service::class;
 
   protected static ?string $navigationIcon = 'heroicon-o-collection';
+  public static function getModelLabel(): string { return 'Услуга'; }
+  public static function getPluralModelLabel(): string { return 'Услуги'; }
   protected static ?string $navigationGroup = 'Управление существующими услугами';
   protected static ?string $navigationLabel = 'Услуги';
 

@@ -29,6 +29,9 @@ class AdvantageResource extends Resource
 
   protected static ?string $navigationLabel = 'Публикуемые услуги';
 
+  public static function getModelLabel(): string { return 'Публикуемая услуга'; }
+  public static function getPluralModelLabel(): string { return 'Публикуемые услуги'; }
+
   public static function form(Form $form): Form
   {
     return $form

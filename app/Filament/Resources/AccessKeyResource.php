@@ -18,6 +18,8 @@ class AccessKeyResource extends Resource
     protected static ?string $model = AccessKey::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-key';
+    public static function getModelLabel(): string { return 'Ключ доступа'; }
+    public static function getPluralModelLabel(): string { return 'Ключи доступа'; }
 
     protected static ?string $navigationGroup = 'Управление подписками и тарифами';
 
@@ -67,14 +69,14 @@ class AccessKeyResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -82,5 +84,5 @@ class AccessKeyResource extends Resource
             'create' => Pages\CreateAccessKey::route('/create'),
             'edit' => Pages\EditAccessKey::route('/{record}/edit'),
         ];
-    }    
+    }
 }
