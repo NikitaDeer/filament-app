@@ -9,7 +9,13 @@
       </div>
       <div>
         <h3 class="text-xl font-bold text-gray-800 dark:text-white">{{ $service->name }}</h3>
-        <p class="mt-1 text-gray-500 dark:text-gray-400">от {{ $service->price }} ₽</p>
+        <p class="mt-1 text-gray-500 dark:text-gray-400">
+          @if(($service->pricing_type ?? 'fixed') === 'hourly')
+            {{ number_format((float) $service->price, 0, '.', ' ') }} ₽/час
+          @else
+            от {{ number_format((float) $service->price, 0, '.', ' ') }} ₽
+          @endif
+        </p>
       </div>
     </div>
     <p class="mt-4 text-gray-600 dark:text-gray-300">{{ $service->description }}</p>

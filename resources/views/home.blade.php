@@ -236,7 +236,6 @@
             <div class="flex items-start justify-between">
               <div>
                 <h3 class="text-xl font-bold text-gray-800 dark:text-white">{{ $service->name }}</h3>
-                <p class="mt-1 text-gray-500 dark:text-gray-400">от {{ $service->price }} ₽</p>
               </div>
               <div class="rounded-lg bg-blue-100 p-2 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"

@@ -20,13 +20,17 @@
       <!-- Services -->
       <div>
         <h3 class="font-semibold text-gray-800 dark:text-white">Услуги</h3>
+        @php
+          $footerServices = \App\Models\Service::where('is_published', true)->latest()->take(6)->get(['id','name']);
+        @endphp
         <ul class="mt-4 space-y-2">
-          <li><a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">Квартирные переезды</a>
-          </li>
-          <li><a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">Офисные переезды</a></li>
-          <li><a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">Доставка мебели</a></li>
-          <li><a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">Грузчики</a></li>
-          <li><a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">Межгород</a></li>
+          @foreach ($footerServices as $s)
+            <li>
+              <a href="{{ route('services.index') }}" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">
+                {{ $s->name }}
+              </a>
+            </li>
+          @endforeach
         </ul>
       </div>
       <!-- Contacts -->
