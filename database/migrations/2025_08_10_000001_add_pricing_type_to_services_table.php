@@ -11,7 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('services', function (Blueprint $table) {
-            $table->enum('pricing_type', ['fixed', 'hourly'])->default('fixed')->after('price');
+            // Используем совместимый тип для всех СУБД (SQLite/MySQL/PostgreSQL)
+            $table->string('pricing_type', 16)->default('fixed')->after('price');
         });
     }
 
