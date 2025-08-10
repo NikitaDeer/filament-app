@@ -30,8 +30,7 @@ class NotificationChannelResource extends Resource
     {
         return 'Каналы уведомлений';
     }
-    protected static ?string $navigationGroup = 'Управление каналами уведомлений';
-    protected static ?string $navigationLabel = 'Каналы уведомлений';
+
 
     public static function form(Form $form): Form
     {
