@@ -17,7 +17,7 @@ class EditNotificationChannel extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-    
+
     protected function afterSave(): void
     {
         // Если текущий канал установлен как канал по умолчанию, сбросить все другие
@@ -25,6 +25,14 @@ class EditNotificationChannel extends EditRecord
             NotificationChannel::where('id', '!=', $this->record->id)
                 ->where('is_default', true)
                 ->update(['is_default' => false]);
+        }
+
+        // Гарантируем единственность активного канала внутри одного type
+        if ($this->record->is_active) {
+            NotificationChannel::where('id', '!=', $this->record->id)
+                ->where('type', $this->record->type)
+                ->where('is_active', true)
+                ->update(['is_active' => false]);
         }
     }
 }

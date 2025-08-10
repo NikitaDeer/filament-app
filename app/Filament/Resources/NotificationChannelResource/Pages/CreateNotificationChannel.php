@@ -10,7 +10,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateNotificationChannel extends CreateRecord
 {
     protected static string $resource = NotificationChannelResource::class;
-    
+
     protected function afterCreate(): void
     {
         // Если текущий канал установлен как канал по умолчанию, сбросить все другие
@@ -18,6 +18,14 @@ class CreateNotificationChannel extends CreateRecord
             NotificationChannel::where('id', '!=', $this->record->id)
                 ->where('is_default', true)
                 ->update(['is_default' => false]);
+        }
+
+        // Гарантируем единственность активного канала внутри одного type
+        if ($this->record->is_active) {
+            NotificationChannel::where('id', '!=', $this->record->id)
+                ->where('type', $this->record->type)
+                ->where('is_active', true)
+                ->update(['is_active' => false]);
         }
     }
 }

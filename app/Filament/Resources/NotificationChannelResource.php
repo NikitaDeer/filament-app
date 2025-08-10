@@ -35,8 +35,8 @@ class NotificationChannelResource extends Resource
                             ->label('Тип канала')
                             ->options([
                                 'email' => 'Email',
-                                'telegram' => 'Telegram',
-                                'whatsapp' => 'WhatsApp',
+                                'phone' => 'Номер телефона',
+                                'telegram' => 'Telegram ID',
                             ])
                             ->required()
                             ->reactive(),
@@ -45,11 +45,26 @@ class NotificationChannelResource extends Resource
                             ->label('Значение')
                             ->required()
                             ->maxLength(255)
-                            ->helperText('Email адрес, номер телефона или ID чата')
+                            ->helperText('Email адрес, номер телефона или Telegram ID')
                             ->rule(function (callable $get) {
+                                $type = $get('type');
+                                if ($type === 'email') {
+                                    return ['email'];
+                                }
+                                if ($type === 'phone') {
+                                    return ['regex:/^\+?7[0-9]{10}$/'];
+                                }
+                                if ($type === 'telegram') {
+                                    return ['regex:/^[0-9]{5,15}$/']; // numeric ID 5-15 цифр
+                                }
+                                return ['string'];
+                            })
+                            ->placeholder(function (callable $get) {
                                 return match ($get('type')) {
-                                    'email' => ['email'],
-                                    default => ['string'],
+                                    'email' => 'example@domain.com',
+                                    'phone' => '+79991234567',
+                                    'telegram' => '123456789',
+                                    default => '',
                                 };
                             }),
 
@@ -114,8 +129,8 @@ class NotificationChannelResource extends Resource
                     ->label('Тип')
                     ->options([
                         'email' => 'Email',
-                        'telegram' => 'Telegram',
-                        'whatsapp' => 'WhatsApp',
+                        'phone' => 'Номер телефона',
+                        'telegram' => 'Telegram ID',
                     ]),
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Активность')
