@@ -24,7 +24,6 @@ class CreateNotificationChannel extends CreateRecord
         if ($this->record->is_active) {
             NotificationChannel::where('id', '!=', $this->record->id)
                 ->where('type', $this->record->type)
-                ->where('is_active', true)
                 ->update(['is_active' => false]);
         }
     }

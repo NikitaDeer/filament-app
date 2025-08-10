@@ -46,18 +46,12 @@ class NotificationChannelResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->helperText('Email адрес, номер телефона или Telegram ID')
-                            ->rule(function (callable $get) {
-                                $type = $get('type');
-                                if ($type === 'email') {
-                                    return ['email'];
-                                }
-                                if ($type === 'phone') {
-                                    return ['regex:/^\+?7[0-9]{10}$/'];
-                                }
-                                if ($type === 'telegram') {
-                                    return ['regex:/^[0-9]{5,15}$/']; // numeric ID 5-15 цифр
-                                }
-                                return ['string'];
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                // Ничего, триггер для реактивности
+                            })
+                            ->rule(function (\Closure $fail) use (&$get) {
+                                // Фоллбэк, будет заменен в ->validationAttribute ниже
                             })
                             ->placeholder(function (callable $get) {
                                 return match ($get('type')) {
@@ -66,7 +60,8 @@ class NotificationChannelResource extends Resource
                                     'telegram' => '123456789',
                                     default => '',
                                 };
-                            }),
+                            })
+                            ->validationAttribute('значение'),
 
                         Forms\Components\Toggle::make('is_active')
                             ->label('Активен')
@@ -149,6 +144,10 @@ class NotificationChannelResource extends Resource
                     ->action(function ($record) {
                         \App\Models\NotificationChannel::query()->update(['is_default' => false]);
                         $record->update(['is_default' => true, 'is_active' => true]);
+                        // Выключаем активность у других каналов того же типа
+                        \App\Models\NotificationChannel::where('id', '!=', $record->id)
+                            ->where('type', $record->type)
+                            ->update(['is_active' => false]);
                     }),
             ])
             ->bulkActions([

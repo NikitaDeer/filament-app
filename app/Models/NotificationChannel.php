@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class NotificationChannel extends Model
 {
     use HasFactory;
-    
+
     /**
      * Атрибуты, которые можно массово назначать.
      *
@@ -21,7 +21,7 @@ class NotificationChannel extends Model
         'is_active',
         'is_default',
     ];
-    
+
     /**
      * Атрибуты, которые должны быть приведены к определенным типам.
      *
@@ -31,7 +31,26 @@ class NotificationChannel extends Model
         'is_active' => 'boolean',
         'is_default' => 'boolean',
     ];
-    
+
+    protected static function booted(): void
+    {
+        static::saved(function (NotificationChannel $channel): void {
+            // Единственный активный канал внутри одного типа
+            if ($channel->is_active) {
+                static::where('id', '!=', $channel->id)
+                    ->where('type', $channel->type)
+                    ->update(['is_active' => false]);
+            }
+
+            // Единственный канал по умолчанию во всей таблице
+            if ($channel->is_default) {
+                static::where('id', '!=', $channel->id)
+                    ->where('is_default', true)
+                    ->update(['is_default' => false]);
+            }
+        });
+    }
+
     /**
      * Получить все активные каналы уведомлений.
      *
@@ -41,7 +60,7 @@ class NotificationChannel extends Model
     {
         return self::where('is_active', true)->get();
     }
-    
+
     /**
      * Получить канал уведомлений по умолчанию.
      *
@@ -51,7 +70,7 @@ class NotificationChannel extends Model
     {
         return self::where('is_default', true)->first();
     }
-    
+
     /**
      * Получить все каналы уведомлений типа email.
      *
