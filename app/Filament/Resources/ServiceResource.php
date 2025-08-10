@@ -29,10 +29,13 @@ class ServiceResource extends Resource
   {
     return $form
       ->schema([
-        Forms\Components\TextInput::make('name')
-          ->label('Название услуги')
-          ->required()
-          ->maxLength(100),
+        Section::make('Название услуги')
+          ->schema([
+            Forms\Components\TextInput::make('name')
+              ->label('Название услуги')
+              ->required()
+              ->maxLength(100),
+          ])->columns(2),
 
         Section::make('Ценообразование')
           ->schema([
@@ -54,6 +57,9 @@ class ServiceResource extends Resource
               ->helperText('Укажите стоимость в рублях.'),
           ])->columns(2),
 
+
+        Section::make('Описание услуги')
+          ->schema([
         Forms\Components\Textarea::make('description')
           ->label('Краткое описание')
           ->required()
@@ -63,13 +69,19 @@ class ServiceResource extends Resource
           ->label('Особенности услуги')
           ->placeholder('Добавьте особенность и нажмите Enter')
           ->columnSpan('full'),
-        Forms\Components\Toggle::make('is_published')
-          ->label('Опубликовано')
-          ->default(true),
-        Forms\Components\Toggle::make('is_popular')
-          ->label('Популярная услуга')
-          ->default(false),
+        ])->columns(2),
+
+        Section::make('Опубликовать')
+          ->schema([
+            Forms\Components\Toggle::make('is_published')
+              ->label('Опубликовано')
+              ->default(true),
+            Forms\Components\Toggle::make('is_popular')
+              ->label('Популярная услуга')
+              ->default(false),
+          ])->columns(2),
       ]);
+
   }
 
   public static function table(Table $table): Table
