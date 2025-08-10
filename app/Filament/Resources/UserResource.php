@@ -31,12 +31,12 @@ class UserResource extends Resource
   protected static ?string $model = User::class;
 
   protected static ?string $navigationIcon = 'heroicon-o-users';
-  protected static ?string $navigationGroup = 'Управление авторизованными в системе пользователями';
+  protected static ?string $navigationGroup = 'Управление пользователями системы';
 
   protected static ?string $navigationLabel = 'Пользователи';
 
 
-  
+
   public static function form(Form $form): Form
   {
     return $form
@@ -61,7 +61,7 @@ class UserResource extends Resource
                     'expired' => 'Expired',
                     'paused' => 'Paused'
                 ]),
-            
+
             // Добавляем поле для выбора ролей
             Forms\Components\Select::make('roles')
                 ->label('Роли')
@@ -83,7 +83,7 @@ class UserResource extends Resource
       ->columns([
         Tables\Columns\TextColumn::make('email')
         ->searchable(),
-        
+
         // Добавляем колонку с ролями
         Tables\Columns\BadgeColumn::make('roles')
         ->label('Роли')
@@ -94,22 +94,22 @@ class UserResource extends Resource
             'danger' => 'Admin',
             'primary' => 'User',
         ]),
-        
+
         Tables\Columns\TextColumn::make('currentTariff.title')
         ->label('Текущий тариф'),
-        
+
         // Заменяем колонку tariff_status на динамическую колонку, основанную на реальном статусе подписки
         Tables\Columns\BadgeColumn::make('subscription_status')
         ->label('Статус подписки')
         ->getStateUsing(function ($record) {
             $subscriptionStatus = $record->getSubscriptionStatus();
 
-            
+
             return $subscriptionStatus['status'];
         })
         ->colors([
             'success' => 'active',
-            'warning' => 'trial', 
+            'warning' => 'trial',
             'danger' => 'inactive'
         ])
         ->formatStateUsing(function ($state) {
@@ -120,7 +120,7 @@ class UserResource extends Resource
                 default => 'Неизвестно'
             };
         }),
-        
+
         // Добавляем колонку с датой окончания
         Tables\Columns\TextColumn::make('subscription_end_date')
         ->label('Окончание подписки')
@@ -144,7 +144,7 @@ class UserResource extends Resource
             if (!$data['value']) {
                 return $query;
             }
-            
+
             return $query->where(function ($query) use ($data) {
                 switch ($data['value']) {
                     case 'active':
@@ -169,7 +169,7 @@ class UserResource extends Resource
                 }
             });
           }),
-          
+
         // Добавляем фильтр по ролям
         Tables\Filters\SelectFilter::make('roles')
           ->label('Роль')
@@ -180,7 +180,7 @@ class UserResource extends Resource
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
-        
+
         // Добавляем быстрое действие для смены роли
         Tables\Actions\Action::make('change_role')
             ->label('Изменить роль')
@@ -205,7 +205,7 @@ class UserResource extends Resource
       ])
       ->bulkActions([
         Tables\Actions\DeleteBulkAction::make(),
-        
+
         // Добавляем массовое действие для назначения роли
         Tables\Actions\BulkAction::make('assign_role')
             ->label('Назначить роль')

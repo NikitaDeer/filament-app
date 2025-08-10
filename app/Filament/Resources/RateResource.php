@@ -15,8 +15,9 @@ class RateResource extends Resource
     protected static ?string $model = Rate::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+    protected static ?string $navigationGroup = 'Управление тарифами калькулятора за КМ';
 
-    protected static ?string $navigationLabel = 'Тарифы (цена за км)';
+    protected static ?string $navigationLabel = 'Тарифы';
 
     public static function form(Form $form): Form
     {
@@ -45,7 +46,7 @@ class RateResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Название'),
-                Tables\Columns\TextColumn::make('price_per_km')->label('Цена за км')->money('rub'),
+                Tables\Columns\TextColumn::make('price_per_km')->label('Цена за км')->money('rub')->formatStateUsing(fn ($state) => number_format($state, 2, ',', ' ') . ' ₽'),
                 Tables\Columns\IconColumn::make('is_active')->label('Активен')->boolean(),
             ])
             ->filters([

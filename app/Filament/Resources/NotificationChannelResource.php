@@ -18,6 +18,8 @@ class NotificationChannelResource extends Resource
     protected static ?string $model = NotificationChannel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-bell';
+    protected static ?string $navigationGroup = 'Управление каналами уведомлений';
+    protected static ?string $navigationLabel = 'Каналы уведомлений';
 
     public static function form(Form $form): Form
     {
@@ -47,11 +49,11 @@ class NotificationChannelResource extends Resource
                             ->maxLength(255)
                             ->helperText('Email адрес, номер телефона или Telegram ID')
                             ->reactive()
-                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                                // Ничего, триггер для реактивности
-                            })
-                            ->rule(function (\Closure $fail) use (&$get) {
-                                // Фоллбэк, будет заменен в ->validationAttribute ниже
+                            ->rule(fn (callable $get) => match ($get('type')) {
+                                'email' => 'email',
+                                'phone' => 'regex:/^\\+?7[0-9]{10}$/',
+                                'telegram' => 'regex:/^[0-9]{5,15}$/',
+                                default => 'string',
                             })
                             ->placeholder(function (callable $get) {
                                 return match ($get('type')) {
@@ -89,13 +91,13 @@ class NotificationChannelResource extends Resource
                     ->label('Тип')
                     ->enum([
                         'email' => 'Email',
-                        'telegram' => 'Telegram',
-                        'whatsapp' => 'WhatsApp',
+                        'phone' => 'Номер телефона',
+                        'telegram' => 'Telegram ID',
                     ])
                     ->colors([
                         'primary' => 'email',
                         'success' => 'telegram',
-                        'warning' => 'whatsapp',
+                        'warning' => 'phone',
                     ]),
                 Tables\Columns\TextColumn::make('value')
                     ->label('Значение')
