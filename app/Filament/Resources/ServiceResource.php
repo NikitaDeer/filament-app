@@ -11,6 +11,7 @@ use Filament\Resources\Form;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms;
@@ -30,13 +31,33 @@ class ServiceResource extends Resource
       ->schema([
         Forms\Components\TextInput::make('name')
           ->label('Название услуги')
-          ->required(),
-        Forms\Components\TextInput::make('price')
-          ->label('Цена (например, "от 2,500 ₽" или "от 500 ₽/час")')
-          ->required(),
+          ->required()
+          ->maxLength(100),
+
+        Section::make('Ценообразование')
+          ->schema([
+            Select::make('pricing_type')
+              ->label('Тип цены')
+              ->options([
+                'fixed' => 'Фиксированная цена',
+                'hourly' => 'Руб/час',
+              ])
+              ->required()
+              ->default('fixed'),
+
+            Forms\Components\TextInput::make('price')
+              ->label('Цена')
+              ->numeric()
+              ->minValue(0)
+              ->step(0.1)
+              ->required()
+              ->helperText('Укажите стоимость в рублях.'),
+          ])->columns(2),
+
         Forms\Components\Textarea::make('description')
           ->label('Краткое описание')
           ->required()
+          ->maxLength(1000)
           ->columnSpan('full'),
         Forms\Components\TagsInput::make('features')
           ->label('Особенности услуги')
@@ -55,8 +76,30 @@ class ServiceResource extends Resource
   {
     return $table
       ->columns([
-        Tables\Columns\TextColumn::make('name')->label('Название')->searchable(),
-        Tables\Columns\TextColumn::make('price')->label('Цена'),
+        Tables\Columns\TextColumn::make('name')
+          ->label('Название')
+          ->searchable()
+          ->limit(30)
+          ->tooltip(fn ($record) => $record->name),
+
+        Tables\Columns\TextColumn::make('price')
+          ->label('Цена')
+          ->formatStateUsing(function ($state, $record) {
+            if ($record && $record->pricing_type === 'hourly') {
+              return number_format((float) $state, 0, '.', ' ') . ' ₽/час';
+            }
+            return 'от ' . number_format((float) $state, 0, '.', ' ') . ' ₽';
+          })
+          ->sortable(),
+
+        Tables\Columns\BadgeColumn::make('pricing_type')
+          ->label('Тип цены')
+          ->colors([
+            'success' => 'fixed',
+            'warning' => 'hourly',
+          ])
+          ->formatStateUsing(fn ($state) => $state === 'hourly' ? 'Руб/час' : 'Фикс.'),
+
         Tables\Columns\IconColumn::make('is_published')->boolean()->label('Опубликовано'),
         Tables\Columns\IconColumn::make('is_popular')->boolean()->label('Популярная'),
       ])
