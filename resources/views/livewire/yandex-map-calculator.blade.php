@@ -1,16 +1,16 @@
 <div class="p-4 sm:p-6 lg:p-8">
   <div class="grid grid-cols-1 gap-6 md:grid-cols-2" id="calculator-container">
     {{-- Левая колонка с формами --}}
-    <div class="space-y-6 md:col-span-2" id="form-container">
+    <div class="space-y-6 md:col-span-1" id="form-container">
       {{-- Форма калькулятора --}}
       <div class="rounded-lg bg-gray-50 dark:bg-neutral-800 p-6 shadow-md border border-gray-200 dark:border-neutral-700">
         <h2 class="mb-2 text-xl font-semibold">Калькулятор стоимости</h2>
-        <p class="mb-4 text-sm text-gray-500 dark:text-gray-400">Выберите две точки на карте: сначала точку А (откуда), затем точку Б (куда). Поля заполнятся автоматически. Ввод вручную отключён.</p>
+        <p class="mb-4 text-sm text-gray-500 dark:text-gray-400">Выберите две точки на карте: сначала точку А (откуда), затем точку Б (куда). Поля заполнятся автоматически.</p>
         <div class="space-y-3">
           <input wire:model.debounce.500ms="from" type="text" id="from" placeholder="Откуда (выберите на карте)" readonly
             class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500 cursor-not-allowed">
           <input wire:model.debounce.500ms="to" type="text" id="to" placeholder="Куда (выберите на карте)" readonly
-            class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500 cursor-not-allowed">
+            class="w-ful l rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500 cursor-not-allowed">
           <button wire:click="calculate"
             class="w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Рассчитать</button>
         </div>
