@@ -101,7 +101,7 @@
 
     {{-- Правая колонка с картой --}}
     <div class="md:col-span-1">
-      <div wire:ignore id="map" class="w-full rounded-lg shadow-md border border-gray-200 dark:border-neutral-700" style="min-height: 400px;"></div>
+      <div wire:ignore id="map" class="w-full rounded-lg shadow-md border border-gray-200 dark:border-neutral-700" style="min-height: 200px;"></div>
     </div>
   </div>
 </div>
