@@ -174,6 +174,8 @@ class YandexMapCalculator extends Component
     $this->mount();
     // Отправляем событие в браузер для очистки карты
     $this->dispatchBrowserEvent('new-order-started');
+    // Принудительно отправляем событие для синхронизации высоты
+    $this->dispatchBrowserEvent('force-map-sync');
   }
 
   public function render()

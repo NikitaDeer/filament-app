@@ -195,146 +195,15 @@
         }
       });
 
-      // Перерисовываем карту и подгоняем высоту, когда Livewire обновил DOM
+      // Синхронизация после обновления Livewire
       Livewire.on('updated', () => {
-        setTimeout(() => {
-          adjustMapHeight();
-        }, 100);
+          // Небольшая задержка, чтобы DOM успел полностью перерисоваться
+          setTimeout(syncMapHeight, 150);
       });
 
-      // Обработчик события для обновления карты при отправке формы заказа
-      Livewire.on('orderSubmitted', () => {
-        setTimeout(() => {
-          adjustMapHeight();
-        }, 200);
-      });
-
-      // Используем MutationObserver для отслеживания изменений в DOM
-      const formContainer = document.getElementById('form-container');
-      if (formContainer) {
-        const observer = new MutationObserver(function(mutations) {
-          setTimeout(adjustMapHeight, 100);
-        });
-
-        observer.observe(formContainer, {
-          childList: true,
-          subtree: true,
-          attributes: false
-        });
-      }
-
-      // Дополнительная проверка после полной загрузки страницы
-      window.addEventListener('load', function() {
-        if (myMap) {
-          adjustMapHeight();
-          myMap.container.fitToViewport();
-        }
-      });
-
-      // Обработчик события show-notification
-      window.addEventListener('show-notification', function(event) {
-        const notificationContainer = document.getElementById('notification-container');
-        if (!notificationContainer) return;
-
-        const type = event.detail.type;
-        const message = event.detail.message;
-
-        // Создаем элемент уведомления с улучшенным стилем
-        const notification = document.createElement('div');
-        notification.className =
-          `p-4 rounded-md mb-4 shadow-md ${type === 'error' ? 'bg-red-50 text-red-700 border-l-4 border-red-500' : 'bg-green-50 text-green-700 border-l-4 border-green-500'}`;
-        notification.style.animation = 'fadeIn 0.5s';
-
-        // Создаем содержимое уведомления
-        const content = document.createElement('div');
-        content.className = 'flex items-center';
-
-        // Добавляем иконку
-        const icon = document.createElement('svg');
-        icon.className = 'w-6 h-6 mr-3';
-        icon.setAttribute('fill', 'currentColor');
-        icon.setAttribute('viewBox', '0 0 20 20');
-        icon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('fill-rule', 'evenodd');
-        if (type === 'error') {
-          path.setAttribute('d',
-            'M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z'
-          );
-        } else {
-          path.setAttribute('d',
-            'M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
-          );
-        }
-        path.setAttribute('clip-rule', 'evenodd');
-        icon.appendChild(path);
-
-        // Добавляем текст сообщения с улучшенным стилем
-        const textContainer = document.createElement('div');
-        textContainer.className = 'flex-1';
-
-        const text = document.createElement('p');
-        text.className = 'font-medium';
-        text.textContent = message;
-        textContainer.appendChild(text);
-
-        // Добавляем кнопку закрытия
-        const closeButton = document.createElement('button');
-        closeButton.className = 'ml-auto text-gray-400 hover:text-gray-600';
-        closeButton.innerHTML =
-          '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>';
-        closeButton.onclick = function() {
-          hideNotification(notification);
-        };
-
-        // Собираем уведомление
-        content.appendChild(icon);
-        content.appendChild(textContainer);
-        content.appendChild(closeButton);
-        notification.appendChild(content);
-
-        // Очищаем контейнер и добавляем новое уведомление
-        notificationContainer.innerHTML = '';
-        notificationContainer.appendChild(notification);
-
-        // Прокручиваем к уведомлению с плавной анимацией
-        notification.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
-
-        // Добавляем стили анимации
-        const style = document.createElement('style');
-        if (!document.querySelector('#notification-styles')) {
-          style.id = 'notification-styles';
-          style.textContent = `
-            @keyframes fadeIn {
-              from { opacity: 0; transform: translateY(-10px); }
-              to { opacity: 1; transform: translateY(0); }
-            }
-            @keyframes fadeOut {
-              from { opacity: 1; transform: translateY(0); }
-              to { opacity: 0; transform: translateY(-10px); }
-            }
-          `;
-          document.head.appendChild(style);
-        }
-
-        // Функция для скрытия уведомления
-        function hideNotification(notif) {
-          notif.style.animation = 'fadeOut 0.5s';
-          setTimeout(() => {
-            if (notificationContainer.contains(notif)) {
-              notificationContainer.removeChild(notif);
-            }
-          }, 500);
-        }
-
-        // Автоматически скрываем уведомление через 10 секунд
-        setTimeout(() => {
-          hideNotification(notification);
-        }, 10000);
+      // Принудительная синхронизация по событию из PHP
+      window.addEventListener('force-map-sync', event => {
+          setTimeout(syncMapHeight, 50);
       });
 
       window.addEventListener('new-order-started', event => {
