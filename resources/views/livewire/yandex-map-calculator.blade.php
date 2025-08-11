@@ -10,7 +10,7 @@
           <input wire:model.debounce.500ms="from" type="text" id="from" placeholder="Откуда (выберите на карте)" readonly
             class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500 cursor-not-allowed">
           <input wire:model.debounce.500ms="to" type="text" id="to" placeholder="Куда (выберите на карте)" readonly
-            class="w-ful l rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500 cursor-not-allowed">
+            class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500 cursor-not-allowed">
           <button wire:click="calculate"
             class="w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Рассчитать</button>
         </div>
