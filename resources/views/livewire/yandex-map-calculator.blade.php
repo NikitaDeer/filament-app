@@ -195,15 +195,11 @@
         }
       });
 
-      // Синхронизация после обновления Livewire
+      // Синхронизация после ЛЮБОГО обновления Livewire компонента
       Livewire.on('updated', () => {
-          // Небольшая задержка, чтобы DOM успел полностью перерисоваться
+          // Используем достаточную задержку, чтобы DOM успел перерисоваться
+          // как при добавлении, так и при удалении элемента.
           setTimeout(syncMapHeight, 150);
-      });
-
-      // Принудительная синхронизация по событию из PHP
-      window.addEventListener('force-map-sync', event => {
-          setTimeout(syncMapHeight, 50);
       });
 
       window.addEventListener('new-order-started', event => {
