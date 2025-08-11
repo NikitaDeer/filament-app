@@ -1,15 +1,16 @@
 <div class="p-4 sm:p-6 lg:p-8">
-  <div class="grid grid-cols-1 gap-8 md:grid-cols-3" id="calculator-container">
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-2" id="calculator-container">
     {{-- Левая колонка с формами --}}
     <div class="space-y-6 md:col-span-2" id="form-container">
       {{-- Форма калькулятора --}}
-      <div class="rounded-lg bg-gray-50 dark:bg-neutral-800 p-6 shadow-md">
-        <h2 class="mb-4 text-xl font-semibold">Калькулятор стоимости</h2>
-        <div class="space-y-4">
-          <input wire:model.debounce.500ms="from" type="text" id="from" placeholder="Откуда"
-            class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500">
-          <input wire:model.debounce.500ms="to" type="text" id="to" placeholder="Куда"
-            class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500">
+      <div class="rounded-lg bg-gray-50 dark:bg-neutral-800 p-6 shadow-md border border-gray-200 dark:border-neutral-700">
+        <h2 class="mb-2 text-xl font-semibold">Калькулятор стоимости</h2>
+        <p class="mb-4 text-sm text-gray-500 dark:text-gray-400">Выберите две точки на карте: сначала точку А (откуда), затем точку Б (куда). Поля заполнятся автоматически. Ввод вручную отключён.</p>
+        <div class="space-y-3">
+          <input wire:model.debounce.500ms="from" type="text" id="from" placeholder="Откуда (выберите на карте)" readonly
+            class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500 cursor-not-allowed">
+          <input wire:model.debounce.500ms="to" type="text" id="to" placeholder="Куда (выберите на карте)" readonly
+            class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500 cursor-not-allowed">
           <button wire:click="calculate"
             class="w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Рассчитать</button>
         </div>
@@ -23,7 +24,7 @@
 
       {{-- Форма заказа --}}
       @if ($distance)
-        <div class="rounded-lg bg-gray-50 dark:bg-neutral-800 p-6 shadow-md">
+        <div class="rounded-lg bg-gray-50 dark:bg-neutral-800 p-6 shadow-md border border-gray-200 dark:border-neutral-700">
           <h2 class="mb-4 text-xl font-semibold">Оформить заявку</h2>
           <div class="relative">
             @if ($orderSubmittedSuccessfully)
@@ -59,8 +60,8 @@
                   <span class="text-sm text-danger-500">{{ $message }}</span>
                 @enderror
 
-                <input type="tel" wire:model.defer="phone" class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Ваш телефон*" required>
+                <input type="tel" wire:model.defer="phone" id="phone" inputmode="tel" pattern="^\+7\s?\(?\d{3}\)?\s?\d{3}[-\s]?\d{2}[-\s]?\d{2}$" class="w-full rounded-md border-gray-300 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-900 px-4 py-2 focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="+7 (___) ___-__-__" required>
                 @error('phone')
                   <span class="text-sm text-danger-500">{{ $message }}</span>
                 @enderror
@@ -100,7 +101,7 @@
 
     {{-- Правая колонка с картой --}}
     <div class="md:col-span-1">
-      <div wire:ignore id="map" class="w-full rounded-lg shadow-md" style="min-height: 400px;"></div>
+      <div wire:ignore id="map" class="w-full rounded-lg shadow-md border border-gray-200 dark:border-neutral-700" style="min-height: 400px;"></div>
     </div>
   </div>
 </div>
@@ -149,8 +150,7 @@
             myMap.container.fitToViewport();
           }, 100);
 
-          new ymaps.SuggestView('from');
-          new ymaps.SuggestView('to');
+          // Поля адресов только для отображения, выбор делается кликами по карте
 
           myMap.events.add('click', function(e) {
             const coords = e.get('coords');
@@ -360,6 +360,43 @@
         }, function(error) {
           console.error('Ошибка построения маршрута: ', error.message);
         });
+      });
+    });
+  </script>
+  <script>
+    // Маска телефона РФ: +7 (XXX) XXX-XX-XX
+    document.addEventListener('DOMContentLoaded', function() {
+      const phoneInput = document.getElementById('phone');
+      if (!phoneInput) return;
+
+      const format = (value) => {
+        const digits = value.replace(/\D/g, '');
+        let result = '+7 ';
+        // Обрезаем к 11-ти, включая ведущую 7
+        let d = digits;
+        if (d.startsWith('8')) d = '7' + d.slice(1);
+        if (!d.startsWith('7')) d = '7' + d; // принудительно +7
+        const num = d.slice(1); // без ведущей 7
+        if (num.length > 0) result += '(' + num.substring(0, 3);
+        if (num.length >= 3) result += ') ' + num.substring(3, 6);
+        if (num.length >= 6) result += '-' + num.substring(6, 8);
+        if (num.length >= 8) result += '-' + num.substring(8, 10);
+        return result;
+      };
+
+      const handle = (e) => {
+        const caretEnd = phoneInput.selectionEnd;
+        phoneInput.value = format(phoneInput.value);
+      };
+
+      phoneInput.addEventListener('input', handle);
+      phoneInput.addEventListener('focus', () => {
+        if (phoneInput.value.trim() === '') phoneInput.value = '+7 ';
+      });
+      phoneInput.addEventListener('blur', () => {
+        if (phoneInput.value.replace(/\D/g, '').length < 11) {
+          // оставим как есть — серверная валидация покажет ошибку
+        }
       });
     });
   </script>

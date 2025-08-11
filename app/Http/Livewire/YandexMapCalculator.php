@@ -64,7 +64,20 @@ class YandexMapCalculator extends Component
   {
     $validatedData = $this->validate([
       'name' => 'required|string|min:2|max:255',
-      'phone' => 'required|string|min:10|max:20|regex:/^[0-9+\-\s()]*$/',
+      'phone' => [
+        'required',
+        'string',
+        'min:10',
+        'max:20',
+        // разрешаем любые символы форматирования, но валидируем конечные цифры как российский номер
+        function ($attribute, $value, $fail) {
+          $digits = preg_replace('/[^0-9]/', '', (string) $value);
+          if (strlen($digits) === 11 && ($digits[0] === '7' || $digits[0] === '8')) {
+            return;
+          }
+          $fail('Введите номер телефона в формате +7 (XXX) XXX-XX-XX');
+        },
+      ],
       'email' => 'required|email:rfc|max:255',
       'from' => 'required|string|min:3|max:255',
       'to' => 'required|string|min:3|max:255',
@@ -78,7 +91,7 @@ class YandexMapCalculator extends Component
       'phone.required' => 'Пожалуйста, укажите ваш номер телефона',
       'phone.min' => 'Номер телефона должен содержать не менее 10 символов',
       'phone.max' => 'Номер телефона не должен превышать 20 символов',
-      'phone.regex' => 'Номер телефона может содержать только цифры, пробелы и символы +()-',
+      'phone.regex' => 'Введите номер телефона в формате +7 (XXX) XXX-XX-XX',
       'email.required' => 'Пожалуйста, укажите ваш email',
       'email.email' => 'Пожалуйста, укажите корректный email адрес',
       'email.max' => 'Email не должен превышать 255 символов',
