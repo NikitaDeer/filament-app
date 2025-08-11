@@ -337,29 +337,41 @@
         }, 10000);
       });
 
+      window.addEventListener('new-order-started', event => {
+          if (myMap) {
+              myMap.geoObjects.removeAll();
+              routePoints = []; // Очищаем массив точек
+          }
+      });
 
       window.addEventListener('calculate-route', event => {
-        const from = event.detail.from;
-        const to = event.detail.to;
-        const pricePerKm = event.detail.price_per_km;
+          const from = event.detail.from;
+          const to = event.detail.to;
+          const pricePerKm = event.detail.price_per_km;
 
-        if (!from || !to) return;
+          if (!from || !to) return;
 
-        myMap.geoObjects.removeAll();
+          // Очищаем предыдущий маршрут перед построением нового
+          myMap.geoObjects.removeAll();
+          routePoints = []; // Также очищаем точки здесь
 
-        ymaps.route([from, to]).then(function(route) {
-          myMap.geoObjects.add(route);
-          const distance = route.getLength() / 1000;
-          const cost = Math.round(distance * pricePerKm);
+          ymaps.route([from, to]).then(function(route) {
+              // Добавляем метки в начало и конец маршрута
+              const points = route.getWayPoints();
+              myMap.geoObjects.add(new ymaps.Placemark(points.get(0).geometry.getCoordinates(), { iconCaption: 'А' }));
+              myMap.geoObjects.add(new ymaps.Placemark(points.get(1).geometry.getCoordinates(), { iconCaption: 'Б' }));
 
-          @this.set('distance', distance);
-          @this.set('cost', cost);
+              // Добавляем саму линию маршрута
+              myMap.geoObjects.add(route);
 
-          // Обновляем размер карты после расчета маршрута
-          setTimeout(adjustMapHeight, 200);
-        }, function(error) {
-          console.error('Ошибка построения маршрута: ', error.message);
-        });
+              const distance = route.getLength() / 1000;
+              const cost = Math.round(distance * pricePerKm);
+
+              @this.set('distance', distance);
+              @this.set('cost', cost);
+          }, function(error) {
+              console.error('Ошибка построения маршрута: ', error.message);
+          });
       });
     });
   </script>

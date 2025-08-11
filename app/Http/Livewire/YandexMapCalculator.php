@@ -40,6 +40,16 @@ class YandexMapCalculator extends Component
 
   public function calculate()
   {
+    // Добавляем проверку, чтобы убедиться, что тариф загружен
+    if (!$this->rate) {
+        $this->rate = Rate::where('is_active', true)->first();
+        if (!$this->rate) {
+            // Если тарифа всё ещё нет, можно показать ошибку или использовать значение по умолчанию
+            session()->flash('error', 'Активный тариф не найден. Расчет невозможен.');
+            return;
+        }
+    }
+
     $this->validate([
       'from' => 'required|string|min:3|max:255',
       'to' => 'required|string|min:3|max:255',
@@ -160,6 +170,10 @@ class YandexMapCalculator extends Component
   {
     $this->reset();
     $this->orderSubmittedSuccessfully = false;
+    // Повторно инициализируем тариф
+    $this->mount();
+    // Отправляем событие в браузер для очистки карты
+    $this->dispatchBrowserEvent('new-order-started');
   }
 
   public function render()
