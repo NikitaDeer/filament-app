@@ -342,8 +342,6 @@
               myMap.geoObjects.removeAll();
               routePoints = []; // Очищаем массив точек
           }
-          // Вызываем синхронизацию высоты, чтобы карта вернулась к исходному размеру
-          setTimeout(syncMapHeight, 50);
       });
 
       window.addEventListener('calculate-route', event => {
