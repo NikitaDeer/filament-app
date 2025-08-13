@@ -97,34 +97,41 @@ class UserResource extends Resource
       ->actions([
         Tables\Actions\EditAction::make(),
         Tables\Actions\DeleteAction::make()
-            ->visible(fn (User $record): bool => !$record->hasRole('Admin')),
+            ->visible(fn (User $record): bool => !$record->hasRole('Admin') && $record->id !== auth()->id()),
       ])
       ->bulkActions([
         Tables\Actions\DeleteBulkAction::make()
             ->action(function (Collection $records) {
-                $adminsInSelection = $records->filter(fn (User $record) => $record->hasRole('Admin'));
-                $usersToDelete = $records->filter(fn (User $record) => !$record->hasRole('Admin'));
+                $currentUser = auth()->user();
+                $deletedCount = 0;
+                $notDeletedCount = 0;
 
-                if ($adminsInSelection->isNotEmpty()) {
+                $records->each(function (User $record) use ($currentUser, &$deletedCount, &$notDeletedCount) {
+                    if ($record->id === $currentUser->id || $record->hasRole('Admin')) {
+                        $notDeletedCount++;
+                    } else {
+                        $record->delete();
+                        $deletedCount++;
+                    }
+                });
+
+                if ($deletedCount > 0) {
                     Notification::make()
-                        ->title('Часть пользователей не была удалена')
-                        ->body('Вы не можете удалять пользователей с ролью "Admin". Остальные выбранные пользователи были удалены.')
-                        ->warning()
+                        ->title('Пользователи удалены')
+                        ->body("Успешно удалено {$deletedCount} пользователей.")
+                        ->success()
                         ->send();
                 }
 
-                if ($usersToDelete->isEmpty()) {
-                    return;
+                if ($notDeletedCount > 0) {
+                    Notification::make()
+                        ->title('Некоторые пользователи не были удалены')
+                        ->body("Не удалось удалить {$notDeletedCount} пользователей, так как они являются администраторами или это ваш собственный аккаунт.")
+                        ->warning()
+                        ->send();
                 }
-
-                $usersToDelete->each->delete();
-
-                Notification::make()
-                    ->title('Пользователи успешно удалены')
-                    ->body('Выбранные пользователи, не являющиеся администраторами, были успешно удалены.')
-                    ->success()
-                    ->send();
-            }),
+            })
+            ->deselectRecordsAfterCompletion(),
       ]);
   }
 
