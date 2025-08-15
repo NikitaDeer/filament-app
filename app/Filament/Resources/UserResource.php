@@ -25,6 +25,8 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\NumberColumn;
 use Filament\Tables\Columns\IconColumn;
 use Spatie\Permission\Models\Role;
+use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserResource extends Resource
 {
@@ -46,36 +48,28 @@ class UserResource extends Resource
       ->schema([
         Card::make()
           ->schema([
-            Forms\Components\TextInput::make('name'),
+            Forms\Components\TextInput::make('name')
+                ->required(),
             Forms\Components\TextInput::make('email')
                 ->email()
-                ->required(),
+                ->required()
+                ->unique(ignoreRecord: true),
             Forms\Components\TextInput::make('password')
                 ->password()
-                ->required()
+                ->required(fn (Page $livewire): bool => $livewire instanceof CreateRecord)
+                ->minLength(8)
                 ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                ->dehydrated(fn ($state) => filled($state))
-                ->hiddenOn('edit'),
-            Forms\Components\Select::make('current_tariff_id')
-                ->relationship('currentTariff', 'title'),
-            Forms\Components\Select::make('tariff_status')
-                ->options([
-                    'active' => 'Active',
-                    'expired' => 'Expired',
-                    'paused' => 'Paused'
-                ]),
-
-            // Добавляем поле для выбора ролей
+                ->dehydrated(fn ($state) => filled($state)),
             Forms\Components\Select::make('roles')
-                ->label('Роли')
                 ->multiple()
                 ->relationship('roles', 'name')
-                ->options(function () {
-                    return Role::all()->pluck('name', 'id')->toArray();
-                })
                 ->preload()
-                ->searchable()
-                ->helperText('Выберите роли для пользователя'),
+                // При создании пользователя по умолчанию будет выбрана роль Admin
+                ->default(fn (Page $livewire): array => $livewire instanceof CreateRecord ? [Role::where('name', 'Admin')->first()?->id] : [])
+                ->disabled(fn (Page $livewire): bool => $livewire instanceof CreateRecord)
+                ->helperText(fn (Page $livewire): string => $livewire instanceof CreateRecord ? 'Пользователь будет создан с ролью Admin.' : '')
+                // Запрещаем администратору редактировать собственные роли
+                ->visible(fn ($record) => !$record || $record->id !== auth()->id()),
           ])
       ]);
   }
@@ -84,151 +78,60 @@ class UserResource extends Resource
   {
     return $table
       ->columns([
-        Tables\Columns\TextColumn::make('email')
-        ->searchable(),
-
-        // Добавляем колонку с ролями
-        Tables\Columns\BadgeColumn::make('roles')
-        ->label('Роли')
-        ->getStateUsing(function ($record) {
-            return $record->roles->pluck('name')->toArray();
-        })
-        ->colors([
-            'danger' => 'Admin',
-            'primary' => 'User',
-        ]),
-
-        Tables\Columns\TextColumn::make('currentTariff.title')
-        ->label('Текущий тариф'),
-
-        // Заменяем колонку tariff_status на динамическую колонку, основанную на реальном статусе подписки
-        Tables\Columns\BadgeColumn::make('subscription_status')
-        ->label('Статус подписки')
-        ->getStateUsing(function ($record) {
-            $subscriptionStatus = $record->getSubscriptionStatus();
-
-
-            return $subscriptionStatus['status'];
-        })
-        ->colors([
-            'success' => 'active',
-            'warning' => 'trial',
-            'danger' => 'inactive'
-        ])
-        ->formatStateUsing(function ($state) {
-            return match($state) {
-                'active' => 'Активна',
-                'trial' => 'Пробный период',
-                'inactive' => 'Не активна',
-                default => 'Неизвестно'
-            };
-        }),
-
-        // Добавляем колонку с датой окончания
-        Tables\Columns\TextColumn::make('subscription_end_date')
-        ->label('Окончание подписки')
-        ->getStateUsing(function ($record) {
-            $subscriptionStatus = $record->getSubscriptionStatus();
-            if (isset($subscriptionStatus['end_date'])) {
-                return $subscriptionStatus['end_date']->format('d.m.Y H:i');
-            }
-            return '-';
-        }),
+        Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
+        Tables\Columns\TextColumn::make('email')->searchable()->sortable(),
+        Tables\Columns\BadgeColumn::make('roles.name')
+            ->label('Роли')
+            ->sortable()
+            ->colors([
+                'danger' => 'Admin',
+            ]),
+        Tables\Columns\TextColumn::make('created_at')
+            ->label('Дата создания')
+            ->dateTime('d.m.Y H:i')
+            ->sortable(),
       ])
       ->filters([
-        Tables\Filters\SelectFilter::make('subscription_status')
-          ->options([
-            'active' => 'Активна',
-            'trial' => 'Пробный период',
-            'inactive' => 'Не активна'
-          ])
-          ->label('Статус подписки')
-          ->query(function (Builder $query, array $data): Builder {
-            if (!$data['value']) {
-                return $query;
-            }
-
-            return $query->where(function ($query) use ($data) {
-                switch ($data['value']) {
-                    case 'active':
-                        $query->whereHas('subscriptions', function ($q) {
-                            $q->where('status', 'active')
-                              ->where('end_date', '>', now());
-                        });
-                        break;
-                    case 'trial':
-                        $query->where('trial_ends_at', '>', now());
-                        break;
-                    case 'inactive':
-                        $query->whereDoesntHave('subscriptions', function ($q) {
-                            $q->where('status', 'active')
-                              ->where('end_date', '>', now());
-                        })
-                        ->where(function ($q) {
-                            $q->whereNull('trial_ends_at')
-                              ->orWhere('trial_ends_at', '<=', now());
-                        });
-                        break;
-                }
-            });
-          }),
-
-        // Добавляем фильтр по ролям
-        Tables\Filters\SelectFilter::make('roles')
-          ->label('Роль')
-          ->relationship('roles', 'name')
-          ->options(function () {
-              return Role::all()->pluck('name', 'name')->toArray();
-          }),
+        //
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
-
-        // Добавляем быстрое действие для смены роли
-        Tables\Actions\Action::make('change_role')
-            ->label('Изменить роль')
-            ->icon('heroicon-o-shield-check')
-            ->form([
-                Select::make('role')
-                    ->label('Роль')
-                    ->options(function () {
-                        return Role::all()->pluck('name', 'name')->toArray();
-                    })
-                    ->required()
-                    ->default(function ($record) {
-                        return $record->roles->first()?->name;
-                    }),
-            ])
-            ->action(function (array $data, $record): void {
-                $record->syncRoles([$data['role']]);
-            })
-            ->requiresConfirmation()
-            ->modalHeading('Изменить роль пользователя')
-            ->modalSubheading('Вы уверены, что хотите изменить роль этого пользователя?'),
+        Tables\Actions\DeleteAction::make()
+            ->visible(fn (User $record): bool => !$record->hasRole('Admin') && $record->id !== auth()->id()),
       ])
       ->bulkActions([
-        Tables\Actions\DeleteBulkAction::make(),
+        Tables\Actions\DeleteBulkAction::make()
+            ->action(function (Collection $records) {
+                $currentUser = auth()->user();
+                $deletedCount = 0;
+                $notDeletedCount = 0;
 
-        // Добавляем массовое действие для назначения роли
-        Tables\Actions\BulkAction::make('assign_role')
-            ->label('Назначить роль')
-            ->icon('heroicon-o-shield-check')
-            ->form([
-                Select::make('role')
-                    ->label('Роль')
-                    ->options(function () {
-                        return Role::all()->pluck('name', 'name')->toArray();
-                    })
-                    ->required(),
-            ])
-            ->action(function (array $data, $records): void {
-                foreach ($records as $record) {
-                    $record->syncRoles([$data['role']]);
+                $records->each(function (User $record) use ($currentUser, &$deletedCount, &$notDeletedCount) {
+                    if ($record->id === $currentUser->id || $record->hasRole('Admin')) {
+                        $notDeletedCount++;
+                    } else {
+                        $record->delete();
+                        $deletedCount++;
+                    }
+                });
+
+                if ($deletedCount > 0) {
+                    Notification::make()
+                        ->title('Пользователи удалены')
+                        ->body("Успешно удалено {$deletedCount} пользователей.")
+                        ->success()
+                        ->send();
+                }
+
+                if ($notDeletedCount > 0) {
+                    Notification::make()
+                        ->title('Некоторые пользователи не были удалены')
+                        ->body("Не удалось удалить {$notDeletedCount} пользователей, так как они являются администраторами или это ваш собственный аккаунт.")
+                        ->warning()
+                        ->send();
                 }
             })
-            ->requiresConfirmation()
-            ->modalHeading('Назначить роль выбранным пользователям')
-            ->modalSubheading('Вы уверены, что хотите назначить роль выбранным пользователям?'),
+            ->deselectRecordsAfterCompletion(),
       ]);
   }
 

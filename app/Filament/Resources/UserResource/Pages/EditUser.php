@@ -13,7 +13,8 @@ class EditUser extends EditRecord
     protected function getActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->visible(fn ($record) => !$record->hasRole('Admin') && $record->id !== auth()->id()),
         ];
     }
 }
