@@ -6,6 +6,12 @@
         "./artisan",
         "boost:mcp"
       ]
+    },
+    "byterover-mcp": {
+      "httpUrl": "https://mcp.byterover.dev/v2/mcp",
+      "headers": {
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJsaWNLZXkiOiJway1ici0xN2QyNTdmOS1hYjFmLTQxNmQtODNlNS01NzUzZDcyZTRmZDgiLCJ1c2VySWQiOiJkZGVyZ3Vub3ZAeWFuZGV4LnJ1IiwiaWF0IjoxNzU1NDI3NTQ0LCJleHAiOjE3NjA2MTE1NDQsImlzcyI6IkJZVEVST1ZFUiBNQ1AgU0VSVkVSIn0.VYBH7LdJ233heOeB7Dm7EjKcFZmc22ONERmTtbMg2EU"
+      }
     }
   }
 }
