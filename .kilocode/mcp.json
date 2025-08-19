@@ -5,6 +5,11 @@
       "args": [
         "./artisan",
         "boost:mcp"
+      ],
+      "alwaysAllow": [
+        "list-artisan-commands",
+        "list-routes",
+        "database-schema"
       ]
     }
   }
