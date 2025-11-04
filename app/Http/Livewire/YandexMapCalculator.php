@@ -70,6 +70,12 @@ class YandexMapCalculator extends Component
     $this->vehicle_id = $vehicleId;
     $this->vehicle = Vehicle::find($vehicleId);
 
+    // Сбрасываем пассажиров если новый транспорт их не поддерживает
+    if (!$this->vehicle || !$this->vehicle->allows_passengers) {
+      $this->passengers_count = 0;
+      $this->passenger_price = 0;
+    }
+
     // Пересчитываем стоимость при смене автомобиля
     if (!empty($this->route_points) && count($this->route_points) >= 2) {
       $this->recalculate();
@@ -148,21 +154,39 @@ class YandexMapCalculator extends Component
    */
   public function updatePassengersCount($count)
   {
-    if (!$this->vehicle || !$this->vehicle->allows_passengers) {
+    // Проверяем что транспорт загружен
+    if (!$this->vehicle) {
       $this->passengers_count = 0;
       $this->passenger_price = 0;
       return;
     }
 
-    $passengerOption = PricingOption::ofType('passenger')->active()->first();
-    if ($passengerOption) {
-      $maxPassengers = min($this->vehicle->max_passengers, $passengerOption->max_quantity);
-      $this->passengers_count = max(0, min($count, $maxPassengers));
-      $this->passenger_price = $passengerOption->price_per_hour;
-    } else {
+    // Проверяем что транспорт поддерживает пассажиров
+    if (!$this->vehicle->allows_passengers) {
       $this->passengers_count = 0;
       $this->passenger_price = 0;
+      return;
     }
+
+    // Проверяем что есть активная опция пассажиров
+    $passengerOption = PricingOption::ofType('passenger')->active()->first();
+    if (!$passengerOption) {
+      $this->passengers_count = 0;
+      $this->passenger_price = 0;
+      return;
+    }
+
+    // Определяем максимум (учитываем оба лимита)
+    $vehicleMax = (int) $this->vehicle->max_passengers;
+    $optionMax = (int) $passengerOption->max_quantity;
+
+    // Если у транспорта max = 0, используем лимит опции
+    $maxPassengers = $vehicleMax > 0 ? min($vehicleMax, $optionMax) : $optionMax;
+
+    // Устанавливаем количество с учетом лимитов
+    $this->passengers_count = max(0, min($count, $maxPassengers));
+    $this->passenger_price = $passengerOption->price_per_hour;
+
     $this->recalculate();
   }
 

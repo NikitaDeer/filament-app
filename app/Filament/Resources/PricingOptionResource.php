@@ -127,9 +127,9 @@ class PricingOptionResource extends Resource
                     ->label('Макс.')
                     ->sortable(),
 
-                Tables\Columns\IconColumn::make('is_active')
+                Tables\Columns\ToggleColumn::make('is_active')
                     ->label('Активна')
-                    ->boolean(),
+                    ->tooltip('Кликните для активации/деактивации. При активации другие опции того же типа будут деактивированы автоматически'),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Создана')
@@ -153,47 +153,9 @@ class PricingOptionResource extends Resource
                     ->falseLabel('Только неактивные'),
             ])
             ->actions([
-                Tables\Actions\Action::make('toggle_active')
-                    ->label('Активировать')
-                    ->icon('heroicon-o-check-circle')
-                    ->color('success')
-                    ->visible(fn ($record) => !$record->is_active)
-                    ->requiresConfirmation()
-                    ->modalHeading('Активировать эту опцию?')
-                    ->modalSubheading(fn ($record) => 'Другие активные опции типа "' . $record->type . '" будут деактивированы')
-                    ->action(function ($record) {
-                        // Деактивируем все записи этого типа
-                        \App\Models\PricingOption::where('type', $record->type)
-                            ->where('id', '!=', $record->id)
-                            ->update(['is_active' => false]);
-
-                        // Активируем текущую
-                        $record->update(['is_active' => true]);
-
-                        \Filament\Notifications\Notification::make()
-                            ->success()
-                            ->title('Опция активирована')
-                            ->body('Все другие опции этого типа были деактивированы')
-                            ->send();
-                    }),
-
-                Tables\Actions\Action::make('toggle_inactive')
-                    ->label('Деактивировать')
-                    ->icon('heroicon-o-x-circle')
-                    ->color('danger')
-                    ->visible(fn ($record) => $record->is_active)
-                    ->requiresConfirmation()
-                    ->action(function ($record) {
-                        $record->update(['is_active' => false]);
-
-                        \Filament\Notifications\Notification::make()
-                            ->success()
-                            ->title('Опция деактивирована')
-                            ->send();
-                    }),
-
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

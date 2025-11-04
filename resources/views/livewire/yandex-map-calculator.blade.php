@@ -179,18 +179,20 @@
                 <div class="flex items-center justify-between">
                   <div>
                     <label class="font-medium text-gray-900 dark:text-white">Грузчики</label>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ number_format($loaderOption->price_per_hour, 0) }} ₽/час за человека</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ number_format($loaderOption->price_per_hour, 0) }} ₽/час за человека (макс: {{ $loaderOption->max_quantity }})</p>
                   </div>
                   <div class="flex items-center gap-2">
                     <button
-                      wire:click="updateLoadersCount({{ max(0, $loaders_count - 1) }})"
-                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500">
+                      wire:click="updateLoadersCount({{ $loaders_count - 1 }})"
+                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                      @if($loaders_count <= 0) disabled @endif>
                       −
                     </button>
                     <span class="w-8 text-center font-bold">{{ $loaders_count }}</span>
                     <button
-                      wire:click="updateLoadersCount({{ min($loaderOption->max_quantity, $loaders_count + 1) }})"
-                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500">
+                      wire:click="updateLoadersCount({{ $loaders_count + 1 }})"
+                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                      @if($loaders_count >= $loaderOption->max_quantity) disabled @endif>
                       +
                     </button>
                   </div>
@@ -204,18 +206,20 @@
                 <div class="flex items-center justify-between">
                   <div>
                     <label class="font-medium text-gray-900 dark:text-white">Пассажиры</label>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ number_format($passengerOption->price_per_hour, 0) }} ₽/час за человека</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ number_format($passengerOption->price_per_hour, 0) }} ₽/час за человека (макс: {{ $vehicle->max_passengers }})</p>
                   </div>
                   <div class="flex items-center gap-2">
                     <button
-                      wire:click="updatePassengersCount({{ max(0, $passengers_count - 1) }})"
-                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500">
+                      wire:click="updatePassengersCount({{ $passengers_count - 1 }})"
+                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                      @if($passengers_count <= 0) disabled @endif>
                       −
                     </button>
                     <span class="w-8 text-center font-bold">{{ $passengers_count }}</span>
                     <button
-                      wire:click="updatePassengersCount({{ min($vehicle->max_passengers, $passengers_count + 1) }})"
-                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500">
+                      wire:click="updatePassengersCount({{ $passengers_count + 1 }})"
+                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                      @if($passengers_count >= $vehicle->max_passengers) disabled @endif>
                       +
                     </button>
                   </div>
@@ -228,19 +232,21 @@
               <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-600">
                 <div class="mb-3">
                   <label class="font-medium text-gray-900 dark:text-white">Подъем на этаж</label>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ number_format($floorOption->price_per_floor, 0) }} ₽ за этаж</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ number_format($floorOption->price_per_floor, 0) }} ₽ за этаж (макс: {{ $floorOption->max_quantity }})</p>
                 </div>
                 <div class="flex items-center gap-3">
                   <div class="flex items-center gap-2">
                     <button
-                      wire:click="updateFloorsCount({{ max(0, $floors_count - 1) }})"
-                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500">
+                      wire:click="updateFloorsCount({{ $floors_count - 1 }})"
+                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                      @if($floors_count <= 0) disabled @endif>
                       −
                     </button>
                     <span class="w-8 text-center font-bold">{{ $floors_count }}</span>
                     <button
-                      wire:click="updateFloorsCount({{ min($floorOption->max_quantity, $floors_count + 1) }})"
-                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500">
+                      wire:click="updateFloorsCount({{ $floors_count + 1 }})"
+                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                      @if($floors_count >= $floorOption->max_quantity) disabled @endif>
                       +
                     </button>
                   </div>

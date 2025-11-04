@@ -22,11 +22,19 @@ class PricingOption extends Model
     protected static function booted()
     {
         // При сохранении активной записи деактивируем другие того же типа
-        static::saving(function ($pricingOption) {
+        static::saved(function ($pricingOption) {
             if ($pricingOption->is_active && $pricingOption->type) {
+                // Деактивируем другие записи этого типа
                 static::where('type', $pricingOption->type)
-                    ->where('id', '!=', $pricingOption->id ?? 0)
+                    ->where('id', '!=', $pricingOption->id)
                     ->update(['is_active' => false]);
+                
+                // Логируем для отладки
+                \Log::info("PricingOption activated", [
+                    'id' => $pricingOption->id,
+                    'type' => $pricingOption->type,
+                    'name' => $pricingOption->name,
+                ]);
             }
         });
     }
