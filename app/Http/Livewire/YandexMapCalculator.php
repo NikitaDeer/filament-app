@@ -215,6 +215,10 @@ class YandexMapCalculator extends Component
    */
   protected function calculateDistanceCost()
   {
+    if (!$this->vehicle) {
+      $this->base_distance_cost = 0;
+      return;
+    }
     $this->base_distance_cost = $this->distance * $this->vehicle->price_per_km;
   }
 
@@ -223,6 +227,10 @@ class YandexMapCalculator extends Component
    */
   protected function calculateTimeCost()
   {
+    if (!$this->vehicle) {
+      $this->base_time_cost = 0;
+      return;
+    }
     $this->base_time_cost = $this->estimated_hours * $this->vehicle->price_per_hour;
   }
 

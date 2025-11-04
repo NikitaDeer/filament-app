@@ -10,20 +10,20 @@
             <i class="fas fa-user text-green-500 mr-2"></i>
             Основная информация
         </h4>
-        
+
         <form method="POST" action="{{ route('profile.update') }}" class="space-y-4">
             @csrf
             @method('patch')
-            
+
             <!-- Имя пользователя -->
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
                     Имя пользователя
                 </label>
-                <input 
-                    type="text" 
-                    id="name" 
-                    name="name" 
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
                     value="{{ old('name', Auth::user()->name) }}"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     required
@@ -38,10 +38,10 @@
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
                     Электронная почта
                 </label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
                     value="{{ old('email', Auth::user()->email) }}"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     required
@@ -56,10 +56,10 @@
                 <label for="telegram_id" class="block text-sm font-medium text-gray-700 mb-2">
                     Telegram ID <span class="text-gray-500 text-xs">(необязательно)</span>
                 </label>
-                <input 
-                    type="text" 
-                    id="telegram_id" 
-                    name="telegram_id" 
+                <input
+                    type="text"
+                    id="telegram_id"
+                    name="telegram_id"
                     value="{{ old('telegram_id', Auth::user()->telegram_id) }}"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     placeholder="Введите ваш Telegram ID"
@@ -70,7 +70,7 @@
             </div>
 
             <div class="flex justify-end">
-                <button 
+                <button
                     type="submit"
                     class="bg-gradient-to-r from-green-500 to-green-500 text-white px-6 py-3 rounded-lg font-medium hover:from-green-600 hover:to-green-600 transition-all duration-300 flex items-center"
                 >
@@ -87,26 +87,26 @@
             <i class="fas fa-lock text-green-500 mr-2"></i>
             Изменение пароля
         </h4>
-        
+
         <form method="POST" action="{{ route('password.update') }}" class="space-y-4">
             @csrf
             @method('put')
-            
+
             <!-- Текущий пароль -->
             <div>
                 <label for="current_password" class="block text-sm font-medium text-gray-700 mb-2">
                     Текущий пароль
                 </label>
                 <div class="relative">
-                    <input 
-                        type="password" 
-                        id="current_password" 
+                    <input
+                        type="password"
+                        id="current_password"
                         name="current_password"
                         class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                         required
                     >
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         onclick="togglePassword('current_password')"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                     >
@@ -124,15 +124,15 @@
                     Новый пароль
                 </label>
                 <div class="relative">
-                    <input 
-                        type="password" 
-                        id="password" 
+                    <input
+                        type="password"
+                        id="password"
                         name="password"
                         class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                         required
                     >
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         onclick="togglePassword('password')"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                     >
@@ -150,15 +150,15 @@
                     Подтвердите новый пароль
                 </label>
                 <div class="relative">
-                    <input 
-                        type="password" 
-                        id="password_confirmation" 
+                    <input
+                        type="password"
+                        id="password_confirmation"
                         name="password_confirmation"
                         class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                         required
                     >
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         onclick="togglePassword('password_confirmation')"
                         class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                     >
@@ -171,7 +171,7 @@
             </div>
 
             <div class="flex justify-end">
-                <button 
+                <button
                     type="submit"
                     class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-300 flex items-center"
                 >
@@ -191,8 +191,8 @@
         <p class="text-sm text-red-600 mb-4">
             Удаление учетной записи приведет к безвозвратной потере всех ваших данных, включая подписки и ключи доступа.
         </p>
-        
-        <button 
+
+        <button
             onclick="openDeleteModal()"
             class="bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-all duration-300 flex items-center"
         >
@@ -209,22 +209,22 @@
             <i class="fas fa-exclamation-triangle text-red-500 text-2xl mr-3"></i>
             <h3 class="text-lg font-semibold text-gray-800">Подтверждение удаления</h3>
         </div>
-        
+
         <p class="text-gray-600 mb-6">
             Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.
         </p>
-        
+
         <form method="POST" action="{{ route('profile.destroy') }}" class="mb-4" id="deleteForm">
             @csrf
             @method('delete')
-            
+
             <div class="mb-4">
                 <label for="delete_password" class="block text-sm font-medium text-gray-700 mb-2">
                     Введите ваш пароль для подтверждения
                 </label>
-                <input 
-                    type="password" 
-                    id="delete_password" 
+                <input
+                    type="password"
+                    id="delete_password"
                     name="password"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     required
@@ -235,16 +235,16 @@
                     <p class="mt-1 text-sm text-red-600" id="server-password-error">{{ $message }}</p>
                 @enderror
             </div>
-            
+
             <div class="flex justify-end space-x-3">
-                <button 
+                <button
                     type="button"
                     onclick="closeDeleteModal()"
                     class="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors duration-200"
                 >
                     Отмена
                 </button>
-                <button 
+                <button
                     type="submit"
                     class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
                     id="deleteSubmitButton"
@@ -253,7 +253,7 @@
                 </button>
             </div>
         </form>
-        
+
         <form method="POST" action="{{ route('profile.destroy') }}" class="hidden" id="simpleDeleteForm">
             @csrf
             @method('delete')
@@ -269,13 +269,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordField = document.getElementById('password');
     const confirmPasswordField = document.getElementById('password_confirmation');
     const passwordForm = passwordField.closest('form');
-    
+
     let currentPasswordValid = false;
 
     // Валидация текущего пароля через AJAX
     function validateCurrentPassword() {
         const currentPassword = currentPasswordField.value;
-        
+
         if (!currentPassword) {
             removeCurrentPasswordError();
             currentPasswordValid = false;
@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             removeCurrentPasswordLoading();
-            
+
             if (data.valid) {
                 showCurrentPasswordSuccess();
                 currentPasswordValid = true;
@@ -321,12 +321,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функции для отображения состояний текущего пароля
     function showCurrentPasswordError(message) {
         removeCurrentPasswordFeedback();
-        
+
         const errorElement = document.createElement('p');
         errorElement.className = 'mt-1 text-sm text-red-600';
         errorElement.id = 'current-password-error';
         errorElement.textContent = message;
-        
+
         currentPasswordField.parentNode.appendChild(errorElement);
         currentPasswordField.classList.add('border-red-500');
         currentPasswordField.classList.remove('border-gray-300', 'border-green-500');
@@ -334,12 +334,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showCurrentPasswordSuccess() {
         removeCurrentPasswordFeedback();
-        
+
         const successElement = document.createElement('p');
         successElement.className = 'mt-1 text-sm text-green-600 flex items-center';
         successElement.id = 'current-password-success';
         successElement.innerHTML = '<i class="fas fa-check-circle mr-1"></i>Пароль подтвержден';
-        
+
         currentPasswordField.parentNode.appendChild(successElement);
         currentPasswordField.classList.add('border-green-500');
         currentPasswordField.classList.remove('border-gray-300', 'border-red-500');
@@ -347,12 +347,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showCurrentPasswordLoading() {
         removeCurrentPasswordFeedback();
-        
+
         const loadingElement = document.createElement('p');
         loadingElement.className = 'mt-1 text-sm text-green-600 flex items-center';
         loadingElement.id = 'current-password-loading';
         loadingElement.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Проверка пароля...';
-        
+
         currentPasswordField.parentNode.appendChild(loadingElement);
         currentPasswordField.classList.add('border-green-500');
         currentPasswordField.classList.remove('border-gray-300', 'border-red-500', 'border-green-500');
@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function removeCurrentPasswordFeedback() {
         const existing = currentPasswordField.parentNode.querySelectorAll('#current-password-error, #current-password-success, #current-password-loading');
         existing.forEach(el => el.remove());
-        
+
         currentPasswordField.classList.remove('border-red-500', 'border-green-500', 'border-green-500');
         currentPasswordField.classList.add('border-gray-300');
     }
@@ -387,25 +387,25 @@ document.addEventListener('DOMContentLoaded', function() {
     function validatePasswordMatch() {
         const password = passwordField.value;
         const confirmPassword = confirmPasswordField.value;
-        
+
         removePasswordMatchError();
-        
+
         if (confirmPassword && password !== confirmPassword) {
             showPasswordMatchError('Пароли не совпадают');
             return false;
         }
-        
+
         return true;
     }
 
     function showPasswordMatchError(message) {
         removePasswordMatchError();
-        
+
         const errorElement = document.createElement('p');
         errorElement.className = 'mt-1 text-sm text-red-600';
         errorElement.id = 'password-match-error';
         errorElement.textContent = message;
-        
+
         confirmPasswordField.parentNode.appendChild(errorElement);
         confirmPasswordField.classList.add('border-red-500');
         confirmPasswordField.classList.remove('border-gray-300');
@@ -416,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (existingError) {
             existingError.remove();
         }
-        
+
         confirmPasswordField.classList.remove('border-red-500');
         confirmPasswordField.classList.add('border-gray-300');
     }
@@ -424,7 +424,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Проверка силы пароля
     function validatePasswordStrength(password) {
         let strengthElement = document.getElementById('password-strength');
-        
+
         if (!password) {
             if (strengthElement) strengthElement.remove();
             return;
@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         const metCount = requirements.filter(req => req.met).length;
-        
+
         if (!strengthElement) {
             strengthElement = document.createElement('div');
             strengthElement.id = 'password-strength';
@@ -458,7 +458,7 @@ document.addEventListener('DOMContentLoaded', function() {
         strengthElement.innerHTML = `
             <div class="flex items-center space-x-2 mb-2">
                 <div class="flex space-x-1">
-                    ${Array(5).fill(0).map((_, i) => 
+                    ${Array(5).fill(0).map((_, i) =>
                         `<div class="h-2 w-6 rounded ${i < metCount ? strengthColors[strengthIndex] : 'bg-gray-200'}"></div>`
                     ).join('')}
                 </div>
@@ -467,7 +467,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </span>
             </div>
             <div class="grid grid-cols-1 gap-1 text-xs">
-                ${requirements.map(req => 
+                ${requirements.map(req =>
                     `<div class="flex items-center">
                         <i class="fas ${req.met ? 'fa-check text-green-500' : 'fa-times text-red-500'} mr-2 w-3"></i>
                         <span class="${req.met ? 'text-green-600' : 'text-gray-500'}">${req.text}</span>
@@ -559,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const originalText = submitButton.innerHTML;
         submitButton.disabled = true;
         submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Обновление пароля...';
-        
+
         // Через 10 секунд разблокируем кнопку на случай проблем
         setTimeout(() => {
             submitButton.disabled = false;
@@ -570,7 +570,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Обработка ответа формы
     passwordForm.addEventListener('submit', function(e) {
         const formData = new FormData(this);
-        
+
         // Можно добавить AJAX обработку для более плавного UX
         fetch(this.action, {
             method: 'POST',
@@ -617,15 +617,15 @@ document.addEventListener('DOMContentLoaded', function() {
     function validatePasswordMatch() {
         const password = passwordField.value;
         const confirmPassword = confirmPasswordField.value;
-        
+
         // Удаляем предыдущие сообщения об ошибках
         removePasswordMatchError();
-        
+
         if (confirmPassword && password !== confirmPassword) {
             showPasswordMatchError('Пароли не совпадают');
             return false;
         }
-        
+
         return true;
     }
 
@@ -633,16 +633,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function showPasswordMatchError(message) {
         // Удаляем существующую ошибку
         removePasswordMatchError();
-        
+
         // Создаем новый элемент ошибки
         const errorElement = document.createElement('p');
         errorElement.className = 'mt-1 text-sm text-red-600';
         errorElement.id = 'password-match-error';
         errorElement.textContent = message;
-        
+
         // Добавляем после поля подтверждения пароля
         confirmPasswordField.parentNode.appendChild(errorElement);
-        
+
         // Добавляем красную границу
         confirmPasswordField.classList.add('border-red-500');
         confirmPasswordField.classList.remove('border-gray-300');
@@ -654,7 +654,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (existingError) {
             existingError.remove();
         }
-        
+
         // Убираем красную границу
         confirmPasswordField.classList.remove('border-red-500');
         confirmPasswordField.classList.add('border-gray-300');
@@ -663,7 +663,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для проверки силы пароля
     function validatePasswordStrength(password) {
         const strengthIndicator = document.getElementById('password-strength');
-        
+
         if (!password) {
             if (strengthIndicator) strengthIndicator.remove();
             return;
@@ -694,14 +694,14 @@ document.addEventListener('DOMContentLoaded', function() {
         strengthElement.innerHTML = `
             <div class="flex items-center space-x-2">
                 <div class="flex space-x-1">
-                    ${Array(5).fill(0).map((_, i) => 
+                    ${Array(5).fill(0).map((_, i) =>
                         `<div class="h-2 w-6 rounded ${i < strength ? strengthColors[strength - 1] : 'bg-gray-200'}"></div>`
                     ).join('')}
                 </div>
                 <span class="text-sm text-gray-600">${strengthTexts[strength - 1] || 'Слишком слабый'}</span>
             </div>
             <div class="mt-1 text-xs text-gray-500">
-                Требования: ${requirements.map(req => 
+                Требования: ${requirements.map(req =>
                     `<span class="${req.regex.test(password) ? 'text-green-600' : 'text-red-600'}">${req.text}</span>`
                 ).join(', ')}
             </div>
@@ -733,7 +733,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function togglePassword(fieldId) {
     const field = document.getElementById(fieldId);
     const icon = document.getElementById(fieldId + '_icon');
-    
+
     if (field.type === 'password') {
         field.type = 'text';
         icon.className = 'fas fa-eye-slash';
@@ -747,7 +747,7 @@ function togglePassword(fieldId) {
 function togglePassword(fieldId) {
     const field = document.getElementById(fieldId);
     const icon = document.getElementById(fieldId + '_icon');
-    
+
     if (field.type === 'password') {
         field.type = 'text';
         icon.className = 'fas fa-eye-slash';
@@ -779,7 +779,7 @@ function showDeletePasswordError(message) {
         errorDiv.textContent = message;
         errorDiv.classList.remove('hidden');
     }
-    
+
     // Добавляем красную границу к полю ввода
     const passwordField = document.getElementById('delete_password');
     if (passwordField) {
@@ -793,7 +793,7 @@ function hideDeletePasswordError() {
     if (errorDiv) {
         errorDiv.classList.add('hidden');
     }
-    
+
     // Убираем красную границу
     const passwordField = document.getElementById('delete_password');
     if (passwordField) {
@@ -807,7 +807,7 @@ function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
     const icon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-    
+
     notification.innerHTML = `
         <div class="flex items-center">
             <i class="${icon} mr-2"></i>
@@ -815,14 +815,14 @@ function showNotification(message, type = 'success') {
         </div>
     `;
     notification.className = `fixed bottom-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300`;
-    
+
     document.body.appendChild(notification);
-    
+
     // Показываем уведомление
     setTimeout(() => {
         notification.classList.remove('translate-x-full');
     }, 100);
-    
+
     // Скрываем уведомление через 4 секунды
     setTimeout(() => {
         notification.classList.add('translate-x-full');
@@ -832,7 +832,7 @@ function showNotification(message, type = 'success') {
 
 // Инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', function() {
-    
+
     // Закрытие модального окна при клике вне его
     const deleteModal = document.getElementById('deleteModal');
     if (deleteModal) {
@@ -856,24 +856,24 @@ document.addEventListener('DOMContentLoaded', function() {
     if (deleteForm) {
         deleteForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             const password = document.getElementById('delete_password').value.trim();
-            
+
             if (!password) {
                 showDeletePasswordError('Пожалуйста, введите пароль');
                 document.getElementById('delete_password').focus();
                 return;
             }
-            
+
             // Блокируем кнопку отправки
             const submitButton = document.getElementById('deleteSubmitButton');
             const originalText = submitButton.innerHTML;
             submitButton.disabled = true;
             submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Удаление...';
-            
+
             // Создаем FormData для отправки
             const formData = new FormData(this);
-            
+
             fetch(this.action, {
                 method: 'POST',
                 headers: {
@@ -896,7 +896,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 1500);
                     return;
                 }
-                
+
                 if (status === 422 && data.errors) {
                     // Ошибка валидации
                     if (data.errors.password) {
@@ -906,7 +906,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     return;
                 }
-                
+
                 // Другие ошибки
                 showDeletePasswordError(data.message || 'Произошла ошибка');
             })
@@ -945,7 +945,7 @@ function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
     const icon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-    
+
     notification.innerHTML = `
         <div class="flex items-center">
             <i class="${icon} mr-2"></i>
@@ -953,14 +953,14 @@ function showNotification(message, type = 'success') {
         </div>
     `;
     notification.className = `fixed bottom-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300`;
-    
+
     document.body.appendChild(notification);
-    
+
     // Показываем уведомление
     setTimeout(() => {
         notification.classList.remove('translate-x-full');
     }, 100);
-    
+
     // Скрываем уведомление через 4 секунды
     setTimeout(() => {
         notification.classList.add('translate-x-full');
@@ -968,3 +968,4 @@ function showNotification(message, type = 'success') {
     }, 4000);
 }
 </script>
+

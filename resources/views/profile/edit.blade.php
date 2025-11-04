@@ -107,3 +107,4 @@ function copyToClipboard(text) {
     .catch(err => console.error('Ошибка копирования:', err));
 }
 </script>
+

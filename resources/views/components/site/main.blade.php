@@ -56,7 +56,7 @@
         <!-- Subscription Progress Card -->
         <div class="bg-gray-50 dark:bg-neutral-800 rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow">
           <h3 class="text-xl font-bold text-primary-800 dark:text-primary-200 mb-4">Статус вашей подписки</h3>
-          
+
           @auth
             @php
               $user = Auth::user();
@@ -71,8 +71,8 @@
                   <span class="font-medium text-primary-800 dark:text-primary-200">{{ $activeSubscription->tariff->title }}</span>
                 </div>
                 <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2.5">
-                  <div 
-                    class="bg-gradient-to-r from-orange-400 to-pink-500 h-2.5 rounded-full" 
+                  <div
+                    class="bg-gradient-to-r from-orange-400 to-pink-500 h-2.5 rounded-full"
                     style="width: {{ $activeSubscription->progressPercentage() }}%"
                   ></div>
                 </div>
@@ -96,7 +96,7 @@
                 </div>
                 <p class="text-sm text-orange-600 mb-3">Подписка истекла или неактивна</p>
               </div>
-              
+
               <a href="{{ route('profile.edit') }}"
                 class="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg py-2 px-4 text-sm font-medium hover:from-orange-600 hover:to-red-600 transition-colors w-full text-center"
               >
@@ -143,3 +143,4 @@
     </div>
   @endif
 </section>
+

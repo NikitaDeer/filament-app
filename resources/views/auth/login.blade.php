@@ -31,13 +31,13 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-envelope text-green-400"></i>
                             </div>
-                            <x-text-input id="email" 
-                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-colors bg-gray-50 hover:bg-white" 
-                                type="email" 
-                                name="email" 
-                                :value="old('email')" 
-                                required 
-                                autofocus 
+                            <x-text-input id="email"
+                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-colors bg-gray-50 hover:bg-white"
+                                type="email"
+                                name="email"
+                                :value="old('email')"
+                                required
+                                autofocus
                                 autocomplete="username"
                                 placeholder="Введите ваш email" />
                         </div>
@@ -51,11 +51,11 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-key text-green-400"></i>
                             </div>
-                            <x-text-input id="password" 
+                            <x-text-input id="password"
                                 class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-colors bg-gray-50 hover:bg-white"
                                 type="password"
                                 name="password"
-                                required 
+                                required
                                 autocomplete="current-password"
                                 placeholder="Введите ваш пароль" />
                         </div>
@@ -65,15 +65,15 @@
                     <!-- Remember Me -->
                     <div class="flex items-center justify-between">
                         <label for="remember_me" class="flex items-center">
-                            <input id="remember_me" 
-                                type="checkbox" 
-                                class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-400 focus:ring-2" 
+                            <input id="remember_me"
+                                type="checkbox"
+                                class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-400 focus:ring-2"
                                 name="remember">
                             <span class="ml-2 text-sm text-gray-700">{{ __('Запомнить меня') }}</span>
                         </label>
 
                         <!-- @if (Route::has('password.request'))
-                            <a class="text-sm text-green-600 hover:text-green-800 font-medium transition-colors" 
+                            <a class="text-sm text-green-600 hover:text-green-800 font-medium transition-colors"
                                href="{{ route('password.request') }}">
                                 {{ __('Forgot your password?') }}
                             </a>
@@ -92,8 +92,8 @@
                 <!-- Register Link -->
                 <div class="text-center pt-4 border-t border-gray-200">
                     <p class="text-sm text-gray-600">
-                        Нет аккаунта? 
-                        <a href="{{ route('register') }}" 
+                        Нет аккаунта?
+                        <a href="{{ route('register') }}"
                            class="font-medium text-green-600 hover:text-green-800 transition-colors">
                             Зарегистрироваться
                         </a>
@@ -104,7 +104,7 @@
             <!-- Additional Info -->
             <div class="text-center">
                 <p class="text-xs text-gray-500">
-                    Входя в систему, вы соглашаетесь с нашими 
+                    Входя в систему, вы соглашаетесь с нашими
                     <a href="#" class="text-green-600 hover:text-green-800">условиями использования</a>
                 </p>
             </div>
@@ -113,3 +113,4 @@
 </x-guest-layout>
 {{-- footer --}}
 <x-site.footer />
+

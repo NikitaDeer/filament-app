@@ -29,13 +29,13 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-user text-green-400"></i>
                             </div>
-                            <x-text-input id="name" 
-                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-colors bg-gray-50 hover:bg-white" 
-                                type="text" 
-                                name="name" 
-                                :value="old('name')" 
-                                required 
-                                autofocus 
+                            <x-text-input id="name"
+                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-colors bg-gray-50 hover:bg-white"
+                                type="text"
+                                name="name"
+                                :value="old('name')"
+                                required
+                                autofocus
                                 autocomplete="name"
                                 placeholder="Введите ваше имя" />
                         </div>
@@ -49,12 +49,12 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-envelope text-green-400"></i>
                             </div>
-                            <x-text-input id="email" 
-                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-colors bg-gray-50 hover:bg-white" 
-                                type="email" 
-                                name="email" 
-                                :value="old('email')" 
-                                required 
+                            <x-text-input id="email"
+                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-colors bg-gray-50 hover:bg-white"
+                                type="email"
+                                name="email"
+                                :value="old('email')"
+                                required
                                 autocomplete="username"
                                 placeholder="Введите ваш email" />
                         </div>
@@ -68,11 +68,11 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-key text-green-400"></i>
                             </div>
-                            <x-text-input id="password" 
+                            <x-text-input id="password"
                                 class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-colors bg-gray-50 hover:bg-white"
                                 type="password"
                                 name="password"
-                                required 
+                                required
                                 autocomplete="new-password"
                                 placeholder="Создайте надежный пароль" />
                         </div>
@@ -86,11 +86,11 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-shield-check text-green-400"></i>
                             </div>
-                            <x-text-input id="password_confirmation" 
+                            <x-text-input id="password_confirmation"
                                 class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-colors bg-gray-50 hover:bg-white"
                                 type="password"
-                                name="password_confirmation" 
-                                required 
+                                name="password_confirmation"
+                                required
                                 autocomplete="new-password"
                                 placeholder="Подтвердите ваш пароль" />
                         </div>
@@ -124,8 +124,8 @@
                 <!-- Login Link -->
                 <div class="text-center pt-4 border-t border-gray-200">
                     <p class="text-sm text-gray-600">
-                        Уже есть аккаунт? 
-                        <a href="{{ route('login') }}" 
+                        Уже есть аккаунт?
+                        <a href="{{ route('login') }}"
                            class="font-medium text-green-600 hover:text-green-800 transition-colors">
                             Войти
                         </a>
@@ -136,9 +136,9 @@
             <!-- Additional Info -->
             <div class="text-center">
                 <p class="text-xs text-gray-500">
-                    Регистрируясь, вы соглашаетесь с нашими 
+                    Регистрируясь, вы соглашаетесь с нашими
                     <a href="#" class="text-green-600 hover:text-green-800">условиями использования</a>
-                    и 
+                    и
                     <a href="#" class="text-green-600 hover:text-green-800">политикой конфиденциальности</a>
                 </p>
             </div>
@@ -148,3 +148,4 @@
 
 {{-- footer --}}
 <x-site.footer />
+
