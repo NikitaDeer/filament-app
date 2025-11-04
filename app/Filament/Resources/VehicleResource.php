@@ -31,62 +31,117 @@ class VehicleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Название транспорта')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Section::make('Основная информация')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Название транспорта')
+                            ->required()
+                            ->maxLength(255),
 
-                Forms\Components\Textarea::make('description')
-                    ->label('Описание')
-                    ->maxLength(1000)
-                    ->columnSpanFull(),
+                        Forms\Components\Textarea::make('description')
+                            ->label('Описание')
+                            ->maxLength(1000)
+                            ->rows(3)
+                            ->columnSpanFull(),
 
-                Forms\Components\Toggle::make('allows_passengers')
-                    ->label('Можно брать пассажиров')
-                    ->default(false),
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Фотография транспорта')
+                            ->image()
+                            ->directory('vehicles')
+                            ->maxSize(5120)
+                            ->nullable()
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('1920')
+                            ->imageResizeTargetHeight('1080')
+                            ->columnSpanFull()
+                            ->helperText('Максимальный размер: 5 МБ. Рекомендуемое соотношение сторон: 16:9. Необязательно.'),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
 
-                Forms\Components\TextInput::make('price_per_km')
-                    ->label('Цена за км (₽)')
-                    ->required()
-                    ->numeric()
-                    ->minValue(0)
-                    ->step(0.01),
+                Forms\Components\Section::make('Характеристики')
+                    ->schema([
+                        Forms\Components\TextInput::make('capacity_tons')
+                            ->label('Грузоподъемность (тонн)')
+                            ->required()
+                            ->numeric()
+                            ->minValue(0)
+                            ->step(0.01),
 
-                Forms\Components\TextInput::make('price_per_hour')
-                    ->label('Цена за час (₽)')
-                    ->required()
-                    ->numeric()
-                    ->minValue(0)
-                    ->step(0.01),
+                        Forms\Components\TextInput::make('length_m')
+                            ->label('Длина (м)')
+                            ->numeric()
+                            ->minValue(0)
+                            ->step(0.01),
 
-                Forms\Components\TextInput::make('capacity_tons')
-                    ->label('Грузоподъемность (тонн)')
-                    ->required()
-                    ->numeric()
-                    ->minValue(0)
-                    ->step(0.01),
+                        Forms\Components\TextInput::make('width_m')
+                            ->label('Ширина (м)')
+                            ->numeric()
+                            ->minValue(0)
+                            ->step(0.01),
 
-                Forms\Components\TextInput::make('length_m')
-                    ->label('Длина (м)')
-                    ->numeric()
-                    ->minValue(0)
-                    ->step(0.01),
+                        Forms\Components\TextInput::make('height_m')
+                            ->label('Высота (м)')
+                            ->numeric()
+                            ->minValue(0)
+                            ->step(0.01),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
 
-                Forms\Components\TextInput::make('width_m')
-                    ->label('Ширина (м)')
-                    ->numeric()
-                    ->minValue(0)
-                    ->step(0.01),
+                Forms\Components\Section::make('Ценообразование')
+                    ->schema([
+                        Forms\Components\TextInput::make('price_per_km')
+                            ->label('Цена за км (₽)')
+                            ->required()
+                            ->numeric()
+                            ->minValue(0)
+                            ->step(0.01)
+                            ->prefix('₽'),
 
-                Forms\Components\TextInput::make('height_m')
-                    ->label('Высота (м)')
-                    ->numeric()
-                    ->minValue(0)
-                    ->step(0.01),
+                        Forms\Components\TextInput::make('price_per_hour')
+                            ->label('Цена за час (₽)')
+                            ->required()
+                            ->numeric()
+                            ->minValue(0)
+                            ->step(0.01)
+                            ->prefix('₽'),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
 
-                Forms\Components\Toggle::make('is_active')
-                    ->label('Активен')
-                    ->default(true),
+                Forms\Components\Section::make('Пассажиры')
+                    ->schema([
+                        Forms\Components\Toggle::make('allows_passengers')
+                            ->label('Можно брать пассажиров')
+                            ->default(false)
+                            ->reactive(),
+
+                        Forms\Components\TextInput::make('max_passengers')
+                            ->label('Максимум пассажиров')
+                            ->numeric()
+                            ->minValue(0)
+                            ->default(0)
+                            ->visible(fn (callable $get) => $get('allows_passengers')),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
+
+                Forms\Components\Section::make('Настройки')
+                    ->schema([
+                        Forms\Components\Toggle::make('is_active')
+                            ->label('Активен')
+                            ->default(true),
+
+                        Forms\Components\TextInput::make('sort_order')
+                            ->label('Порядок сортировки')
+                            ->numeric()
+                            ->default(0)
+                            ->helperText('Чем меньше число, тем выше в списке'),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
             ]);
     }
 
@@ -94,10 +149,16 @@ class VehicleResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Фото')
+                    ->circular()
+                    ->size(60),
+
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->weight('bold'),
 
                 Tables\Columns\TextColumn::make('capacity_tons')
                     ->label('Грузоподъемность')
@@ -106,17 +167,21 @@ class VehicleResource extends Resource
 
                 Tables\Columns\TextColumn::make('price_per_km')
                     ->label('Цена/км')
-                    ->money('RUB')
+                    ->formatStateUsing(fn ($state) => number_format($state, 0, '.', ' ') . ' ₽')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('price_per_hour')
                     ->label('Цена/час')
-                    ->money('RUB')
+                    ->formatStateUsing(fn ($state) => number_format($state, 0, '.', ' ') . ' ₽')
                     ->sortable(),
 
                 Tables\Columns\IconColumn::make('allows_passengers')
                     ->label('Пассажиры')
                     ->boolean(),
+
+                Tables\Columns\TextColumn::make('sort_order')
+                    ->label('Порядок')
+                    ->sortable(),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Активен')
@@ -134,15 +199,22 @@ class VehicleResource extends Resource
                     ->placeholder('Все')
                     ->trueLabel('Только активные')
                     ->falseLabel('Только неактивные'),
+
+                Tables\Filters\TernaryFilter::make('allows_passengers')
+                    ->label('С пассажирами')
+                    ->placeholder('Все')
+                    ->trueLabel('Принимают пассажиров')
+                    ->falseLabel('Без пассажиров'),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
-            ->defaultSort('name', 'asc');
+            ->defaultSort('sort_order', 'asc');
     }
 
     public static function getRelations(): array

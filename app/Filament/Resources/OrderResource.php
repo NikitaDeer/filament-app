@@ -28,14 +28,56 @@ class OrderResource extends Resource
   {
     return $form
       ->schema([
-        Forms\Components\TextInput::make('name')->label('Имя клиента')->disabled(),
-        Forms\Components\TextInput::make('phone')->label('Телефон')->disabled(),
-        Forms\Components\TextInput::make('email')->label('Email')->disabled(),
-        Forms\Components\TextInput::make('from_address')->label('Начальная точка')->disabled(),
-        Forms\Components\TextInput::make('to_address')->label('Конечная точка')->disabled(),
-        Forms\Components\TextInput::make('distance')->label('Километраж')->disabled(),
-        Forms\Components\TextInput::make('cost')->label('Стоимость')->disabled(),
-        Forms\Components\Textarea::make('comment')->label('Комментарий')->disabled(),
+        Forms\Components\Section::make('Информация о клиенте')
+          ->schema([
+            Forms\Components\TextInput::make('name')->label('Имя клиента')->disabled(),
+            Forms\Components\TextInput::make('phone')->label('Телефон')->disabled(),
+            Forms\Components\TextInput::make('email')->label('Email')->disabled(),
+          ])->columns(3),
+
+        Forms\Components\Section::make('Маршрут')
+          ->schema([
+            Forms\Components\TextInput::make('from_address')->label('Начальная точка')->disabled()->columnSpanFull(),
+            Forms\Components\TextInput::make('to_address')->label('Конечная точка')->disabled()->columnSpanFull(),
+            Forms\Components\KeyValue::make('route_points')
+              ->label('Все точки маршрута')
+              ->disabled()
+              ->columnSpanFull()
+              ->visible(fn ($record) => !empty($record->route_points)),
+            Forms\Components\TextInput::make('distance')->label('Расстояние (км)')->disabled(),
+            Forms\Components\TextInput::make('estimated_hours')->label('Расчетное время (ч)')->disabled(),
+          ])->columns(2),
+
+        Forms\Components\Section::make('Транспорт и опции')
+          ->schema([
+            Forms\Components\Select::make('vehicle_id')
+              ->label('Выбранный транспорт')
+              ->relationship('vehicle', 'name')
+              ->disabled(),
+            Forms\Components\TextInput::make('loaders_count')->label('Грузчиков')->disabled(),
+            Forms\Components\TextInput::make('passengers_count')->label('Пассажиров')->disabled(),
+            Forms\Components\TextInput::make('floors_count')->label('Этажей')->disabled(),
+            Forms\Components\Toggle::make('has_cargo_elevator')->label('Грузовой лифт')->disabled(),
+          ])->columns(3),
+
+        Forms\Components\Section::make('Стоимость')
+          ->schema([
+            Forms\Components\TextInput::make('base_distance_cost')->label('За расстояние (₽)')->disabled()->prefix('₽'),
+            Forms\Components\TextInput::make('base_time_cost')->label('За время (₽)')->disabled()->prefix('₽'),
+            Forms\Components\TextInput::make('services_cost')->label('Услуги (₽)')->disabled()->prefix('₽'),
+            Forms\Components\TextInput::make('options_cost')->label('Опции (₽)')->disabled()->prefix('₽'),
+            Forms\Components\TextInput::make('total_cost')
+              ->label('ИТОГО (₽)')
+              ->disabled()
+              ->prefix('₽')
+              ->extraAttributes(['class' => 'font-bold text-lg']),
+          ])->columns(2),
+
+        Forms\Components\Section::make('Дополнительно')
+          ->schema([
+            Forms\Components\Textarea::make('comment')->label('Комментарий')->disabled()->columnSpanFull(),
+            Forms\Components\TextInput::make('created_at')->label('Дата создания')->disabled(),
+          ])->columns(2)->collapsible(),
       ]);
   }
 
@@ -43,8 +85,12 @@ class OrderResource extends Resource
   {
     return $table
       ->columns([
+        Tables\Columns\TextColumn::make('id')
+          ->label('№')
+          ->sortable(),
+
         Tables\Columns\TextColumn::make('name')
-          ->label('Имя клиента')
+          ->label('Клиент')
           ->searchable()
           ->limit(20)
           ->tooltip(fn ($record) => $record->name),
@@ -66,47 +112,82 @@ class OrderResource extends Resource
               return (string) $state;
           }),
 
-        Tables\Columns\TextColumn::make('email')
-          ->label('Email')
-          ->searchable()
-          ->limit(25)
-          ->tooltip(fn ($record) => $record->email),
+        Tables\Columns\TextColumn::make('vehicle.name')
+          ->label('Транспорт')
+          ->limit(20)
+          ->default('—')
+          ->tooltip(fn ($record) => $record->vehicle?->name),
 
         Tables\Columns\TextColumn::make('from_address')
-          ->label('Начальная точка')
-          ->limit(30)
-          ->tooltip(fn ($record) => $record->from_address),
+          ->label('Откуда')
+          ->limit(25)
+          ->tooltip(fn ($record) => $record->from_address)
+          ->toggleable(),
 
         Tables\Columns\TextColumn::make('to_address')
-          ->label('Конечная точка')
-          ->limit(30)
-          ->tooltip(fn ($record) => $record->to_address),
+          ->label('Куда')
+          ->limit(25)
+          ->tooltip(fn ($record) => $record->to_address)
+          ->toggleable(),
 
         Tables\Columns\TextColumn::make('distance')
-          ->label('Километраж')
+          ->label('Км')
           ->suffix(' км')
           ->sortable(),
 
-        Tables\Columns\TextColumn::make('cost')
-          ->label('Стоимость')
-          ->suffix(' ₽')
-          ->sortable(),
+        Tables\Columns\TextColumn::make('total_cost')
+          ->label('Итого')
+          ->formatStateUsing(fn ($state) => $state ? number_format($state, 0, '.', ' ') . ' ₽' : '0 ₽')
+          ->sortable()
+          ->weight('bold')
+          ->color('success'),
 
-        Tables\Columns\TextColumn::make('comment')
-          ->label('Комментарий')
-          ->limit(50)
-          ->tooltip(fn ($record) => $record->comment),
-        Tables\Columns\TextColumn::make('created_at')->label('Дата заказа')->dateTime('d-m-Y H:i'),
+        Tables\Columns\TextColumn::make('loaders_count')
+          ->label('Грузч.')
+          ->default('—')
+          ->toggleable(isToggledHiddenByDefault: true),
+
+        Tables\Columns\TextColumn::make('passengers_count')
+          ->label('Пасс.')
+          ->default('—')
+          ->toggleable(isToggledHiddenByDefault: true),
+
+        Tables\Columns\TextColumn::make('created_at')
+          ->label('Дата')
+          ->dateTime('d.m.Y H:i')
+          ->sortable(),
       ])
       ->filters([
-        //
+        Tables\Filters\Filter::make('created_at')
+          ->form([
+            Forms\Components\DatePicker::make('created_from')->label('От'),
+            Forms\Components\DatePicker::make('created_until')->label('До'),
+          ])
+          ->query(function (Builder $query, array $data): Builder {
+            return $query
+              ->when(
+                $data['created_from'],
+                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+              )
+              ->when(
+                $data['created_until'],
+                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+              );
+          }),
+
+        Tables\Filters\SelectFilter::make('vehicle_id')
+          ->label('Транспорт')
+          ->relationship('vehicle', 'name'),
       ])
       ->actions([
-        // Tables\Actions\EditAction::make(),
+        Tables\Actions\ViewAction::make(),
+        Tables\Actions\EditAction::make(),
+        Tables\Actions\DeleteAction::make(),
       ])
       ->bulkActions([
-        // Tables\Actions\DeleteBulkAction::make(),
-      ]);
+        Tables\Actions\DeleteBulkAction::make(),
+      ])
+      ->defaultSort('created_at', 'desc');
   }
 
   public static function getRelations(): array

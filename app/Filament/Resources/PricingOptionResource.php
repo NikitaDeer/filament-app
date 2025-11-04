@@ -105,15 +105,13 @@ class PricingOptionResource extends Resource
 
                 Tables\Columns\TextColumn::make('price_per_hour')
                     ->label('Цена/час')
-                    ->money('RUB')
-                    ->sortable()
-                    ->default('—'),
+                    ->formatStateUsing(fn ($state) => $state ? number_format($state, 0, '.', ' ') . ' ₽' : '—')
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('price_per_floor')
                     ->label('Цена/этаж')
-                    ->money('RUB')
-                    ->sortable()
-                    ->default('—'),
+                    ->formatStateUsing(fn ($state) => $state ? number_format($state, 0, '.', ' ') . ' ₽' : '—')
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('max_quantity')
                     ->label('Макс.')

@@ -10,33 +10,33 @@ class Order extends Model
 {
   use HasFactory;
 
-  protected $fillable = [
-    'name',
-    'phone',
-    'email',
-    'from_address',
-    'to_address',
-    'distance',
-    'old_cost', // Старое поле cost переименовано
-    'comment',
-    // Новые поля
-    'vehicle_id',
-    'route_points',
-    'selected_services',
-    'loaders_count',
-    'loader_price',
-    'passengers_count',
-    'passenger_price',
-    'floors_count',
-    'floor_price',
-    'has_cargo_elevator',
-    'estimated_hours',
-    'base_distance_cost',
-    'base_time_cost',
-    'services_cost',
-    'options_cost',
-    'total_cost',
-  ];
+    protected $fillable = [
+        'name',
+        'phone',
+        'email',
+        'from_address',
+        'to_address',
+        'distance',
+        'cost', // Старое поле, оставлено для совместимости
+        'comment',
+        // Новые поля калькулятора
+        'vehicle_id',
+        'route_points',
+        'selected_services',
+        'loaders_count',
+        'loader_price',
+        'passengers_count',
+        'passenger_price',
+        'floors_count',
+        'floor_price',
+        'has_cargo_elevator',
+        'estimated_hours',
+        'base_distance_cost',
+        'base_time_cost',
+        'services_cost',
+        'options_cost',
+        'total_cost',
+    ];
 
   protected $casts = [
     'route_points' => 'array',
@@ -53,10 +53,10 @@ class Order extends Model
     'base_distance_cost' => 'decimal:2',
     'base_time_cost' => 'decimal:2',
     'services_cost' => 'decimal:2',
-    'options_cost' => 'decimal:2',
-    'total_cost' => 'decimal:2',
-    'old_cost' => 'decimal:2',
-  ];
+            'options_cost' => 'decimal:2',
+            'total_cost' => 'decimal:2',
+            'cost' => 'decimal:2',
+        ];
 
   /**
    * Получить автомобиль заказа

@@ -25,6 +25,8 @@ class Vehicle extends Model
         'is_active',
         'sort_order',
     ];
+    
+    protected $appends = ['image_url'];
 
     protected $casts = [
         'allows_passengers' => 'boolean',
@@ -61,6 +63,17 @@ class Vehicle extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('sort_order')->orderBy('name');
+    }
+    
+    /**
+     * Get the image URL accessor
+     */
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return \Storage::url($this->image);
+        }
+        return url('/images/default-vehicle.png');
     }
 }
 
