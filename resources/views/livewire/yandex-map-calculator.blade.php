@@ -1,5 +1,17 @@
 <div class="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
 
+  {{-- Кнопка сброса --}}
+  <div class="mb-4 flex justify-end">
+    <button
+      wire:click="resetCalculator"
+      class="rounded-lg bg-gray-500 px-4 py-2 text-white transition-colors hover:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-700">
+      <svg class="mr-2 inline-block h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+      </svg>
+      Сбросить калькулятор
+    </button>
+  </div>
+
   {{-- Выбор транспорта --}}
   <section class="mb-8">
     <h2 class="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Шаг 1: Выберите транспорт</h2>
@@ -221,15 +233,19 @@
                   <p class="text-xs text-gray-500 dark:text-gray-400">{{ number_format($floorOption->price_per_floor, 0) }} ₽ за этаж</p>
                 </div>
                 <div class="flex items-center gap-3">
-                  <input
-                    type="number"
-                    wire:model.debounce.500ms="floors_count"
-                    wire:change="recalculate"
-                    min="0"
-                    max="{{ $floorOption->max_quantity }}"
-                    class="w-24 rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700"
-                    placeholder="0"
-                  />
+                  <div class="flex items-center gap-2">
+                    <button
+                      wire:click="updateFloorsCount({{ max(0, $floors_count - 1) }})"
+                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500">
+                      −
+                    </button>
+                    <span class="w-8 text-center font-bold">{{ $floors_count }}</span>
+                    <button
+                      wire:click="updateFloorsCount({{ min($floorOption->max_quantity, $floors_count + 1) }})"
+                      class="rounded-lg bg-gray-200 px-3 py-1 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500">
+                      +
+                    </button>
+                  </div>
                   <label class="flex items-center text-sm">
                     <input
                       type="checkbox"
@@ -257,7 +273,7 @@
             <span class="font-semibold">{{ number_format($base_distance_cost, 0) }} ₽</span>
           </div>
           <div class="flex justify-between text-gray-700 dark:text-gray-300">
-            <span>Время ({{ number_format($estimated_hours, 1) }} ч × {{ number_format($vehicle->price_per_hour, 0) }} ₽/ч)</span>
+            <span>Время ({{ number_format($vehicle->price_per_hour, 0) }} ₽/ч)</span>
             <span class="font-semibold">{{ number_format($base_time_cost, 0) }} ₽</span>
           </div>
           @if($services_cost > 0)
@@ -455,6 +471,11 @@ document.addEventListener('livewire:load', function() {
 
   // Слушаем события от Livewire
   window.addEventListener('new-order-started', () => {
+    clearMap();
+  });
+
+  // Сброс калькулятора
+  Livewire.on('resetMap', () => {
     clearMap();
   });
 

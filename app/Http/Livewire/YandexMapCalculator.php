@@ -135,8 +135,10 @@ class YandexMapCalculator extends Component
     $loaderOption = PricingOption::ofType('loader')->active()->first();
     if ($loaderOption) {
       $this->loaders_count = max(0, min($count, $loaderOption->max_quantity));
+      $this->loader_price = $loaderOption->price_per_hour;
     } else {
       $this->loaders_count = 0;
+      $this->loader_price = 0;
     }
     $this->recalculate();
   }
@@ -148,6 +150,7 @@ class YandexMapCalculator extends Component
   {
     if (!$this->vehicle || !$this->vehicle->allows_passengers) {
       $this->passengers_count = 0;
+      $this->passenger_price = 0;
       return;
     }
 
@@ -155,8 +158,10 @@ class YandexMapCalculator extends Component
     if ($passengerOption) {
       $maxPassengers = min($this->vehicle->max_passengers, $passengerOption->max_quantity);
       $this->passengers_count = max(0, min($count, $maxPassengers));
+      $this->passenger_price = $passengerOption->price_per_hour;
     } else {
       $this->passengers_count = 0;
+      $this->passenger_price = 0;
     }
     $this->recalculate();
   }
@@ -169,10 +174,20 @@ class YandexMapCalculator extends Component
     $floorOption = PricingOption::ofType('floor')->active()->first();
     if ($floorOption) {
       $this->floors_count = max(0, min($count, $floorOption->max_quantity));
+      $this->floor_price = $floorOption->price_per_floor;
     } else {
       $this->floors_count = 0;
+      $this->floor_price = 0;
     }
     $this->recalculate();
+  }
+
+  /**
+   * При изменении floors_count через wire:model
+   */
+  public function updatedFloorsCount($value)
+  {
+    $this->updateFloorsCount($value);
   }
 
   /**
@@ -256,27 +271,18 @@ class YandexMapCalculator extends Component
     $cost = 0;
 
     // Грузчики
-    if ($this->loaders_count > 0) {
-      $loaderOption = PricingOption::ofType('loader')->active()->first();
-      if ($loaderOption) {
-        $cost += $this->loaders_count * $loaderOption->price_per_hour * $this->estimated_hours;
-      }
+    if ($this->loaders_count > 0 && $this->loader_price > 0) {
+      $cost += $this->loaders_count * $this->loader_price * $this->estimated_hours;
     }
 
     // Пассажиры
-    if ($this->passengers_count > 0) {
-      $passengerOption = PricingOption::ofType('passenger')->active()->first();
-      if ($passengerOption) {
-        $cost += $this->passengers_count * $passengerOption->price_per_hour * $this->estimated_hours;
-      }
+    if ($this->passengers_count > 0 && $this->passenger_price > 0) {
+      $cost += $this->passengers_count * $this->passenger_price * $this->estimated_hours;
     }
 
     // Этажи (только если нет грузового лифта)
-    if ($this->floors_count > 0 && !$this->has_cargo_elevator) {
-      $floorOption = PricingOption::ofType('floor')->active()->first();
-      if ($floorOption) {
-        $cost += $this->floors_count * $floorOption->price_per_floor;
-      }
+    if ($this->floors_count > 0 && !$this->has_cargo_elevator && $this->floor_price > 0) {
+      $cost += $this->floors_count * $this->floor_price;
     }
 
     $this->options_cost = $cost;
@@ -293,6 +299,38 @@ class YandexMapCalculator extends Component
     $this->services_cost = 0;
     $this->options_cost = 0;
     $this->total_cost = 0;
+  }
+
+  /**
+   * Полный сброс калькулятора
+   */
+  public function resetCalculator()
+  {
+    // Сбрасываем транспорт
+    $this->vehicle = Vehicle::active()->ordered()->first();
+    if ($this->vehicle) {
+      $this->vehicle_id = $this->vehicle->id;
+    }
+
+    // Сбрасываем маршрут
+    $this->route_points = [];
+
+    // Сбрасываем услуги и опции
+    $this->selected_services = [];
+    $this->loaders_count = 0;
+    $this->loader_price = 0;
+    $this->passengers_count = 0;
+    $this->passenger_price = 0;
+    $this->floors_count = 0;
+    $this->floor_price = 0;
+    $this->has_cargo_elevator = false;
+
+    // Сбрасываем расчеты
+    $this->estimated_hours = 2;
+    $this->resetCalculation();
+
+    // Эмитим событие для карты
+    $this->emit('resetMap');
   }
 
   /**

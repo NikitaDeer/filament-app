@@ -77,7 +77,17 @@ class PricingOptionResource extends Resource
 
                 Forms\Components\Toggle::make('is_active')
                     ->label('Активна')
-                    ->default(true),
+                    ->default(true)
+                    ->helperText('При активации этой записи, другие активные записи того же типа будут деактивированы')
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $get, $livewire) {
+                        // При активации деактивируем другие записи того же типа
+                        if ($state && $get('type')) {
+                            \App\Models\PricingOption::where('type', $get('type'))
+                                ->where('id', '!=', $livewire->record->id ?? 0)
+                                ->update(['is_active' => false]);
+                        }
+                    }),
             ]);
     }
 
