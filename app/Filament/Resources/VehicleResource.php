@@ -71,18 +71,21 @@ class VehicleResource extends Resource
 
                         Forms\Components\TextInput::make('length_m')
                             ->label('Длина (м)')
+                            ->required()
                             ->numeric()
                             ->minValue(0)
                             ->step(0.01),
 
                         Forms\Components\TextInput::make('width_m')
                             ->label('Ширина (м)')
+                            ->required()
                             ->numeric()
                             ->minValue(0)
                             ->step(0.01),
 
                         Forms\Components\TextInput::make('height_m')
                             ->label('Высота (м)')
+                            ->required()
                             ->numeric()
                             ->minValue(0)
                             ->step(0.01),

@@ -201,11 +201,12 @@
             <p class="text-4xl font-bold text-green-600 dark:text-green-400">500+</p>
             <p class="mt-2 text-gray-500 dark:text-gray-400">Постоянных клиентов</p>
           </div>
-          <div
-            class="rounded-lg bg-gray-50 p-6 text-center transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-gray-800">
+          <a href="{{ route('vehicles.index') }}"
+            class="group rounded-lg bg-gray-50 p-6 text-center transition-all duration-300 ease-in-out hover:-translate-y-2 hover:bg-green-50 hover:shadow-lg dark:bg-gray-800 dark:hover:bg-gray-700">
             <p class="text-4xl font-bold text-green-600 dark:text-green-400">15+</p>
-            <p class="mt-2 text-gray-500 dark:text-gray-400">Единиц техники</p>
-          </div>
+            <p class="mt-2 text-gray-500 group-hover:text-green-600 dark:text-gray-400 dark:group-hover:text-green-400">Единиц техники</p>
+            <p class="mt-2 text-xs text-green-600 opacity-0 transition-opacity group-hover:opacity-100 dark:text-green-400">Посмотреть автопарк →</p>
+          </a>
           <div
             class="rounded-lg bg-gray-50 p-6 text-center transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-gray-800">
             <p class="text-4xl font-bold text-green-600 dark:text-green-400">5</p>

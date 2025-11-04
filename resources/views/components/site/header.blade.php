@@ -26,6 +26,8 @@
           class="text-gray-600 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-500">О нас</a>
         <a href="{{ route('services.index') }}"
           class="text-gray-600 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-500">Услуги</a>
+        <a href="{{ route('vehicles.index') }}"
+          class="text-gray-600 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-500">Автопарк</a>
         <a href="{{ route('prices.index') }}" class="text-gray-600 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-500">Цены</a>
         <a href="{{ route('calculator.index') }}"
           class="text-gray-600 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-500">Калькулятор</a>
@@ -60,6 +62,7 @@
       <a href="{{ route('home') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Главная</a>
       <a href="{{ route('about.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">О нас</a>
       <a href="{{ route('services.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Услуги</a>
+      <a href="{{ route('vehicles.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Автопарк</a>
       <a href="{{ route('prices.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Цены</a>
       <a href="{{ route('calculator.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Калькулятор</a>
       <a href="{{ route('contacts.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Контакты</a>

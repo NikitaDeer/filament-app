@@ -17,20 +17,17 @@
           бизнесом.
         </p>
       </div>
-      <!-- Services -->
+      <!-- Navigation -->
       <div>
-        <h3 class="font-semibold text-gray-800 dark:text-white">Услуги</h3>
-        @php
-          $footerServices = \App\Models\Service::where('is_published', true)->latest()->take(6)->get(['id','name']);
-        @endphp
+        <h3 class="font-semibold text-gray-800 dark:text-white">Навигация</h3>
         <ul class="mt-4 space-y-2">
-          @foreach ($footerServices as $s)
-            <li>
-              <a href="{{ route('services.index') }}" class="text-gray-500 hover:text-green-600 dark:text-gray-400">
-                {{ $s->name }}
-              </a>
-            </li>
-          @endforeach
+          <li><a href="{{ route('home') }}" class="text-gray-500 hover:text-green-600 dark:text-gray-400">Главная</a></li>
+          <li><a href="{{ route('about.index') }}" class="text-gray-500 hover:text-green-600 dark:text-gray-400">О нас</a></li>
+          <li><a href="{{ route('services.index') }}" class="text-gray-500 hover:text-green-600 dark:text-gray-400">Услуги</a></li>
+          <li><a href="{{ route('vehicles.index') }}" class="text-gray-500 hover:text-green-600 dark:text-gray-400">Автопарк</a></li>
+          <li><a href="{{ route('prices.index') }}" class="text-gray-500 hover:text-green-600 dark:text-gray-400">Цены</a></li>
+          <li><a href="{{ route('calculator.index') }}" class="text-gray-500 hover:text-green-600 dark:text-gray-400">Калькулятор</a></li>
+          <li><a href="{{ route('contacts.index') }}" class="text-gray-500 hover:text-green-600 dark:text-gray-400">Контакты</a></li>
         </ul>
       </div>
       <!-- Contacts -->

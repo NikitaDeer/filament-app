@@ -30,4 +30,8 @@ Route::get('/prices', function () {
   return view('pages.prices.index');
 })->name('prices.index');
 
+Route::get('/vehicles', function () {
+  return view('pages.vehicles.index');
+})->name('vehicles.index');
+
 require __DIR__ . '/auth.php';

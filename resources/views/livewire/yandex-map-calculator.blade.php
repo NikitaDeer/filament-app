@@ -2,7 +2,13 @@
 
   {{-- Выбор транспорта --}}
   <section class="mb-8">
-    <h2 class="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Шаг 1: Выберите транспорт</h2>
+    <div class="mb-4 flex items-center justify-between">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Шаг 1: Выберите транспорт</h2>
+      <a href="{{ route('vehicles.index') }}" 
+         class="text-sm text-green-600 hover:text-green-700 hover:underline dark:text-green-400 dark:hover:text-green-500">
+        Посмотреть весь автопарк →
+      </a>
+    </div>
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       @foreach($vehicles as $veh)
         <div
