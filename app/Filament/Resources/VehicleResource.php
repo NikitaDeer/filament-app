@@ -116,14 +116,24 @@ class VehicleResource extends Resource
                         Forms\Components\Toggle::make('allows_passengers')
                             ->label('Можно брать пассажиров')
                             ->default(false)
-                            ->reactive(),
+                            ->reactive()
+                            ->afterStateUpdated(function (callable $set, $state) {
+                                // При включении allows_passengers автоматически ставим 2
+                                if ($state) {
+                                    $set('max_passengers', 2);
+                                } else {
+                                    $set('max_passengers', 0);
+                                }
+                            }),
 
                         Forms\Components\TextInput::make('max_passengers')
                             ->label('Максимум пассажиров')
                             ->numeric()
-                            ->minValue(0)
-                            ->default(0)
-                            ->visible(fn (callable $get) => $get('allows_passengers')),
+                            ->minValue(1)
+                            ->default(2)
+                            ->required(fn (callable $get) => $get('allows_passengers'))
+                            ->visible(fn (callable $get) => $get('allows_passengers'))
+                            ->helperText('Укажите сколько пассажиров может вместить транспорт'),
                     ])
                     ->columns(2)
                     ->collapsible(),
