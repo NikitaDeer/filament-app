@@ -18,6 +18,18 @@ class PricingOption extends Model
         'max_quantity',
         'is_active',
     ];
+    
+    protected static function booted()
+    {
+        // При сохранении активной записи деактивируем другие того же типа
+        static::saving(function ($pricingOption) {
+            if ($pricingOption->is_active && $pricingOption->type) {
+                static::where('type', $pricingOption->type)
+                    ->where('id', '!=', $pricingOption->id ?? 0)
+                    ->update(['is_active' => false]);
+            }
+        });
+    }
 
     protected $casts = [
         'is_active' => 'boolean',

@@ -1,17 +1,5 @@
 <div class="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
 
-  {{-- Кнопка сброса --}}
-  <div class="mb-4 flex justify-end">
-    <button
-      wire:click="resetCalculator"
-      class="rounded-lg bg-gray-500 px-4 py-2 text-white transition-colors hover:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-700">
-      <svg class="mr-2 inline-block h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-      </svg>
-      Сбросить калькулятор
-    </button>
-  </div>
-
   {{-- Выбор транспорта --}}
   <section class="mb-8">
     <h2 class="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Шаг 1: Выберите транспорт</h2>
@@ -48,7 +36,17 @@
 
   {{-- Карта и маршрут --}}
   <section class="mb-8">
-    <h2 class="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Шаг 2: Укажите маршрут на карте</h2>
+    <div class="mb-4 flex items-center justify-between">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Шаг 2: Укажите маршрут на карте</h2>
+      <button
+        wire:click="resetCalculator"
+        class="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700">
+        <svg class="mr-2 inline-block h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        Сбросить калькулятор
+      </button>
+    </div>
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
       {{-- Левая панель: Точки маршрута --}}
@@ -282,10 +280,22 @@
               <span class="font-semibold">{{ number_format($services_cost, 0) }} ₽</span>
             </div>
           @endif
-          @if($options_cost > 0)
-            <div class="flex justify-between text-gray-700 dark:text-gray-300">
-              <span>Дополнительные опции (грузчики, пассажиры, этажи)</span>
-              <span class="font-semibold">{{ number_format($options_cost, 0) }} ₽</span>
+          @if($loaders_count > 0)
+            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+              <span>• Грузчики: {{ $loaders_count }} × {{ number_format($loader_price, 0) }} ₽/ч × 2 ч</span>
+              <span class="font-medium">{{ number_format($loaders_count * $loader_price * $estimated_hours, 0) }} ₽</span>
+            </div>
+          @endif
+          @if($passengers_count > 0)
+            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+              <span>• Пассажиры: {{ $passengers_count }} × {{ number_format($passenger_price, 0) }} ₽/ч × 2 ч</span>
+              <span class="font-medium">{{ number_format($passengers_count * $passenger_price * $estimated_hours, 0) }} ₽</span>
+            </div>
+          @endif
+          @if($floors_count > 0 && !$has_cargo_elevator)
+            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+              <span>• Этажи: {{ $floors_count }} × {{ number_format($floor_price, 0) }} ₽</span>
+              <span class="font-medium">{{ number_format($floors_count * $floor_price, 0) }} ₽</span>
             </div>
           @endif
           <div class="border-t border-gray-300 pt-3 dark:border-gray-600">
