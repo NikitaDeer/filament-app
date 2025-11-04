@@ -22,35 +22,35 @@
             оптимальный маршрут для вашего груза.
           </p>
           <ul class="mt-6 space-y-3">
-            <li class="flex items-center text-blue-600 dark:text-blue-400">
-              <span class="mr-3 h-2 w-2 rounded-full bg-blue-500"></span>
+            <li class="flex items-center text-green-600 dark:text-green-400">
+              <span class="mr-3 h-2 w-2 rounded-full bg-green-500"></span>
               Лицензированная деятельность
             </li>
-            <li class="flex items-center text-blue-600 dark:text-blue-400">
-              <span class="mr-3 h-2 w-2 rounded-full bg-blue-500"></span>
+            <li class="flex items-center text-green-600 dark:text-green-400">
+              <span class="mr-3 h-2 w-2 rounded-full bg-green-500"></span>
               Собственный автопарк из 15+ машин
             </li>
-            <li class="flex items-center text-blue-600 dark:text-blue-400">
-              <span class="mr-3 h-2 w-2 rounded-full bg-blue-500"></span>
+            <li class="flex items-center text-green-600 dark:text-green-400">
+              <span class="mr-3 h-2 w-2 rounded-full bg-green-500"></span>
               Команда из 25+ специалистов
             </li>
           </ul>
         </div>
         <div class="grid grid-cols-2 gap-6">
           <div class="rounded-lg bg-gray-50 p-6 text-center dark:bg-gray-800">
-            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">10K+</p>
+            <p class="text-4xl font-bold text-green-600 dark:text-green-400">10K+</p>
             <p class="mt-2 text-gray-500 dark:text-gray-400">Выполненных заказов</p>
           </div>
           <div class="rounded-lg bg-gray-50 p-6 text-center dark:bg-gray-800">
-            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">500+</p>
+            <p class="text-4xl font-bold text-green-600 dark:text-green-400">500+</p>
             <p class="mt-2 text-gray-500 dark:text-gray-400">Постоянных клиентов</p>
           </div>
           <div class="rounded-lg bg-gray-50 p-6 text-center dark:bg-gray-800">
-            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">15+</p>
+            <p class="text-4xl font-bold text-green-600 dark:text-green-400">15+</p>
             <p class="mt-2 text-gray-500 dark:text-gray-400">Единиц техники</p>
           </div>
           <div class="rounded-lg bg-gray-50 p-6 text-center dark:bg-gray-800">
-            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">5</p>
+            <p class="text-4xl font-bold text-green-600 dark:text-green-400">5</p>
             <p class="mt-2 text-gray-500 dark:text-gray-400">Лет на рынке</p>
           </div>
         </div>
@@ -58,7 +58,7 @@
 
       <div class="mt-24 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
         <div class="rounded-lg bg-gray-50 p-8 text-center dark:bg-gray-800">
-          <div class="inline-block rounded-lg bg-blue-100 p-4 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400">
+          <div class="inline-block rounded-lg bg-green-100 p-4 text-green-600 dark:bg-green-900/50 dark:text-green-400">
             <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -70,7 +70,7 @@
             с договором.</p>
         </div>
         <div class="rounded-lg bg-gray-50 p-8 text-center dark:bg-gray-800">
-          <div class="inline-block rounded-lg bg-blue-100 p-4 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400">
+          <div class="inline-block rounded-lg bg-green-100 p-4 text-green-600 dark:bg-green-900/50 dark:text-green-400">
             <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -83,7 +83,7 @@
             лет.</p>
         </div>
         <div class="rounded-lg bg-gray-50 p-8 text-center dark:bg-gray-800">
-          <div class="inline-block rounded-lg bg-blue-100 p-4 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400">
+          <div class="inline-block rounded-lg bg-green-100 p-4 text-green-600 dark:bg-green-900/50 dark:text-green-400">
             <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -95,7 +95,7 @@
           </p>
         </div>
         <div class="rounded-lg bg-gray-50 p-8 text-center dark:bg-gray-800">
-          <div class="inline-block rounded-lg bg-blue-100 p-4 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400">
+          <div class="inline-block rounded-lg bg-green-100 p-4 text-green-600 dark:bg-green-900/50 dark:text-green-400">
             <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

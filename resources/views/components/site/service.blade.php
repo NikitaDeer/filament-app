@@ -22,7 +22,7 @@
           <form action="{{ route('tariffs.activate', $tariff) }}" method="POST">
             @csrf
             <button type="submit" 
-              class="w-full bg-gradient-to-r from-primary-500 to-blue-500 text-white rounded-lg py-3 px-6 text-lg font-semibold text-center hover:from-primary-600 hover:to-blue-600 transition-all duration-300"
+              class="w-full bg-gradient-to-r from-primary-500 to-green-500 text-white rounded-lg py-3 px-6 text-lg font-semibold text-center hover:from-primary-600 hover:to-green-600 transition-all duration-300"
             >
             Выбрать тариф
             </button>

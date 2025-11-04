@@ -58,12 +58,12 @@
       color: #111827;
     }
 
-    .text-blue-600 {
-      color: #2563eb;
+    .text-green-600 {
+      color: #4CAF50;
     }
 
-    .text-blue-700 {
-      color: #1d4ed8;
+    .text-green-700 {
+      color: #388E3C;
     }
 
     .bg-white {
@@ -78,8 +78,8 @@
       background-color: #f3f4f6;
     }
 
-    .bg-blue-50 {
-      background-color: #eff6ff;
+    .bg-green-50 {
+      background-color: #E8F5E9;
     }
 
     .bg-green-50 {
@@ -210,7 +210,7 @@
     }
 
     .btn-primary {
-      background-color: #2563eb;
+      background-color: #4CAF50;
       color: #ffffff;
     }
 
@@ -250,7 +250,7 @@
     <div class="mb-4 rounded-lg bg-white p-8 shadow">
       <div class="mb-10 border-b border-gray-200 pb-4 text-center">
         {{-- <img src="{{ $message->embed(public_path('images/logo.png')) }}" alt="Логотип" class="m-auto mb-4 max-w-150"> --}}
-        <h1 class="m-0 text-2xl font-bold text-blue-700">Новая заявка №{{ $order->id }}</h1>
+        <h1 class="m-0 text-2xl font-bold text-green-700">Новая заявка №{{ $order->id }}</h1>
         <p class="mt-2 text-gray-600">Заявка поступила во время: {{ $order->created_at->format('d.m.Y H:i') }}</p>
       </div>
 
@@ -259,14 +259,14 @@
         <div class="py-3"><span class="info-label">Имя:</span><span class="info-value">{{ $order->name }}</span>
         </div>
         <div class="py-3"><span class="info-label">Телефон:</span><span class="info-value"><a
-              href="tel:{{ $order->phone }}" class="text-blue-600">{{ $order->phone }}</a></span></div>
+              href="tel:{{ $order->phone }}" class="text-green-600">{{ $order->phone }}</a></span></div>
         <div class="py-3"><span class="info-label">Email:</span><span class="info-value"><a
-              href="mailto:{{ $order->email }}" class="text-blue-600">{{ $order->email }}</a></span></div>
+              href="mailto:{{ $order->email }}" class="text-green-600">{{ $order->email }}</a></span></div>
       </div>
 
       <div class="mb-10">
         <h2 class="mb-5 border-b border-gray-200 pb-2 text-lg font-semibold text-gray-800">Детали заказа</h2>
-        <div class="details-block border-blue-500 bg-blue-50">
+        <div class="details-block border-green-500 bg-green-50">
           <div class="py-3"><span class="info-label">Откуда:</span><span
               class="info-value">{{ $order->from_address }}</span></div>
           <div class="py-3"><span class="info-label">Куда:</span><span

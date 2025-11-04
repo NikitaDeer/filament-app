@@ -4,11 +4,11 @@
       <h3 class="text-lg font-medium mb-4">Основная информация</h3>
       <div class="space-y-3">
         <div class="flex items-center gap-3">
-          <i class="fas fa-user text-cyan-500"></i>
+          <i class="fas fa-user text-green-500"></i>
           <span>{{ Auth::user()->name }}</span>
         </div>
         <div class="flex items-center gap-3">
-          <i class="fas fa-envelope text-cyan-500"></i>
+          <i class="fas fa-envelope text-green-500"></i>
           <span>{{ Auth::user()->email }}</span>
         </div>
       </div>

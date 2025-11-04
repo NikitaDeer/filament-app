@@ -7,7 +7,7 @@
     <!-- Форма изменения основной информации -->
     <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
         <h4 class="text-lg font-medium text-gray-800 mb-4 flex items-center">
-            <i class="fas fa-user text-cyan-500 mr-2"></i>
+            <i class="fas fa-user text-green-500 mr-2"></i>
             Основная информация
         </h4>
         
@@ -25,7 +25,7 @@
                     id="name" 
                     name="name" 
                     value="{{ old('name', Auth::user()->name) }}"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     required
                 >
                 @error('name')
@@ -43,7 +43,7 @@
                     id="email" 
                     name="email" 
                     value="{{ old('email', Auth::user()->email) }}"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     required
                 >
                 @error('email')
@@ -61,7 +61,7 @@
                     id="telegram_id" 
                     name="telegram_id" 
                     value="{{ old('telegram_id', Auth::user()->telegram_id) }}"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     placeholder="Введите ваш Telegram ID"
                 >
                 @error('telegram_id')
@@ -72,7 +72,7 @@
             <div class="flex justify-end">
                 <button 
                     type="submit"
-                    class="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 flex items-center"
+                    class="bg-gradient-to-r from-green-500 to-green-500 text-white px-6 py-3 rounded-lg font-medium hover:from-green-600 hover:to-green-600 transition-all duration-300 flex items-center"
                 >
                     <i class="fas fa-save mr-2"></i>
                     Сохранить изменения
@@ -84,7 +84,7 @@
     <!-- Форма изменения пароля -->
     <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
         <h4 class="text-lg font-medium text-gray-800 mb-4 flex items-center">
-            <i class="fas fa-lock text-cyan-500 mr-2"></i>
+            <i class="fas fa-lock text-green-500 mr-2"></i>
             Изменение пароля
         </h4>
         
@@ -102,7 +102,7 @@
                         type="password" 
                         id="current_password" 
                         name="current_password"
-                        class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+                        class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                         required
                     >
                     <button 
@@ -128,7 +128,7 @@
                         type="password" 
                         id="password" 
                         name="password"
-                        class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+                        class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                         required
                     >
                     <button 
@@ -154,7 +154,7 @@
                         type="password" 
                         id="password_confirmation" 
                         name="password_confirmation"
-                        class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+                        class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                         required
                     >
                     <button 
@@ -349,12 +349,12 @@ document.addEventListener('DOMContentLoaded', function() {
         removeCurrentPasswordFeedback();
         
         const loadingElement = document.createElement('p');
-        loadingElement.className = 'mt-1 text-sm text-blue-600 flex items-center';
+        loadingElement.className = 'mt-1 text-sm text-green-600 flex items-center';
         loadingElement.id = 'current-password-loading';
         loadingElement.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Проверка пароля...';
         
         currentPasswordField.parentNode.appendChild(loadingElement);
-        currentPasswordField.classList.add('border-blue-500');
+        currentPasswordField.classList.add('border-green-500');
         currentPasswordField.classList.remove('border-gray-300', 'border-red-500', 'border-green-500');
     }
 
@@ -362,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const existing = currentPasswordField.parentNode.querySelectorAll('#current-password-error, #current-password-success, #current-password-loading');
         existing.forEach(el => el.remove());
         
-        currentPasswordField.classList.remove('border-red-500', 'border-green-500', 'border-blue-500');
+        currentPasswordField.classList.remove('border-red-500', 'border-green-500', 'border-green-500');
         currentPasswordField.classList.add('border-gray-300');
     }
 
@@ -380,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (loadingElement) {
             loadingElement.remove();
         }
-        currentPasswordField.classList.remove('border-blue-500');
+        currentPasswordField.classList.remove('border-green-500');
     }
 
     // Функция для проверки совпадения паролей
@@ -451,7 +451,7 @@ document.addEventListener('DOMContentLoaded', function() {
             passwordField.parentNode.appendChild(strengthElement);
         }
 
-        const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'];
+        const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500', 'bg-green-500'];
         const strengthTexts = ['Очень слабый', 'Слабый', 'Средний', 'Хороший', 'Отличный'];
         const strengthIndex = Math.max(0, metCount - 1);
 
@@ -462,7 +462,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         `<div class="h-2 w-6 rounded ${i < metCount ? strengthColors[strengthIndex] : 'bg-gray-200'}"></div>`
                     ).join('')}
                 </div>
-                <span class="text-sm font-medium ${metCount >= 4 ? 'text-green-600' : metCount >= 3 ? 'text-blue-600' : 'text-red-600'}">
+                <span class="text-sm font-medium ${metCount >= 4 ? 'text-green-600' : metCount >= 3 ? 'text-green-600' : 'text-red-600'}">
                     ${strengthTexts[strengthIndex] || 'Слишком слабый'}
                 </span>
             </div>
@@ -688,7 +688,7 @@ document.addEventListener('DOMContentLoaded', function() {
             passwordField.parentNode.appendChild(strengthElement);
         }
 
-        const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'];
+        const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500', 'bg-green-500'];
         const strengthTexts = ['Очень слабый', 'Слабый', 'Средний', 'Хороший', 'Отличный'];
 
         strengthElement.innerHTML = `

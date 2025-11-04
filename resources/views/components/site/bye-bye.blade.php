@@ -12,7 +12,7 @@
       </p>
 
       <!-- Кнопка -->
-      <a href="#" target="_blank" class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-primary-500 to-blue-500 px-6 py-3 text-base font-medium text-white shadow-lg hover:from-primary-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2">
+      <a href="#" target="_blank" class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-primary-500 to-green-500 px-6 py-3 text-base font-medium text-white shadow-lg hover:from-primary-600 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 5.572a10.028 10.028 0 00-12.857 0 10.026 10.026 0 000 14.142 10.026 10.026 0 0014.142 0 10.026 10.026 0 000-14.142zM12 10.5l3.5 2.5-1-4.5 3.5-3-4.5-.5-2-4.5-2 4.5-4.5.5 3 3-1 4.5 3.5-2.5z" />
         </svg>

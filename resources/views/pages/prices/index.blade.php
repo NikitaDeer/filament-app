@@ -14,23 +14,94 @@
     </div>
   </section>
 
-  <!-- Тарифные карточки -->
+  <!-- Автопарк и цены -->
   <section class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12">
+      <h2 class="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-white">Наш автопарк</h2>
       <div class="mx-auto max-w-6xl">
-        <div class="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-3">
-          <!-- Базовый -->
-          <div class="relative rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:border-neutral-700 dark:bg-neutral-800">
-            <div class="mb-2 text-sm font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">Базовый</div>
-            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">от 50 ₽/км</h3>
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">Перевозки по городу. Идеально для небольших грузов и коротких расстояний.</p>
+        @php
+          $vehicles = \App\Models\Vehicle::active()->ordered()->get();
+        @endphp
+        <div class="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
+          @foreach($vehicles as $vehicle)
+            <div class="relative rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:border-neutral-700 dark:bg-neutral-800">
+              <div class="mb-2 text-lg font-bold text-gray-900 dark:text-white">{{ $vehicle->name }}</div>
+              <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{{ $vehicle->description }}</p>
+              <div class="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-200">
+                <div class="flex justify-between">
+                  <span>Цена за км:</span>
+                  <span class="font-semibold text-green-600 dark:text-green-400">{{ number_format($vehicle->price_per_km, 0) }} ₽</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Цена за час:</span>
+                  <span class="font-semibold text-green-600 dark:text-green-400">{{ number_format($vehicle->price_per_hour, 0) }} ₽</span>
+                </div>
+                <div class="flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
+                  <span>Грузоподъемность:</span>
+                  <span class="font-medium">{{ $vehicle->capacity_tons }} т</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Размеры (Д×Ш×В):</span>
+                  <span class="font-medium">{{ $vehicle->length_m }}×{{ $vehicle->width_m }}×{{ $vehicle->height_m }} м</span>
+                </div>
+                @if($vehicle->allows_passengers)
+                  <div class="flex justify-between">
+                    <span>Пассажиров:</span>
+                    <span class="font-medium">до {{ $vehicle->max_passengers }} чел.</span>
+                  </div>
+                @endif
+              </div>
+              <div class="mt-6">
+                <a href="{{ route('calculator.index') }}" class="inline-flex w-full items-center justify-center rounded-lg bg-green-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800">
+                  Заказать расчет
+                </a>
+              </div>
+            </div>
+          @endforeach
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Дополнительные опции -->
+  <section class="bg-gray-50 py-16 dark:bg-gray-800 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12">
+      <h2 class="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-white">Дополнительные опции</h2>
+      <div class="mx-auto max-w-4xl">
+        @php
+          $pricingOptions = \App\Models\PricingOption::active()->get()->groupBy('type');
+        @endphp
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+          @foreach(['loader' => 'Грузчики', 'passenger' => 'Пассажиры', 'floor' => 'Подъем на этаж'] as $type => $title)
+            @php
+              $option = $pricingOptions->get($type)?->first();
+            @endphp
+            @if($option)
+              <div class="relative rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:border-neutral-700 dark:bg-neutral-800">
+                <div class="mb-2 text-lg font-bold text-gray-900 dark:text-white">{{ $title }}</div>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{{ $option->description }}</p>
+                <div class="mt-4">
+                  @if($type == 'floor')
+                    <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ number_format($option->price_per_floor, 0) }} ₽</div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">за этаж</p>
+                  @else
+                    <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ number_format($option->price_per_hour, 0) }} ₽/час</div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">за человека</p>
+                  @endif
+                </div>
+                @if($option->max_quantity)
+                  <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Максимум: {{ $option->max_quantity }} {{ $type == 'loader' ? 'грузчиков' : ($type == 'passenger' ? 'пассажиров' : 'этажей') }}</p>
+                @endif
+              </div>
+            @endif
+          @endforeach
             <ul class="mt-6 space-y-3 text-sm text-gray-700 dark:text-gray-200">
               <li class="flex items-center gap-2"><span class="inline-block h-1.5 w-1.5 rounded-full bg-primary-500"></span>Минимальный заказ от 2 часов</li>
               <li class="flex items-center gap-2"><span class="inline-block h-1.5 w-1.5 rounded-full bg-primary-500"></span>Стандартный кузов</li>
               <li class="flex items-center gap-2"><span class="inline-block h-1.5 w-1.5 rounded-full bg-primary-500"></span>Страховка груза базовая</li>
             </ul>
             <div class="mt-8">
-              <a href="{{ route('calculator.index') }}" class="inline-flex w-full items-center justify-center rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800">
+              <a href="{{ route('calculator.index') }}" class="inline-flex w-full items-center justify-center rounded-lg bg-green-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800">
                 Заказать расчет
               </a>
             </div>
@@ -48,7 +119,7 @@
               <li class="flex items-center gap-2"><span class="inline-block h-1.5 w-1.5 rounded-full bg-primary-500"></span>Страховка груза расширенная</li>
             </ul>
             <div class="mt-8">
-              <a href="{{ route('calculator.index') }}" class="inline-flex w-full items-center justify-center rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800">
+              <a href="{{ route('calculator.index') }}" class="inline-flex w-full items-center justify-center rounded-lg bg-green-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800">
                 Заказать расчет
               </a>
             </div>
@@ -75,55 +146,6 @@
     </div>
   </section>
 
-  <!-- Таблица сравнения -->
-  <section class="bg-white py-16 dark:bg-gray-900 sm:py-24">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <div class="mx-auto max-w-6xl">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Сравнение тарифов</h2>
-        <div class="mt-6 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
-          <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-neutral-200 dark:divide-neutral-700">
-              <thead class="bg-neutral-50 dark:bg-neutral-700/40">
-                <tr>
-                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-300">Опция</th>
-                  <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-300">Базовый</th>
-                  <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-300">Популярный</th>
-                  <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-300">Межгород</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-neutral-200 dark:divide-neutral-700">
-                <tr>
-                  <td class="px-6 py-4 text-sm text-gray-800 dark:text-gray-100">Цена за км</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">50 ₽</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">65 ₽</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">Индивид.</td>
-                </tr>
-                <tr>
-                  <td class="px-6 py-4 text-sm text-gray-800 dark:text-gray-100">Страховка</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">Базовая</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">Расширенная</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">Опции</td>
-                </tr>
-                <tr>
-                  <td class="px-6 py-4 text-sm text-gray-800 dark:text-gray-100">Кузов</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">Стандарт</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">Увеличенный</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">Индивидуально</td>
-                </tr>
-                <tr>
-                  <td class="px-6 py-4 text-sm text-gray-800 dark:text-gray-100">Подача</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">По расписанию</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">Гибкие окна</td>
-                  <td class="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-200">Договорная</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <p class="mt-3 text-xs text-gray-500 dark:text-gray-400">Указанные цены ориентировочные и могут отличаться в зависимости от маршрута, веса и сроков.</p>
-      </div>
-    </div>
-  </section>
 
   <!-- FAQ -->
   <section class="bg-white py-16 dark:bg-gray-900">
@@ -164,7 +186,7 @@
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Готовы к переезду?</h2>
         <p class="mx-auto mt-4 max-w-2xl text-base leading-7 text-gray-600 dark:text-gray-300">Рассчитайте стоимость в нашем калькуляторе или оставьте заявку — мы предложим лучшее решение под вашу задачу.</p>
         <div class="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-          <a href="{{ route('calculator.index') }}" class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800 sm:px-8">
+          <a href="{{ route('calculator.index') }}" class="inline-flex items-center justify-center rounded-lg bg-green-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-neutral-800 sm:px-8">
             Перейти к калькулятору
           </a>
           <a href="{{ route('contacts.index') }}" class="inline-flex items-center justify-center rounded-lg border border-neutral-300 bg-white px-6 py-3 text-sm font-semibold text-gray-800 transition-colors hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white dark:hover:bg-neutral-600 dark:focus:ring-offset-neutral-800 sm:px-8">

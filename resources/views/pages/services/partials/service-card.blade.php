@@ -1,7 +1,7 @@
 <div class="flex h-full flex-col">
   <div class="flex-grow">
     <div class="flex items-start">
-      <div class="mr-4 flex-shrink-0 rounded-lg bg-blue-100 p-3 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400">
+      <div class="mr-4 flex-shrink-0 rounded-lg bg-green-100 p-3 text-green-600 dark:bg-green-900/50 dark:text-green-400">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
@@ -35,7 +35,7 @@
   </div>
   <div class="mt-8">
     <a href="{{ route('calculator.index') }}"
-      class="flex w-full items-center justify-center rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-blue-700">
+      class="flex w-full items-center justify-center rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
       <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('services', function (Blueprint $table) {
-            //
+            $table->boolean('is_calculator_option')->default(false)->after('is_published'); // Доступна ли в калькуляторе
+            $table->string('icon')->nullable()->after('is_calculator_option'); // Иконка FontAwesome
+            
+            // Индекс для быстрого поиска
+            $table->index(['is_published', 'is_calculator_option']);
         });
     }
 
@@ -22,7 +26,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('services', function (Blueprint $table) {
-            //
+            $table->dropIndex(['is_published', 'is_calculator_option']);
+            $table->dropColumn(['is_calculator_option', 'icon']);
         });
     }
 };

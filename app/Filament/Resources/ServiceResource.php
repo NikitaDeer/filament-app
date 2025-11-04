@@ -83,6 +83,15 @@ class ServiceResource extends Resource
             Forms\Components\Toggle::make('is_popular')
               ->label('Популярная услуга')
               ->default(false),
+            Forms\Components\Toggle::make('is_calculator_option')
+              ->label('Доступна в калькуляторе')
+              ->default(false)
+              ->helperText('Если включено, услуга будет отображаться в калькуляторе стоимости'),
+            Forms\Components\TextInput::make('icon')
+              ->label('Иконка FontAwesome')
+              ->placeholder('fas fa-box')
+              ->helperText('Название иконки из библиотеки FontAwesome (опционально)')
+              ->maxLength(50),
           ])->columns(2),
       ]);
 
@@ -118,6 +127,7 @@ class ServiceResource extends Resource
 
         Tables\Columns\IconColumn::make('is_published')->boolean()->label('Опубликовано'),
         Tables\Columns\IconColumn::make('is_popular')->boolean()->label('Популярная'),
+        Tables\Columns\IconColumn::make('is_calculator_option')->boolean()->label('В калькуляторе'),
       ])
       ->filters([
         //

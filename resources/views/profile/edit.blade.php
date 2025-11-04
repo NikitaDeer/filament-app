@@ -13,8 +13,8 @@
                 <!-- Левое меню -->
                 <aside class="md:w-64 bg-white shadow-md p-6 rounded-lg sticky top-6 self-start">
                     <div class="flex items-center mb-6">
-                        <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-user text-cyan-500 text-xl"></i>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user text-green-500 text-xl"></i>
                         </div>
                         <div class="ml-3">
                             <p class="text-sm font-medium">{{ Auth::user()->name }}</p>
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <nav class="space-y-4">
-                        <button data-tab="profile" class="w-full text-left px-4 py-3 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-lg font-medium active">
+                        <button data-tab="profile" class="w-full text-left px-4 py-3 bg-green-100 hover:bg-green-200 text-green-800 rounded-lg font-medium active">
                             <i class="fas fa-user mr-2"></i> Профиль
                         </button>
                         <button data-tab="access-key" class="w-full text-left px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
@@ -82,13 +82,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Снимаем активность с других кнопок
             buttons.forEach(btn => {
-                btn.classList.remove('bg-blue-100', 'text-blue-800');
+                btn.classList.remove('bg-green-100', 'text-green-800');
                 btn.classList.add('text-gray-700', 'hover:bg-gray-100');
             });
 
             // Активируем текущую кнопку
             this.classList.remove('text-gray-700', 'hover:bg-gray-100');
-            this.classList.add('bg-blue-100', 'text-blue-800');
+            this.classList.add('bg-green-100', 'text-green-800');
         });
     });
 });
@@ -100,7 +100,7 @@ function copyToClipboard(text) {
     .then(() => {
       const tooltip = document.createElement('div');
       tooltip.textContent = 'Скопировано!';
-      tooltip.className = 'fixed bottom-4 right-4 bg-cyan-500 text-white px-4 py-2 rounded-lg shadow-lg';
+      tooltip.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg';
       document.body.appendChild(tooltip);
       setTimeout(() => tooltip.remove(), 2000);
     })

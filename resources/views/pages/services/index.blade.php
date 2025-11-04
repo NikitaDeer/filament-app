@@ -22,7 +22,7 @@
         <div class="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
           @if ($popularService)
             <div
-              class="relative transform rounded-lg border-2 border-blue-500 bg-white p-8 shadow-lg transition-transform duration-300 hover:-translate-y-2 dark:bg-neutral-800">
+              class="relative transform rounded-lg border-2 border-green-500 bg-white p-8 shadow-lg transition-transform duration-300 hover:-translate-y-2 dark:bg-neutral-800">
               <span
                 class="absolute top-0 -translate-y-1/2 rounded-full bg-gray-800 px-3 py-1 text-xs font-semibold text-white">Популярно</span>
               @include('pages.services.partials.service-card', ['service' => $popularService])
@@ -44,7 +44,7 @@
           сложности. Рассчитайте стоимость в нашем калькуляторе или свяжитесь с нами напрямую.</p>
         <div class="mt-8 flex justify-center gap-4">
           <a href="{{ route('calculator.index') }}"
-            class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-blue-700">
+            class="inline-flex items-center justify-center rounded-lg bg-green-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-green-700">
             Рассчитать стоимость
             <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">

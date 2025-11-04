@@ -17,12 +17,15 @@ class Service extends Model
     'features',
     'is_published',
     'is_popular',
+    'is_calculator_option',
+    'icon',
   ];
 
   protected $casts = [
     'features' => 'array',
     'is_published' => 'boolean',
     'is_popular' => 'boolean',
+    'is_calculator_option' => 'boolean',
   ];
 
   public function product()

@@ -4,7 +4,7 @@
       <!-- Логотип -->
       <div class="flex-shrink-0">
         <a href="/" class="flex items-center">
-          <div class="rounded-lg bg-blue-600 p-2 text-white">
+          <div class="rounded-lg bg-green-600 p-2 text-white">
             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
@@ -21,22 +21,22 @@
       <!-- Навигация для десктопа -->
       <div class="hidden lg:flex lg:items-center lg:space-x-8">
         <a href="{{ route('home') }}"
-          class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Главная</a>
+          class="text-gray-600 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-500">Главная</a>
         <a href="{{ route('about.index') }}"
-          class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">О нас</a>
+          class="text-gray-600 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-500">О нас</a>
         <a href="{{ route('services.index') }}"
-          class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Услуги</a>
-        <a href="{{ route('prices.index') }}" class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Цены</a>
+          class="text-gray-600 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-500">Услуги</a>
+        <a href="{{ route('prices.index') }}" class="text-gray-600 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-500">Цены</a>
         <a href="{{ route('calculator.index') }}"
-          class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Калькулятор</a>
+          class="text-gray-600 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-500">Калькулятор</a>
         <a href="{{ route('contacts.index') }}"
-          class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-500">Контакты</a>
+          class="text-gray-600 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-500">Контакты</a>
       </div>
 
       <!-- Правая часть -->
       <div class="flex items-center">
         <a href="{{ route('calculator.index') }}"
-          class="hidden rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 sm:inline-block">
+          class="hidden rounded-lg bg-green-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-green-700 sm:inline-block">
           Оставить заявку
         </a>
 

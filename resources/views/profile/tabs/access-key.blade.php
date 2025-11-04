@@ -12,7 +12,7 @@
             <div class="mb-4">
                 <p class="text-gray-700 mb-2">Тариф:</p>
                 <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                    <span class="font-medium text-cyan-800">
+                    <span class="font-medium text-green-800">
                         {{ $accessKey->subscription->tariff->title ?? 'Неизвестный тариф' }}
                     </span>
                     <span class="text-sm text-gray-600">
@@ -33,7 +33,7 @@
                     >
                     <button 
                         onclick="copyToClipboard('{{ $accessKey->encrypted_key }}')"
-                        class="ml-2 text-cyan-500 hover:text-cyan-700 p-1"
+                        class="ml-2 text-green-500 hover:text-green-700 p-1"
                         title="Копировать ключ"
                     >
                         <i class="fas fa-copy"></i>
@@ -49,7 +49,7 @@
                 <div class="flex items-center mb-2">
                     <div class="w-full bg-gray-200 rounded-full h-2.5">
                         <div 
-                            class="bg-gradient-to-r from-cyan-500 to-blue-500 h-2.5 rounded-full transition-all duration-300" 
+                            class="bg-gradient-to-r from-green-500 to-green-500 h-2.5 rounded-full transition-all duration-300" 
                             style="width: {{ $accessKey->remainingPercentage() }}%"
                         ></div>
                     </div>
@@ -82,7 +82,7 @@
                 Для получения ключа доступа необходимо оформить подписку на один из доступных тарифов
             </p>
             <a href="{{ route('home') }}" 
-               class="inline-block bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg py-2 px-4 font-medium hover:from-cyan-600 hover:to-blue-600 transition-colors">
+               class="inline-block bg-gradient-to-r from-green-500 to-green-500 text-white rounded-lg py-2 px-4 font-medium hover:from-green-600 hover:to-green-600 transition-colors">
                 Выбрать тариф
             </a>
         </div>

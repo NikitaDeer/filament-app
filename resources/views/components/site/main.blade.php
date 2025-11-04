@@ -83,7 +83,7 @@
               </div>
 
               <a href="{{ route('profile.edit') }}"
-                class="inline-block bg-gradient-to-r from-primary-500 to-blue-500 text-white rounded-lg py-2 px-4 text-sm font-medium hover:from-primary-600 hover:to-blue-600 transition-colors w-full text-center"
+                class="inline-block bg-gradient-to-r from-primary-500 to-green-500 text-white rounded-lg py-2 px-4 text-sm font-medium hover:from-primary-600 hover:to-green-600 transition-colors w-full text-center"
               >
                 Управление подпиской
               </a>
@@ -108,7 +108,7 @@
                 <i class="fas fa-exclamation-circle text-primary-500 dark:text-primary-400 text-3xl mb-3"></i>
                 <p class="text-gray-600 dark:text-gray-400 mb-4">Подписка не активна</p>
                 <a href="{{ route('profile.edit') }}"
-                  class="inline-block bg-gradient-to-r from-primary-500 to-blue-500 text-white rounded-lg py-2 px-4 text-sm font-medium hover:from-primary-600 hover:to-blue-600 transition-colors w-full text-center"
+                  class="inline-block bg-gradient-to-r from-primary-500 to-green-500 text-white rounded-lg py-2 px-4 text-sm font-medium hover:from-primary-600 hover:to-green-600 transition-colors w-full text-center"
                 >
                   Выбрать тариф
                 </a>
@@ -121,7 +121,7 @@
               <i class="fas fa-user-lock text-primary-500 dark:text-primary-400 text-3xl mb-3"></i>
               <p class="text-gray-600 dark:text-gray-400 mb-4">Авторизуйтесь для просмотра статуса подписки</p>
               <a href="{{ route('login') }}"
-                class="inline-block bg-gradient-to-r from-primary-500 to-blue-500 text-white rounded-lg py-2 px-4 text-sm font-medium hover:from-primary-600 hover:to-blue-600 transition-colors w-full text-center"
+                class="inline-block bg-gradient-to-r from-primary-500 to-green-500 text-white rounded-lg py-2 px-4 text-sm font-medium hover:from-primary-600 hover:to-green-600 transition-colors w-full text-center"
               >
                 Войти
               </a>

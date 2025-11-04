@@ -4,7 +4,7 @@
       <!-- Company Info -->
       <div>
         <div class="flex items-center">
-          <div class="rounded-lg bg-blue-600 p-2 text-white">
+          <div class="rounded-lg bg-green-600 p-2 text-white">
             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
               </path>
@@ -26,7 +26,7 @@
         <ul class="mt-4 space-y-2">
           @foreach ($footerServices as $s)
             <li>
-              <a href="{{ route('services.index') }}" class="text-gray-500 hover:text-blue-600 dark:text-gray-400">
+              <a href="{{ route('services.index') }}" class="text-gray-500 hover:text-green-600 dark:text-gray-400">
                 {{ $s->name }}
               </a>
             </li>
@@ -39,11 +39,11 @@
         <ul class="mt-4 space-y-3">
           <li class="flex items-center text-gray-500 dark:text-gray-400">
             <i class="fas fa-phone-alt mr-2 w-5 text-center"></i>
-            <a href="tel:+78121234567" class="hover:text-blue-600">+7 (812) 123-45-67</a>
+            <a href="tel:+78121234567" class="hover:text-green-600">+7 (812) 123-45-67</a>
           </li>
           <li class="flex items-center text-gray-500 dark:text-gray-400">
             <i class="fas fa-envelope mr-2 w-5 text-center"></i>
-            <a href="mailto:info@spbcargo.ru" class="hover:text-blue-600">info@spbcargo.ru</a>
+            <a href="mailto:info@spbcargo.ru" class="hover:text-green-600">info@spbcargo.ru</a>
           </li>
           <li class="flex items-center text-gray-500 dark:text-gray-400">
             <i class="fas fa-map-marker-alt mr-2 w-5 text-center"></i>

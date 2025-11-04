@@ -13,7 +13,17 @@ return new class extends Migration
     {
         Schema::create('pricing_options', function (Blueprint $table) {
             $table->id();
+            $table->enum('type', ['loader', 'passenger', 'floor']); // Тип опции
+            $table->string('name'); // Название опции
+            $table->text('description')->nullable(); // Описание
+            $table->decimal('price_per_hour', 10, 2)->nullable(); // Для грузчиков/пассажиров
+            $table->decimal('price_per_floor', 10, 2)->nullable(); // Для этажей
+            $table->integer('max_quantity')->default(10); // Макс кол-во (например 3 грузчика)
+            $table->boolean('is_active')->default(true); // Активна ли
             $table->timestamps();
+
+            // Индексы
+            $table->index(['type', 'is_active']);
         });
     }
 

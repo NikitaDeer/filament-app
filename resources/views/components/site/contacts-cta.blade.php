@@ -1,10 +1,10 @@
 <div class="bg-base-100 dark:bg-gray-900">
     <div class="container mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <div class="relative isolate overflow-hidden bg-blue-600 px-6 py-24 text-center shadow-2xl rounded-3xl sm:px-16 dark:bg-blue-800">
+        <div class="relative isolate overflow-hidden bg-green-600 px-6 py-24 text-center shadow-2xl rounded-3xl sm:px-16 dark:bg-green-800">
             <h2 class="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 Остались вопросы?
             </h2>
-            <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-blue-100 dark:text-blue-200">
+            <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-green-100 dark:text-green-200">
                 Наша команда готова предоставить вам подробную консультацию. Позвоните или напишите нам, и мы найдем лучшее решение для вас.
             </p>
             <div class="mt-10 flex items-center justify-center gap-x-6">
