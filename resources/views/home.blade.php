@@ -7,7 +7,7 @@
       <div>
         <h1 class="text-4xl font-bold text-gray-800 dark:text-white lg:text-5xl">
           Надежные
-          <span class="text-blue-600 dark:text-blue-500">грузоперевозки</span> в
+          <span class="text-green-600 dark:text-green-500">грузоперевозки</span> в
           СПБ и ЛО
         </h1>
         <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
@@ -16,7 +16,7 @@
         </p>
         <div class="mt-8 grid grid-cols-2 gap-6 text-gray-700 dark:text-gray-300">
           <div class="flex items-center">
-            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -24,7 +24,7 @@
             <span class="ml-2">Работаем 24/7</span>
           </div>
           <div class="flex items-center">
-            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -32,7 +32,7 @@
             <span class="ml-2">Опытные грузчики</span>
           </div>
           <div class="flex items-center">
-            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -40,7 +40,7 @@
             <span class="ml-2">Страхование груза</span>
           </div>
           <div class="flex items-center">
-            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -50,7 +50,7 @@
         </div>
         <div class="mt-10 flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
           <a href="#"
-            class="btn flex items-center justify-center rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-blue-700">
+            class="btn flex items-center justify-center rounded-lg bg-green-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-green-700">
             Рассчитать стоимость
             <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
@@ -64,15 +64,15 @@
         </div>
         <div class="mt-12 grid grid-cols-3 gap-8 text-center">
           <div>
-            <p class="text-3xl font-bold text-blue-600">500+</p>
+            <p class="text-3xl font-bold text-green-600">500+</p>
             <p class="text-gray-500">Довольных клиентов</p>
           </div>
           <div>
-            <p class="text-3xl font-bold text-blue-600">24/7</p>
+            <p class="text-3xl font-bold text-green-600">24/7</p>
             <p class="text-gray-500">Работаем круглосуточно</p>
           </div>
           <div>
-            <p class="text-3xl font-bold text-blue-600">5 лет</p>
+            <p class="text-3xl font-bold text-green-600">5 лет</p>
             <p class="text-gray-500">Опыт работы</p>
           </div>
         </div>
@@ -176,16 +176,16 @@
             оптимальный маршрут для вашего груза.
           </p>
           <ul class="mt-6 space-y-3">
-            <li class="flex items-center text-blue-600 dark:text-blue-400">
-              <span class="mr-3 h-2 w-2 rounded-full bg-blue-500"></span>
+            <li class="flex items-center text-green-600 dark:text-green-400">
+              <span class="mr-3 h-2 w-2 rounded-full bg-green-500"></span>
               Лицензированная деятельность
             </li>
-            <li class="flex items-center text-blue-600 dark:text-blue-400">
-              <span class="mr-3 h-2 w-2 rounded-full bg-blue-500"></span>
+            <li class="flex items-center text-green-600 dark:text-green-400">
+              <span class="mr-3 h-2 w-2 rounded-full bg-green-500"></span>
               Собственный автопарк из 15+ машин
             </li>
-            <li class="flex items-center text-blue-600 dark:text-blue-400">
-              <span class="mr-3 h-2 w-2 rounded-full bg-blue-500"></span>
+            <li class="flex items-center text-green-600 dark:text-green-400">
+              <span class="mr-3 h-2 w-2 rounded-full bg-green-500"></span>
               Команда из 25+ специалистов
             </li>
           </ul>
@@ -193,22 +193,22 @@
         <div class="grid grid-cols-2 gap-6">
           <div
             class="rounded-lg bg-gray-50 p-6 text-center transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-gray-800">
-            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">10K+</p>
+            <p class="text-4xl font-bold text-green-600 dark:text-green-400">10K+</p>
             <p class="mt-2 text-gray-500 dark:text-gray-400">Выполненных заказов</p>
           </div>
           <div
             class="rounded-lg bg-gray-50 p-6 text-center transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-gray-800">
-            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">500+</p>
+            <p class="text-4xl font-bold text-green-600 dark:text-green-400">500+</p>
             <p class="mt-2 text-gray-500 dark:text-gray-400">Постоянных клиентов</p>
           </div>
           <div
             class="rounded-lg bg-gray-50 p-6 text-center transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-gray-800">
-            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">15+</p>
+            <p class="text-4xl font-bold text-green-600 dark:text-green-400">15+</p>
             <p class="mt-2 text-gray-500 dark:text-gray-400">Единиц техники</p>
           </div>
           <div
             class="rounded-lg bg-gray-50 p-6 text-center transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-gray-800">
-            <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">5</p>
+            <p class="text-4xl font-bold text-green-600 dark:text-green-400">5</p>
             <p class="mt-2 text-gray-500 dark:text-gray-400">Лет на рынке</p>
           </div>
         </div>
@@ -237,7 +237,7 @@
               <div>
                 <h3 class="text-xl font-bold text-gray-800 dark:text-white">{{ $service->name }}</h3>
               </div>
-              <div class="rounded-lg bg-blue-100 p-2 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400">
+              <div class="rounded-lg bg-green-100 p-2 text-green-600 dark:bg-green-900/50 dark:text-green-400">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -265,7 +265,7 @@
       </div>
       <div class="mt-12 text-center">
         <a href="{{ route('services.index') }}"
-          class="inline-flex items-center rounded-full border border-blue-600 px-6 py-3 font-semibold text-blue-600 transition-colors hover:text-blue-700 dark:border-blue-400 dark:text-blue-400 dark:hover:text-blue-500">
+          class="inline-flex items-center rounded-full border border-green-600 px-6 py-3 font-semibold text-green-600 transition-colors hover:text-green-700 dark:border-green-400 dark:text-green-400 dark:hover:text-green-500">
           Все услуги
           <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg">

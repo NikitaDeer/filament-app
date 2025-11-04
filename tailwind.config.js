@@ -18,9 +18,9 @@ module.exports = {
                 sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                primary: colors.blue,
+                primary: colors.green, // Изменено с blue на green (#66BB6A, #4CAF50)
                 secondary: colors.gray,
-                accent: colors.teal,
+                accent: colors.emerald, // Изменено с teal на emerald для лучшей гармонии
                 neutral: colors.gray,
                 info: colors.sky,
                 success: colors.green,
@@ -28,7 +28,7 @@ module.exports = {
                 danger: colors.red,
                 // Светлая тема
                 'base-100': '#FFFFFF',
-                'base-content': '#1F2937',
+                'base-content': '#212529', // Обновлено согласно требованиям (#212529)
                 // Темная тема
                 'dark-base-100': '#111827',
                 'dark-base-content': '#D1D5DB',

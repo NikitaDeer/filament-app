@@ -27,5 +27,11 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         )->assignRole('Admin');
+
+        // Запуск сидеров для нового калькулятора
+        $this->call([
+            VehicleSeeder::class,
+            PricingOptionSeeder::class,
+        ]);
     }
 }
