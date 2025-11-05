@@ -289,8 +289,9 @@
                 {{-- Название --}}
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white" x-text="veh.name"></h3>
                 
-                {{-- Описание --}}
-                <p class="mt-2 line-clamp-2 text-sm text-gray-600 dark:text-gray-300" x-text="veh.description"></p>
+                {{-- Описание (ограничено 80 символов) --}}
+                <p class="mt-2 h-10 text-sm text-gray-600 dark:text-gray-300" 
+                   x-text="veh.description && veh.description.length > 80 ? veh.description.substring(0, 80) + '...' : veh.description"></p>
 
                 {{-- Характеристики --}}
                 <div class="mt-4 space-y-2 text-sm">

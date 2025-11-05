@@ -1,59 +1,92 @@
 <div class="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
 
-  {{-- Выбор транспорта (выпадающий список) --}}
+  {{-- Выбор транспорта (карточки с радио-кнопками) --}}
   <section class="mb-8">
-    <div class="rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
-      <label class="mb-2 block text-lg font-semibold text-gray-900 dark:text-white">
-        <svg class="mr-2 inline-block h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="mb-4">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+        <svg class="mr-2 inline-block h-7 w-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
         </svg>
-        Грузовой автомобиль
-      </label>
-      <div class="relative">
-        <select wire:model="vehicle_id" wire:change="selectVehicle($event.target.value)"
-                class="w-full appearance-none rounded-xl border-2 border-gray-300 bg-gray-50 px-4 py-4 pr-12 text-base font-medium text-gray-900 transition-all focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-          @foreach($vehicles as $veh)
-            <option value="{{ $veh->id }}">
-              {{ $veh->name }} — {{ $veh->capacity_tons }}т, {{ $veh->length_m }}×{{ $veh->width_m }}×{{ $veh->height_m }}м, {{ $veh->price_per_km }}₽/км
-            </option>
-          @endforeach
-        </select>
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700 dark:text-gray-300">
-          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </div>
-      </div>
-      
-      @if($vehicle)
-        <div class="mt-4 grid grid-cols-2 gap-4 rounded-xl bg-green-50 p-4 dark:bg-green-900/20 md:grid-cols-4">
-          <div class="text-center">
-            <div class="text-xs text-gray-600 dark:text-gray-400">Грузоподъемность</div>
-            <div class="text-lg font-bold text-gray-900 dark:text-white">{{ $vehicle->capacity_tons }} т</div>
+        Выберите грузовой автомобиль
+      </h2>
+      <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Кликните на карточку для выбора транспорта</p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      @foreach($vehicles as $veh)
+        <label class="cursor-pointer">
+          <input type="radio" name="vehicle" value="{{ $veh->id }}" wire:model="vehicle_id" 
+                 wire:change="selectVehicle($event.target.value)" class="peer sr-only">
+          
+          <div class="group relative overflow-hidden rounded-xl border-2 transition-all
+                      peer-checked:border-green-600 peer-checked:bg-green-50 peer-checked:shadow-lg
+                      border-gray-200 hover:border-green-400 hover:shadow-md
+                      dark:border-gray-700 dark:peer-checked:border-green-500 dark:peer-checked:bg-green-900/20
+                      h-full">
+            
+            {{-- Чекмарк --}}
+            <div class="absolute right-2 top-2 z-10 hidden h-6 w-6 items-center justify-center rounded-full bg-green-600 text-white peer-checked:flex">
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+
+            <div class="p-4">
+              {{-- Название --}}
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ $veh->name }}</h3>
+              
+              {{-- Параметры --}}
+              <div class="mt-3 space-y-2 text-xs">
+                <div class="flex items-center justify-between text-gray-600 dark:text-gray-400">
+                  <span class="flex items-center">
+                    <svg class="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                    </svg>
+                    Грузопод.
+                  </span>
+                  <span class="font-semibold text-gray-900 dark:text-white">{{ $veh->capacity_tons }} т</span>
+                </div>
+                
+                <div class="flex items-center justify-between text-gray-600 dark:text-gray-400">
+                  <span class="flex items-center">
+                    <svg class="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                    </svg>
+                    Размеры
+                  </span>
+                  <span class="font-semibold text-gray-900 dark:text-white">{{ $veh->length_m }}×{{ $veh->width_m }}×{{ $veh->height_m }}</span>
+                </div>
+              </div>
+
+              {{-- Цены --}}
+              <div class="mt-3 grid grid-cols-2 gap-2">
+                <div class="rounded-lg bg-gray-100 p-2 text-center dark:bg-gray-700">
+                  <div class="text-[10px] text-gray-600 dark:text-gray-400">₽/км</div>
+                  <div class="text-base font-bold text-green-600 dark:text-green-400">{{ $veh->price_per_km }}</div>
+                </div>
+                <div class="rounded-lg bg-gray-100 p-2 text-center dark:bg-gray-700">
+                  <div class="text-[10px] text-gray-600 dark:text-gray-400">₽/час</div>
+                  <div class="text-base font-bold text-green-600 dark:text-green-400">{{ $veh->price_per_hour }}</div>
+                </div>
+              </div>
+
+              @if($veh->allows_passengers)
+                <div class="mt-2 text-center text-xs text-green-600 dark:text-green-400">
+                  👥 До {{ $veh->max_passengers }} пассажиров
+                </div>
+              @endif
+            </div>
           </div>
-          <div class="text-center">
-            <div class="text-xs text-gray-600 dark:text-gray-400">Размеры (ДxШxВ)</div>
-            <div class="text-lg font-bold text-gray-900 dark:text-white">{{ $vehicle->length_m }}×{{ $vehicle->width_m }}×{{ $vehicle->height_m }} м</div>
-          </div>
-          <div class="text-center">
-            <div class="text-xs text-gray-600 dark:text-gray-400">Цена за км</div>
-            <div class="text-lg font-bold text-green-600 dark:text-green-400">{{ $vehicle->price_per_km }} ₽</div>
-          </div>
-          <div class="text-center">
-            <div class="text-xs text-gray-600 dark:text-gray-400">Цена за час</div>
-            <div class="text-lg font-bold text-green-600 dark:text-green-400">{{ $vehicle->price_per_hour }} ₽</div>
-          </div>
-        </div>
-      @endif
+        </label>
+      @endforeach
     </div>
   </section>
 
-  {{-- Основной контент: Форма СЛЕВА, Карта СПРАВА --}}
+  {{-- Основной контент --}}
   <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
     
     {{-- Левая колонка --}}
-    <div class="lg:col-span-1">
-      <div class="space-y-6">
+    <div class="lg:col-span-1 space-y-6">
         
         {{-- Дополнительные опции --}}
         <div class="rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
@@ -274,7 +307,6 @@
             @endif
           </div>
         @endif
-      </div>
     </div>
 
     {{-- Правая колонка: КАРТА --}}
