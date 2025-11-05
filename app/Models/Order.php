@@ -36,6 +36,11 @@ class Order extends Model
         'services_cost',
         'options_cost',
         'total_cost',
+        // Дополнительные поля
+        'scheduled_date',
+        'scheduled_time',
+        'client_comments',
+        'is_cash_payment',
     ];
 
   protected $casts = [
@@ -53,10 +58,13 @@ class Order extends Model
     'base_distance_cost' => 'decimal:2',
     'base_time_cost' => 'decimal:2',
     'services_cost' => 'decimal:2',
-            'options_cost' => 'decimal:2',
-            'total_cost' => 'decimal:2',
-            'cost' => 'decimal:2',
-        ];
+    'options_cost' => 'decimal:2',
+    'total_cost' => 'decimal:2',
+    'cost' => 'decimal:2',
+    'scheduled_date' => 'date',
+    'scheduled_time' => 'datetime:H:i',
+    'is_cash_payment' => 'boolean',
+  ];
 
   /**
    * Получить автомобиль заказа

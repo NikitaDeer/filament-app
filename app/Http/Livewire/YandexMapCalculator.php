@@ -24,6 +24,10 @@ class YandexMapCalculator extends Component
   public $phone = '';
   public $email = '';
   public $comment = '';
+  public $scheduled_date = '';
+  public $scheduled_time = '';
+  public $client_comments = '';
+  public $is_cash_payment = false;
 
   // Детали текущей точки (для модального окна)
   public $current_point_details = [
@@ -36,8 +40,11 @@ class YandexMapCalculator extends Component
   // Услуги и опции
   public $selected_services = [];
   public $loaders_count = 0;
+  public $loader_price = 0;
   public $passengers_count = 0;
+  public $passenger_price = 0;
   public $floors_count = 0;
+  public $floor_price = 0;
   public $has_cargo_elevator = false;
 
   // Расчеты
@@ -383,6 +390,10 @@ class YandexMapCalculator extends Component
       'distance' => 'required|numeric|min:0.1',
       'total_cost' => 'required|numeric|min:1',
       'comment' => 'nullable|string|max:1000',
+      'scheduled_date' => 'nullable|date|after_or_equal:today',
+      'scheduled_time' => 'nullable|date_format:H:i',
+      'client_comments' => 'nullable|string|max:2000',
+      'is_cash_payment' => 'boolean',
     ]);
 
     $orderData = [
@@ -393,8 +404,11 @@ class YandexMapCalculator extends Component
       'route_points' => $this->route_points,
       'selected_services' => $this->selected_services,
       'loaders_count' => $this->loaders_count,
+      'loader_price' => $this->loader_price,
       'passengers_count' => $this->passengers_count,
+      'passenger_price' => $this->passenger_price,
       'floors_count' => $this->floors_count,
+      'floor_price' => $this->floor_price,
       'has_cargo_elevator' => $this->has_cargo_elevator,
       'estimated_hours' => $this->estimated_hours,
       'distance' => $this->distance,
@@ -404,10 +418,14 @@ class YandexMapCalculator extends Component
       'options_cost' => $this->options_cost,
       'total_cost' => $this->total_cost,
       'comment' => $validatedData['comment'],
+      'scheduled_date' => $this->scheduled_date ?: null,
+      'scheduled_time' => $this->scheduled_time ?: null,
+      'client_comments' => $this->client_comments,
+      'is_cash_payment' => $this->is_cash_payment,
       // Для совместимости со старой структурой
       'from_address' => $this->route_points[0]['address'] ?? '',
       'to_address' => end($this->route_points)['address'] ?? '',
-      'old_cost' => $this->total_cost,
+      'cost' => $this->total_cost,
     ];
 
     $order = Order::create($orderData);

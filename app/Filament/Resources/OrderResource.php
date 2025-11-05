@@ -75,9 +75,13 @@ class OrderResource extends Resource
 
         Forms\Components\Section::make('Дополнительно')
           ->schema([
+            Forms\Components\DatePicker::make('scheduled_date')->label('Запланированная дата')->disabled(),
+            Forms\Components\TextInput::make('scheduled_time')->label('Запланированное время')->disabled(),
+            Forms\Components\Toggle::make('is_cash_payment')->label('Оплата наличными')->disabled(),
+            Forms\Components\Textarea::make('client_comments')->label('Комментарии клиента')->disabled()->columnSpanFull(),
             Forms\Components\Textarea::make('comment')->label('Комментарий')->disabled()->columnSpanFull(),
             Forms\Components\TextInput::make('created_at')->label('Дата создания')->disabled(),
-          ])->columns(2)->collapsible(),
+          ])->columns(3)->collapsible(),
       ]);
   }
 
@@ -150,6 +154,17 @@ class OrderResource extends Resource
         Tables\Columns\TextColumn::make('passengers_count')
           ->label('Пасс.')
           ->default('—')
+          ->toggleable(isToggledHiddenByDefault: true),
+
+        Tables\Columns\TextColumn::make('scheduled_date')
+          ->label('Запл. дата')
+          ->date('d.m.Y')
+          ->default('—')
+          ->toggleable(isToggledHiddenByDefault: true),
+
+        Tables\Columns\IconColumn::make('is_cash_payment')
+          ->label('Наличные')
+          ->boolean()
           ->toggleable(isToggledHiddenByDefault: true),
 
         Tables\Columns\TextColumn::make('created_at')
