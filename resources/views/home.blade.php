@@ -217,6 +217,144 @@
     </div>
   </section>
 
+  {{-- Автопарк - Карусель --}}
+  <section class="bg-white py-16 dark:bg-gray-900 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">Наш автопарк</h2>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
+          Современный парк грузовых автомобилей для перевозки любых грузов. От компактных газелей до крупнотоннажных фур.
+        </p>
+      </div>
+
+      @php
+        $vehicles = \App\Models\Vehicle::active()->ordered()->get();
+      @endphp
+
+      <div x-data="{
+        currentSlide: 0,
+        vehicles: @js($vehicles->values()->toArray()),
+        get visibleVehicles() {
+          return [
+            this.vehicles[this.currentSlide],
+            this.vehicles[(this.currentSlide + 1) % this.vehicles.length],
+            this.vehicles[(this.currentSlide + 2) % this.vehicles.length]
+          ];
+        },
+        prev() {
+          this.currentSlide = (this.currentSlide - 1 + this.vehicles.length) % this.vehicles.length;
+        },
+        next() {
+          this.currentSlide = (this.currentSlide + 1) % this.vehicles.length;
+        }
+      }" class="relative">
+        
+        {{-- Кнопка влево --}}
+        <button @click="prev" 
+                class="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-green-600 p-3 text-white shadow-lg transition-all hover:bg-green-700 hover:scale-110 lg:-left-12">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        {{-- Карусель --}}
+        <div class="overflow-hidden px-8">
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <template x-for="(veh, idx) in visibleVehicles" :key="veh.id">
+              <a :href="'{{ route('calculator.index') }}'" 
+                 class="group block rounded-2xl border-2 border-gray-200 p-6 transition-all hover:border-green-600 hover:shadow-xl dark:border-gray-700 dark:hover:border-green-600">
+                
+                {{-- Изображение --}}
+                <div class="relative mb-4 aspect-video overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-700">
+                  <template x-if="veh.image">
+                    <img :src="'/storage/' + veh.image" :alt="veh.name" 
+                         class="h-full w-full object-cover transition-transform group-hover:scale-110">
+                  </template>
+                  <template x-if="!veh.image">
+                    <div class="flex h-full items-center justify-center">
+                      <svg class="h-20 w-20 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                      </svg>
+                    </div>
+                  </template>
+                  
+                  {{-- Бейдж пассажиров --}}
+                  <template x-if="veh.allows_passengers">
+                    <div class="absolute right-3 top-3 rounded-full bg-green-600 px-3 py-1 text-xs font-semibold text-white shadow-lg">
+                      <span x-text="'До ' + veh.max_passengers + ' чел.'"></span>
+                    </div>
+                  </template>
+                </div>
+
+                {{-- Название --}}
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white" x-text="veh.name"></h3>
+                
+                {{-- Описание --}}
+                <p class="mt-2 line-clamp-2 text-sm text-gray-600 dark:text-gray-300" x-text="veh.description"></p>
+
+                {{-- Характеристики --}}
+                <div class="mt-4 space-y-2 text-sm">
+                  <div class="flex justify-between text-gray-700 dark:text-gray-300">
+                    <span>Грузоподъемность:</span>
+                    <span class="font-semibold" x-text="veh.capacity_tons + ' т'"></span>
+                  </div>
+                  <div class="flex justify-between text-gray-700 dark:text-gray-300">
+                    <span>Размеры:</span>
+                    <span class="font-semibold" x-text="veh.length_m + '×' + veh.width_m + '×' + veh.height_m + ' м'"></span>
+                  </div>
+                </div>
+
+                {{-- Цены --}}
+                <div class="mt-4 grid grid-cols-2 gap-2">
+                  <div class="rounded-lg bg-green-50 p-2 text-center dark:bg-green-900/10">
+                    <div class="text-xs text-gray-600 dark:text-gray-400">За км</div>
+                    <div class="text-lg font-bold text-green-600 dark:text-green-400" x-text="veh.price_per_km + ' ₽'"></div>
+                  </div>
+                  <div class="rounded-lg bg-green-50 p-2 text-center dark:bg-green-900/10">
+                    <div class="text-xs text-gray-600 dark:text-gray-400">За час</div>
+                    <div class="text-lg font-bold text-green-600 dark:text-green-400" x-text="veh.price_per_hour + ' ₽'"></div>
+                  </div>
+                </div>
+
+                {{-- Кнопка --}}
+                <div class="mt-4 rounded-lg bg-green-600 py-2 text-center text-sm font-semibold text-white transition-colors group-hover:bg-green-700">
+                  Заказать расчет →
+                </div>
+              </a>
+            </template>
+          </div>
+        </div>
+
+        {{-- Кнопка вправо --}}
+        <button @click="next" 
+                class="absolute -right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-green-600 p-3 text-white shadow-lg transition-all hover:bg-green-700 hover:scale-110 lg:-right-12">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        {{-- Индикаторы --}}
+        <div class="mt-8 flex justify-center gap-2">
+          <template x-for="(vehicle, index) in vehicles" :key="'indicator-' + vehicle.id">
+            <button @click="currentSlide = index"
+                    :class="{ 'bg-green-600 w-8': currentSlide === index, 'bg-gray-300 dark:bg-gray-600': currentSlide !== index }"
+                    class="h-2 w-2 rounded-full transition-all"></button>
+          </template>
+        </div>
+      </div>
+
+      <div class="mt-8 text-center">
+        <a href="{{ route('vehicles.index') }}" 
+           class="inline-flex items-center rounded-lg border-2 border-green-600 px-6 py-3 font-semibold text-green-600 transition-all hover:bg-green-600 hover:text-white dark:border-green-500 dark:text-green-500">
+          Смотреть весь автопарк
+          <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
   {{-- Services Section --}}
   <section class="bg-gray-50 py-16 dark:bg-neutral-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,220 +1,116 @@
 <div class="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
 
-  {{-- Карусель транспорта --}}
+  {{-- Выбор транспорта (выпадающий список) --}}
   <section class="mb-8">
-    <div class="mb-4 flex items-center justify-between">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Выберите транспорт</h2>
-      <a href="{{ route('vehicles.index') }}"
-         class="text-sm text-green-600 hover:text-green-700 hover:underline dark:text-green-400">
-        Посмотреть весь автопарк →
-      </a>
-    </div>
-
-    <div x-data="{
-      currentSlide: 0,
-      vehicles: @js($vehicles->values()->toArray()),
-      get visibleVehicles() {
-        return [
-          this.vehicles[this.currentSlide],
-          this.vehicles[(this.currentSlide + 1) % this.vehicles.length],
-          this.vehicles[(this.currentSlide + 2) % this.vehicles.length]
-        ];
-      },
-      prev() {
-        this.currentSlide = (this.currentSlide - 1 + this.vehicles.length) % this.vehicles.length;
-      },
-      next() {
-        this.currentSlide = (this.currentSlide + 1) % this.vehicles.length;
-      }
-    }" class="relative">
-
-      {{-- Кнопка влево --}}
-      <button @click="prev"
-              class="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-green-600 p-3 text-white shadow-lg transition-all hover:bg-green-700 hover:scale-110">
-        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+    <div class="rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
+      <label class="mb-2 block text-lg font-semibold text-gray-900 dark:text-white">
+        <svg class="mr-2 inline-block h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
         </svg>
-      </button>
-
-      {{-- Карусель --}}
-      <div class="overflow-hidden px-8">
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <template x-for="(veh, idx) in visibleVehicles" :key="veh.id">
-            <div @click="$wire.selectVehicle(veh.id)"
-                 :class="{
-                   'border-green-600 bg-green-50 ring-2 ring-green-600 dark:bg-green-900/20': veh.id == {{ $vehicle_id }},
-                   'border-gray-200 dark:border-gray-700 hover:border-green-400': veh.id != {{ $vehicle_id }}
-                 }"
-                 class="group cursor-pointer rounded-2xl border-2 p-6 transition-all hover:shadow-xl">
-
-              {{-- Изображение --}}
-              <div class="relative mb-4 aspect-video overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-700">
-                <template x-if="veh.image">
-                  <img :src="'/storage/' + veh.image" :alt="veh.name"
-                       class="h-full w-full object-cover transition-transform group-hover:scale-110">
-                </template>
-                <template x-if="!veh.image">
-                  <div class="flex h-full items-center justify-center">
-                    <svg class="h-20 w-20 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
-                    </svg>
-                  </div>
-                </template>
-
-                {{-- Бейдж пассажиров --}}
-                <template x-if="veh.allows_passengers">
-                  <div class="absolute right-3 top-3 rounded-full bg-green-600 px-3 py-1 text-xs font-semibold text-white shadow-lg">
-                    <span x-text="'До ' + veh.max_passengers + ' чел.'"></span>
-                  </div>
-                </template>
-              </div>
-
-              {{-- Название --}}
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white" x-text="veh.name"></h3>
-
-              {{-- Описание --}}
-              <p class="mt-2 line-clamp-2 text-sm text-gray-600 dark:text-gray-300" x-text="veh.description"></p>
-
-              {{-- Характеристики --}}
-              <div class="mt-4 space-y-2 text-sm">
-                <div class="flex justify-between text-gray-700 dark:text-gray-300">
-                  <span>Грузоподъемность:</span>
-                  <span class="font-semibold" x-text="veh.capacity_tons + ' т'"></span>
-                </div>
-                <div class="flex justify-between text-gray-700 dark:text-gray-300">
-                  <span>Размеры:</span>
-                  <span class="font-semibold" x-text="veh.length_m + '×' + veh.width_m + '×' + veh.height_m + ' м'"></span>
-                </div>
-              </div>
-
-              {{-- Цены --}}
-              <div class="mt-4 grid grid-cols-2 gap-2">
-                <div class="rounded-lg bg-green-50 p-2 text-center dark:bg-green-900/10">
-                  <div class="text-xs text-gray-600 dark:text-gray-400">За км</div>
-                  <div class="text-lg font-bold text-green-600 dark:text-green-400" x-text="veh.price_per_km + ' ₽'"></div>
-                </div>
-                <div class="rounded-lg bg-green-50 p-2 text-center dark:bg-green-900/10">
-                  <div class="text-xs text-gray-600 dark:text-gray-400">За час</div>
-                  <div class="text-lg font-bold text-green-600 dark:text-green-400" x-text="veh.price_per_hour + ' ₽'"></div>
-                </div>
-              </div>
-
-              {{-- Чекмарк выбран --}}
-              <div x-show="veh.id == {{ $vehicle_id }}"
-                   class="mt-4 flex items-center justify-center rounded-lg bg-green-600 py-2 text-sm font-semibold text-white">
-                <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                </svg>
-                Выбрано
-              </div>
-            </div>
-          </template>
+        Грузовой автомобиль
+      </label>
+      <div class="relative">
+        <select wire:model="vehicle_id" wire:change="selectVehicle($event.target.value)"
+                class="w-full appearance-none rounded-xl border-2 border-gray-300 bg-gray-50 px-4 py-4 pr-12 text-base font-medium text-gray-900 transition-all focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+          @foreach($vehicles as $veh)
+            <option value="{{ $veh->id }}">
+              {{ $veh->name }} — {{ $veh->capacity_tons }}т, {{ $veh->length_m }}×{{ $veh->width_m }}×{{ $veh->height_m }}м, {{ $veh->price_per_km }}₽/км
+            </option>
+          @endforeach
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700 dark:text-gray-300">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
         </div>
       </div>
-
-      {{-- Кнопка вправо --}}
-      <button @click="next"
-              class="absolute -right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-green-600 p-3 text-white shadow-lg transition-all hover:bg-green-700 hover:scale-110">
-        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-        </svg>
-      </button>
-
-      {{-- Индикаторы --}}
-      <div class="mt-6 flex justify-center gap-2">
-        <template x-for="(vehicle, index) in vehicles" :key="'indicator-' + vehicle.id">
-          <button @click="currentSlide = index"
-                  :class="{ 'bg-green-600 w-8': currentSlide === index, 'bg-gray-300 dark:bg-gray-600': currentSlide !== index }"
-                  class="h-2 w-2 rounded-full transition-all"></button>
-        </template>
-      </div>
+      
+      @if($vehicle)
+        <div class="mt-4 grid grid-cols-2 gap-4 rounded-xl bg-green-50 p-4 dark:bg-green-900/20 md:grid-cols-4">
+          <div class="text-center">
+            <div class="text-xs text-gray-600 dark:text-gray-400">Грузоподъемность</div>
+            <div class="text-lg font-bold text-gray-900 dark:text-white">{{ $vehicle->capacity_tons }} т</div>
+          </div>
+          <div class="text-center">
+            <div class="text-xs text-gray-600 dark:text-gray-400">Размеры (ДxШxВ)</div>
+            <div class="text-lg font-bold text-gray-900 dark:text-white">{{ $vehicle->length_m }}×{{ $vehicle->width_m }}×{{ $vehicle->height_m }} м</div>
+          </div>
+          <div class="text-center">
+            <div class="text-xs text-gray-600 dark:text-gray-400">Цена за км</div>
+            <div class="text-lg font-bold text-green-600 dark:text-green-400">{{ $vehicle->price_per_km }} ₽</div>
+          </div>
+          <div class="text-center">
+            <div class="text-xs text-gray-600 dark:text-gray-400">Цена за час</div>
+            <div class="text-lg font-bold text-green-600 dark:text-green-400">{{ $vehicle->price_per_hour }} ₽</div>
+          </div>
+        </div>
+      @endif
     </div>
   </section>
 
   {{-- Основной контент: Форма СЛЕВА, Карта СПРАВА --}}
   <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-
-    {{-- Левая колонка: Форма и опции (1 часть) --}}
+    
+    {{-- Левая колонка --}}
     <div class="lg:col-span-1">
       <div class="space-y-6">
-
+        
         {{-- Дополнительные опции --}}
         <div class="rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
           <h3 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Дополнительные опции</h3>
-
-          {{-- Грузчики --}}
+          
           @if($loaderOption)
             <div class="mb-6">
               <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Грузчики ({{ number_format($loaderOption->price_per_hour, 0) }} ₽/ч)
               </label>
               <div class="flex items-center gap-3">
-                <button
-                  wire:click="updateLoadersCount({{ $loaders_count - 1 }})"
-                  class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
-                  @if($loaders_count <= 0) disabled @endif>
-                  −
-                </button>
+                <button wire:click="updateLoadersCount({{ $loaders_count - 1 }})"
+                        class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                        @if($loaders_count <= 0) disabled @endif>−</button>
                 <span class="w-12 text-center text-lg font-bold text-gray-900 dark:text-white">{{ $loaders_count }}</span>
-                <button
-                  wire:click="updateLoadersCount({{ $loaders_count + 1 }})"
-                  class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
-                  @if($loaders_count >= $loaderOption->max_quantity) disabled @endif>
-                  +
-                </button>
+                <button wire:click="updateLoadersCount({{ $loaders_count + 1 }})"
+                        class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                        @if($loaders_count >= $loaderOption->max_quantity) disabled @endif>+</button>
                 <span class="text-xs text-gray-500 dark:text-gray-400">макс. {{ $loaderOption->max_quantity }}</span>
               </div>
             </div>
           @endif
 
-          {{-- Пассажиры --}}
           @if($vehicle && $vehicle->allows_passengers && $passengerOption)
             <div class="mb-6">
               <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Пассажиры ({{ number_format($passengerOption->price_per_hour, 0) }} ₽/ч)
               </label>
               <div class="flex items-center gap-3">
-                <button
-                  wire:click="updatePassengersCount({{ $passengers_count - 1 }})"
-                  class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
-                  @if($passengers_count <= 0) disabled @endif>
-                  −
-                </button>
+                <button wire:click="updatePassengersCount({{ $passengers_count - 1 }})"
+                        class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                        @if($passengers_count <= 0) disabled @endif>−</button>
                 <span class="w-12 text-center text-lg font-bold text-gray-900 dark:text-white">{{ $passengers_count }}</span>
-                <button
-                  wire:click="updatePassengersCount({{ $passengers_count + 1 }})"
-                  class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
-                  @if($passengers_count >= $vehicle->max_passengers) disabled @endif>
-                  +
-                </button>
+                <button wire:click="updatePassengersCount({{ $passengers_count + 1 }})"
+                        class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                        @if($passengers_count >= $vehicle->max_passengers) disabled @endif>+</button>
                 <span class="text-xs text-gray-500 dark:text-gray-400">макс. {{ $vehicle->max_passengers }}</span>
               </div>
             </div>
           @endif
 
-          {{-- Этажи --}}
           @if($floorOption)
             <div class="mb-6">
               <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Подъем на этаж ({{ number_format($floorOption->price_per_floor, 0) }} ₽/этаж)
               </label>
               <div class="flex items-center gap-3">
-                <button
-                  wire:click="updateFloorsCount({{ $floors_count - 1 }})"
-                  class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
-                  @if($floors_count <= 0) disabled @endif>
-                  −
-                </button>
+                <button wire:click="updateFloorsCount({{ $floors_count - 1 }})"
+                        class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                        @if($floors_count <= 0) disabled @endif>−</button>
                 <span class="w-12 text-center text-lg font-bold text-gray-900 dark:text-white">{{ $floors_count }}</span>
-                <button
-                  wire:click="updateFloorsCount({{ $floors_count + 1 }})"
-                  class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
-                  @if($floors_count >= $floorOption->max_quantity) disabled @endif>
-                  +
-                </button>
+                <button wire:click="updateFloorsCount({{ $floors_count + 1 }})"
+                        class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                        @if($floors_count >= $floorOption->max_quantity) disabled @endif>+</button>
                 <span class="text-xs text-gray-500 dark:text-gray-400">макс. {{ $floorOption->max_quantity }}</span>
               </div>
-
+              
               <label class="mt-3 flex items-center">
                 <input type="checkbox" wire:model="has_cargo_elevator"
                        class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500">
@@ -223,7 +119,6 @@
             </div>
           @endif
 
-          {{-- Услуги --}}
           @if($services->isNotEmpty())
             <div>
               <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Дополнительные услуги</label>
@@ -249,18 +144,18 @@
         @if(count($route_points) >= 2)
           <div class="rounded-2xl bg-gradient-to-br from-green-50 to-white p-6 shadow-lg dark:from-gray-800 dark:to-gray-800">
             <h3 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Расчет стоимости</h3>
-
+            
             <div class="space-y-3">
               <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                 <span>Расстояние:</span>
                 <span class="font-medium text-gray-900 dark:text-white">{{ number_format($distance, 1) }} км</span>
               </div>
-
+              
               <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                 <span>По километражу:</span>
                 <span class="font-medium text-gray-900 dark:text-white">{{ number_format($base_distance_cost, 0) }} ₽</span>
               </div>
-
+              
               <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                 <span>По времени ({{ $estimated_hours }} ч):</span>
                 <span class="font-medium text-gray-900 dark:text-white">{{ number_format($base_time_cost, 0) }} ₽</span>
@@ -308,11 +203,11 @@
         @if(count($route_points) >= 2)
           <div class="rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
             <h3 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Оформление заказа</h3>
-
+            
             <form wire:submit.prevent="submitOrder" class="space-y-4">
               <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Ваше имя *</label>
-                <input type="text" wire:model="name"
+                <input type="text" wire:model="name" 
                        class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                 @error('name') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
               </div>
@@ -326,24 +221,17 @@
 
               <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Email *</label>
-                <input type="email" wire:model="email"
+                <input type="email" wire:model="email" 
                        class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                 @error('email') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
               </div>
 
               <div>
-                <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Дата выполнения работ</label>
-                <input type="date" wire:model="scheduled_date"
-                       min="{{ date('Y-m-d') }}"
+                <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Дата и время получения груза</label>
+                <input type="datetime-local" wire:model="scheduled_datetime" 
+                       min="{{ date('Y-m-d\TH:i') }}"
                        class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                @error('scheduled_date') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
-              </div>
-
-              <div>
-                <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Время начала работ</label>
-                <input type="time" wire:model="scheduled_time"
-                       class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                @error('scheduled_time') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
+                @error('scheduled_datetime') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
               </div>
 
               <div>
@@ -365,15 +253,8 @@
                 </p>
               </div>
 
-              <div>
-                <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Комментарий к заказу</label>
-                <textarea wire:model="comment" rows="2"
-                          class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"></textarea>
-                @error('comment') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
-              </div>
-
               <button type="submit"
-                      class="w-full rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                      class="w-full rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
                 Отправить заявку
               </button>
             </form>
@@ -391,32 +272,18 @@
                 </div>
               </div>
             @endif
-
-            @if($showError)
-              <div class="mt-4 rounded-lg bg-red-50 p-4 dark:bg-red-900/20">
-                <div class="flex">
-                  <svg class="h-5 w-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                  </svg>
-                  <div class="ml-3">
-                    <p class="text-sm font-medium text-red-800 dark:text-red-300">Произошла ошибка при отправке</p>
-                  </div>
-                </div>
-              </div>
-            @endif
           </div>
         @endif
       </div>
     </div>
 
-    {{-- Правая колонка: КАРТА (2 части) --}}
+    {{-- Правая колонка: КАРТА --}}
     <div class="lg:col-span-2">
       <div class="rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
         <div class="mb-4 flex items-center justify-between">
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Укажите маршрут на карте</h2>
-          <button
-            wire:click="resetCalculator"
-            class="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600">
+          <button wire:click="resetCalculator"
+                  class="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600">
             <svg class="mr-2 inline-block h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
             </svg>
@@ -424,30 +291,114 @@
           </button>
         </div>
 
+        {{-- Подсказка --}}
+        @if(count($route_points) == 0)
+          <div class="mb-4 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+            <div class="flex">
+              <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+              </svg>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-blue-800 dark:text-blue-300">Кликните на карте, чтобы указать точку отправления (откуда)</p>
+              </div>
+            </div>
+          </div>
+        @elseif(count($route_points) == 1)
+          <div class="mb-4 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+            <div class="flex">
+              <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+              </svg>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-blue-800 dark:text-blue-300">Теперь укажите точку назначения (куда)</p>
+              </div>
+            </div>
+          </div>
+        @endif
+        
         {{-- Карта --}}
         <div id="map" class="h-[600px] w-full rounded-xl" wire:ignore></div>
 
-        {{-- Список точек маршрута --}}
+        {{-- Точки маршрута с drag & drop --}}
         @if(count($route_points) > 0)
           <div class="mt-6">
-            <h3 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">Точки маршрута</h3>
-            <div class="space-y-2">
+            <div class="mb-3 flex items-center justify-between">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Точки маршрута</h3>
+              @if(count($route_points) >= 2)
+                <button wire:click="addIntermediatePoint" 
+                        class="rounded-lg bg-green-600 px-3 py-1 text-sm font-medium text-white hover:bg-green-700">
+                  + Добавить промежуточную точку
+                </button>
+              @endif
+            </div>
+            
+            <div x-data="{ dragging: null }" class="space-y-2">
               @foreach($route_points as $index => $point)
-                <div class="flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-700/50">
-                  <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full
-                              @if($index === 0) bg-green-600 @elseif($index === count($route_points) - 1) bg-red-600 @else bg-blue-600 @endif
+                <div draggable="true"
+                     x-on:dragstart="dragging = {{ $index }}"
+                     x-on:dragend="dragging = null"
+                     x-on:dragover.prevent
+                     x-on:drop.prevent="if (dragging !== null && dragging !== {{ $index }}) { $wire.reorderRoutePoints(dragging, {{ $index }}) }"
+                     :class="{ 'opacity-50': dragging === {{ $index }} }"
+                     class="flex items-start gap-3 rounded-lg border-2 border-gray-200 bg-gray-50 p-4 transition-all hover:border-green-500 cursor-move dark:border-gray-700 dark:bg-gray-700/50">
+                  
+                  {{-- Иконка перетаскивания --}}
+                  <div class="text-gray-400">
+                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                    </svg>
+                  </div>
+
+                  {{-- Номер точки --}}
+                  <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full 
+                              @if($index === 0) bg-green-600 @elseif($index === count($route_points) - 1) bg-red-600 @else bg-blue-600 @endif 
                               text-sm font-bold text-white">
                     {{ $index + 1 }}
                   </div>
+                  
+                  {{-- Детали точки --}}
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $point['address'] }}</p>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        {{ $index === 0 ? 'Откуда' : ($index === count($route_points) - 1 ? 'Куда' : 'Промежуточная точка') }}
+                      </span>
+                      <div class="flex gap-2">
+                        <button wire:click="editPointDetails({{ $index }})" 
+                                class="text-blue-600 hover:text-blue-700 dark:text-blue-400">
+                          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                          </svg>
+                        </button>
+                        <button wire:click="removeRoutePoint({{ $index }})" 
+                                class="text-red-500 hover:text-red-700">
+                          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <p class="mt-1 text-sm font-medium text-gray-900 dark:text-white">{{ $point['address'] }}</p>
+                    
+                    @if(!empty($point['details']))
+                      <div class="mt-2 grid grid-cols-2 gap-2 text-xs text-gray-600 dark:text-gray-400">
+                        @if(!empty($point['details']['entrance'])) 
+                          <span>🏢 Подъезд: {{ $point['details']['entrance'] }}</span> 
+                        @endif
+                        @if(!empty($point['details']['floor'])) 
+                          <span>📊 Этаж: {{ $point['details']['floor'] }}</span> 
+                        @endif
+                        @if(!empty($point['details']['apartment'])) 
+                          <span>🚪 Квартира: {{ $point['details']['apartment'] }}</span> 
+                        @endif
+                        @if(!empty($point['details']['intercom_code'])) 
+                          <span>🔑 Домофон: {{ $point['details']['intercom_code'] }}</span> 
+                        @endif
+                        @if(!empty($point['details']['contact_phone'])) 
+                          <span>📞 Телефон: {{ $point['details']['contact_phone'] }}</span> 
+                        @endif
+                      </div>
+                    @endif
                   </div>
-                  <button wire:click="removeRoutePoint({{ $index }})"
-                          class="flex-shrink-0 text-red-500 hover:text-red-700">
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                  </button>
                 </div>
               @endforeach
             </div>
@@ -456,9 +407,80 @@
       </div>
     </div>
   </div>
+
+  {{-- Модальное окно деталей точки --}}
+  @if($showPointDetailsModal)
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
+         x-data x-on:click.self="$wire.set('showPointDetailsModal', false)">
+      <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-800"
+           x-on:click.stop>
+        <div class="mb-4 flex items-center justify-between">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Детали адреса</h3>
+          <button wire:click="$set('showPointDetailsModal', false)" 
+                  class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="mb-4 rounded-lg bg-gray-50 p-3 dark:bg-gray-700">
+          <p class="text-sm font-medium text-gray-900 dark:text-white">
+            {{ $route_points[$editingPointIndex]['address'] ?? '' }}
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Подъезд</label>
+              <input type="text" wire:model="current_point_details.entrance" 
+                     class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+            </div>
+            <div>
+              <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Этаж</label>
+              <input type="text" wire:model="current_point_details.floor" 
+                     class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Квартира</label>
+              <input type="text" wire:model="current_point_details.apartment" 
+                     class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+            </div>
+            <div>
+              <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Код домофона</label>
+              <input type="text" wire:model="current_point_details.intercom_code" 
+                     class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+            </div>
+          </div>
+
+          <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Контактный телефон</label>
+            <input type="tel" wire:model="current_point_details.contact_phone" 
+                   placeholder="+7 (___) ___-__-__"
+                   class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+          </div>
+
+          <div class="flex gap-3">
+            <button wire:click="savePointDetails" 
+                    class="flex-1 rounded-lg bg-green-600 px-4 py-2 font-semibold text-white hover:bg-green-700">
+              Сохранить
+            </button>
+            <button wire:click="$set('showPointDetailsModal', false)" 
+                    class="flex-1 rounded-lg border-2 border-gray-300 px-4 py-2 font-semibold text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
+              Отмена
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endif
 </div>
 
-{{-- Скрипты для карты (ВОССТАНОВЛЕННЫЕ ИЗ ОРИГИНАЛА) --}}
+{{-- Скрипты для карты --}}
 @push('scripts')
 <script src="https://api-maps.yandex.ru/2.1/?apikey={{ config('services.yandex_maps.key') }}&lang=ru_RU&load=package.full" type="text/javascript"></script>
 <script>
@@ -471,12 +493,11 @@ document.addEventListener('livewire:load', function() {
     if (!document.getElementById('map')) return;
 
     myMap = new ymaps.Map("map", {
-      center: [59.9342802, 30.3350986], // Санкт-Петербург
+      center: [59.9342802, 30.3350986],
       zoom: 10,
       controls: ['zoomControl', 'searchControl', 'typeSelector', 'fullscreenControl']
     });
 
-    // Клик по карте для добавления точки
     myMap.events.add('click', function(e) {
       const coords = e.get('coords');
 
@@ -484,13 +505,10 @@ document.addEventListener('livewire:load', function() {
         const firstGeoObject = res.geoObjects.get(0);
         const address = firstGeoObject.getAddressLine();
 
-        // Вызываем метод Livewire для добавления точки
         @this.call('addRoutePoint', address, coords, {});
 
-        // Добавляем маркер
         addPlacemark(coords, placemarksArray.length);
 
-        // Если есть 2+ точки, строим маршрут
         if (placemarksArray.length >= 2) {
           buildRoute();
         }
@@ -523,7 +541,7 @@ document.addEventListener('livewire:load', function() {
       currentRoute = route;
       myMap.geoObjects.add(route);
 
-      const distance = route.getLength() / 1000; // в километрах
+      const distance = route.getLength() / 1000;
       @this.set('distance', distance.toFixed(2));
       @this.call('recalculate');
     });
@@ -539,18 +557,25 @@ document.addEventListener('livewire:load', function() {
     }
   }
 
-  // Инициализация карты при загрузке Яндекс.Карт
   ymaps.ready(initMap);
 
-  // Сброс калькулятора
   Livewire.on('resetMap', () => {
     clearMap();
   });
 
-  // Обновление маркеров при изменении точек маршрута
   Livewire.on('routePointRemoved', () => {
     clearMap();
-    // Перестраиваем маркеры из текущих данных
+    const routePoints = @this.get('route_points');
+    routePoints.forEach((point, index) => {
+      addPlacemark(point.coords, index);
+    });
+    if (routePoints.length >= 2) {
+      buildRoute();
+    }
+  });
+
+  Livewire.on('routeReordered', () => {
+    clearMap();
     const routePoints = @this.get('route_points');
     routePoints.forEach((point, index) => {
       addPlacemark(point.coords, index);

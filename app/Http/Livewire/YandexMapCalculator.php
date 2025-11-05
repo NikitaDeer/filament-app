@@ -24,18 +24,22 @@ class YandexMapCalculator extends Component
   public $phone = '';
   public $email = '';
   public $comment = '';
-  public $scheduled_date = '';
-  public $scheduled_time = '';
+  public $scheduled_datetime = '';
   public $client_comments = '';
   public $is_cash_payment = false;
 
   // Детали текущей точки (для модального окна)
   public $current_point_details = [
-    'building' => '',
     'entrance' => '',
     'floor' => '',
-    'intercom_code' => ''
+    'apartment' => '',
+    'intercom_code' => '',
+    'contact_phone' => ''
   ];
+  
+  // Модальное окно
+  public $showPointDetailsModal = false;
+  public $editingPointIndex = null;
 
   // Услуги и опции
   public $selected_services = [];
@@ -390,8 +394,7 @@ class YandexMapCalculator extends Component
       'distance' => 'required|numeric|min:0.1',
       'total_cost' => 'required|numeric|min:1',
       'comment' => 'nullable|string|max:1000',
-      'scheduled_date' => 'nullable|date|after_or_equal:today',
-      'scheduled_time' => 'nullable|date_format:H:i',
+      'scheduled_datetime' => 'nullable|date|after_or_equal:now',
       'client_comments' => 'nullable|string|max:2000',
       'is_cash_payment' => 'boolean',
     ]);
@@ -418,8 +421,8 @@ class YandexMapCalculator extends Component
       'options_cost' => $this->options_cost,
       'total_cost' => $this->total_cost,
       'comment' => $validatedData['comment'],
-      'scheduled_date' => $this->scheduled_date ?: null,
-      'scheduled_time' => $this->scheduled_time ?: null,
+      'scheduled_date' => $this->scheduled_datetime ? date('Y-m-d', strtotime($this->scheduled_datetime)) : null,
+      'scheduled_time' => $this->scheduled_datetime ? date('H:i:s', strtotime($this->scheduled_datetime)) : null,
       'client_comments' => $this->client_comments,
       'is_cash_payment' => $this->is_cash_payment,
       // Для совместимости со старой структурой
@@ -462,6 +465,75 @@ class YandexMapCalculator extends Component
     $this->orderSubmittedSuccessfully = false;
     $this->mount();
     $this->dispatchBrowserEvent('new-order-started');
+  }
+
+  /**
+   * Открыть модальное окно для редактирования деталей точки
+   */
+  public function editPointDetails($index)
+  {
+    $this->editingPointIndex = $index;
+    $this->current_point_details = $this->route_points[$index]['details'] ?? [
+      'entrance' => '',
+      'floor' => '',
+      'apartment' => '',
+      'intercom_code' => '',
+      'contact_phone' => ''
+    ];
+    $this->showPointDetailsModal = true;
+  }
+
+  /**
+   * Сохранить детали точки маршрута
+   */
+  public function savePointDetails()
+  {
+    if ($this->editingPointIndex !== null && isset($this->route_points[$this->editingPointIndex])) {
+      $this->route_points[$this->editingPointIndex]['details'] = $this->current_point_details;
+      $this->showPointDetailsModal = false;
+      $this->editingPointIndex = null;
+      
+      // Сбрасываем поля
+      $this->current_point_details = [
+        'entrance' => '',
+        'floor' => '',
+        'apartment' => '',
+        'intercom_code' => '',
+        'contact_phone' => ''
+      ];
+    }
+  }
+
+  /**
+   * Изменить порядок точек маршрута (drag & drop)
+   */
+  public function reorderRoutePoints($from, $to)
+  {
+    if ($from === $to) return;
+    
+    $item = $this->route_points[$from];
+    
+    // Удаляем элемент из старой позиции
+    array_splice($this->route_points, $from, 1);
+    
+    // Вставляем в новую позицию
+    array_splice($this->route_points, $to, 0, [$item]);
+    
+    // Пересчитываем маршрут
+    $this->emit('routeReordered');
+    
+    if (count($this->route_points) >= 2) {
+      $this->recalculate();
+    }
+  }
+
+  /**
+   * Добавить промежуточную точку
+   */
+  public function addIntermediatePoint()
+  {
+    // Эта функция будет вызвана, но фактически точка добавляется кликом на карте
+    // Здесь можно добавить логику подсказки или открыть карту
   }
 
   public function render()
