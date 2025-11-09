@@ -543,9 +543,9 @@ class YandexMapCalculator extends Component
                        ->where('is_calculator_option', true)
                        ->get();
 
-    $loaderOption = PricingOption::ofType('loader')->active()->first();
-    $passengerOption = PricingOption::ofType('passenger')->active()->first();
-    $floorOption = PricingOption::ofType('floor')->active()->first();
+    $loaderOption = PricingOption::ofType('грузчики')->active()->first();
+    $passengerOption = PricingOption::ofType('пассажиры')->active()->first();
+    $floorOption = PricingOption::ofType('этажи')->active()->first();
 
     return view('livewire.yandex-map-calculator', [
       'vehicles' => $vehicles,

@@ -13,37 +13,40 @@ class PricingOptionSeeder extends Seeder
      */
     public function run(): void
     {
+        // Удаляем старые записи
+        PricingOption::truncate();
+
         $options = [
             // Грузчики
             [
-                'type' => 'loader',
-                'name' => 'Грузчик',
-                'description' => 'Профессиональный грузчик для погрузки/разгрузки',
+                'type' => 'грузчики',
+                'name' => 'Грузчики (стандарт)',
+                'description' => 'Профессиональные грузчики для погрузки/разгрузки. Опыт работы более 3 лет.',
                 'price_per_hour' => 500,
                 'price_per_floor' => null,
-                'max_quantity' => 3,
+                'max_quantity' => 6,
                 'is_active' => true,
             ],
 
             // Пассажиры
             [
-                'type' => 'passenger',
-                'name' => 'Пассажир',
-                'description' => 'Дополнительное место для пассажира в кабине',
+                'type' => 'пассажиры',
+                'name' => 'Пассажиры в кабине',
+                'description' => 'Дополнительное место для пассажира в кабине водителя. Зависит от типа транспорта.',
                 'price_per_hour' => 200,
                 'price_per_floor' => null,
-                'max_quantity' => 2,
+                'max_quantity' => 3,
                 'is_active' => true,
             ],
 
             // Этажи
             [
-                'type' => 'floor',
-                'name' => 'Этаж',
-                'description' => 'Подъем груза на этаж без лифта',
+                'type' => 'этажи',
+                'name' => 'Подъем на этаж',
+                'description' => 'Подъем груза на этаж без грузового лифта. При наличии грузового лифта не тарифицируется.',
                 'price_per_hour' => null,
-                'price_per_floor' => 100,
-                'max_quantity' => 20,
+                'price_per_floor' => 150,
+                'max_quantity' => 25,
                 'is_active' => true,
             ],
         ];
