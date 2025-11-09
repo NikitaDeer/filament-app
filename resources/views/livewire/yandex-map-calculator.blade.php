@@ -163,11 +163,11 @@
                 Грузчики ({{ number_format($loaderOption->price_per_hour, 0) }} ₽/ч)
               </label>
               <div class="flex items-center gap-3">
-                <button wire:click="updateLoadersCount({{ $loaders_count - 1 }})"
+                <button wire:click="decrementLoaders"
                         class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
                         @if($loaders_count <= 0) disabled @endif>−</button>
                 <span class="w-12 text-center text-lg font-bold text-gray-900 dark:text-white">{{ $loaders_count }}</span>
-                <button wire:click="updateLoadersCount({{ $loaders_count + 1 }})"
+                <button wire:click="incrementLoaders"
                         class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
                         @if($loaders_count >= $loaderOption->max_quantity) disabled @endif>+</button>
                 <span class="text-xs text-gray-500 dark:text-gray-400">макс. {{ $loaderOption->max_quantity }}</span>
@@ -181,11 +181,11 @@
                 Пассажиры ({{ number_format($passengerOption->price_per_hour, 0) }} ₽/ч)
               </label>
               <div class="flex items-center gap-3">
-                <button wire:click="updatePassengersCount({{ $passengers_count - 1 }})"
+                <button wire:click="decrementPassengers"
                         class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
                         @if($passengers_count <= 0) disabled @endif>−</button>
                 <span class="w-12 text-center text-lg font-bold text-gray-900 dark:text-white">{{ $passengers_count }}</span>
-                <button wire:click="updatePassengersCount({{ $passengers_count + 1 }})"
+                <button wire:click="incrementPassengers"
                         class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
                         @if($passengers_count >= $vehicle->max_passengers) disabled @endif>+</button>
                 <span class="text-xs text-gray-500 dark:text-gray-400">макс. {{ $vehicle->max_passengers }}</span>
@@ -199,11 +199,11 @@
                 Подъем на этаж ({{ number_format($floorOption->price_per_floor, 0) }} ₽/этаж)
               </label>
               <div class="flex items-center gap-3">
-                <button wire:click="updateFloorsCount({{ $floors_count - 1 }})"
+                <button wire:click="decrementFloors"
                         class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
                         @if($floors_count <= 0) disabled @endif>−</button>
                 <span class="w-12 text-center text-lg font-bold text-gray-900 dark:text-white">{{ $floors_count }}</span>
-                <button wire:click="updateFloorsCount({{ $floors_count + 1 }})"
+                <button wire:click="incrementFloors"
                         class="rounded-lg bg-gray-200 px-4 py-2 font-bold hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
                         @if($floors_count >= $floorOption->max_quantity) disabled @endif>+</button>
                 <span class="text-xs text-gray-500 dark:text-gray-400">макс. {{ $floorOption->max_quantity }}</span>

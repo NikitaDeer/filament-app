@@ -149,15 +149,31 @@ class YandexMapCalculator extends Component
    */
   public function updateLoadersCount($count)
   {
-    $loaderOption = PricingOption::ofType('loader')->active()->first();
+    $loaderOption = PricingOption::ofType('грузчики')->active()->first();
     if ($loaderOption) {
-      $this->loaders_count = max(0, min($count, $loaderOption->max_quantity));
+      $this->loaders_count = max(0, min((int)$count, (int)$loaderOption->max_quantity));
       $this->loader_price = $loaderOption->price_per_hour;
     } else {
       $this->loaders_count = 0;
       $this->loader_price = 0;
     }
     $this->recalculate();
+  }
+
+  /**
+   * Увеличить количество грузчиков
+   */
+  public function incrementLoaders()
+  {
+    $this->updateLoadersCount($this->loaders_count + 1);
+  }
+
+  /**
+   * Уменьшить количество грузчиков
+   */
+  public function decrementLoaders()
+  {
+    $this->updateLoadersCount($this->loaders_count - 1);
   }
 
   /**
@@ -180,7 +196,7 @@ class YandexMapCalculator extends Component
     }
 
     // Проверяем что есть активная опция пассажиров
-    $passengerOption = PricingOption::ofType('passenger')->active()->first();
+    $passengerOption = PricingOption::ofType('пассажиры')->active()->first();
     if (!$passengerOption) {
       $this->passengers_count = 0;
       $this->passenger_price = 0;
@@ -202,11 +218,27 @@ class YandexMapCalculator extends Component
   }
 
   /**
+   * Увеличить количество пассажиров
+   */
+  public function incrementPassengers()
+  {
+    $this->updatePassengersCount($this->passengers_count + 1);
+  }
+
+  /**
+   * Уменьшить количество пассажиров
+   */
+  public function decrementPassengers()
+  {
+    $this->updatePassengersCount($this->passengers_count - 1);
+  }
+
+  /**
    * Обновить количество этажей
    */
   public function updateFloorsCount($count)
   {
-    $floorOption = PricingOption::ofType('floor')->active()->first();
+    $floorOption = PricingOption::ofType('этажи')->active()->first();
     if ($floorOption) {
       $this->floors_count = max(0, min($count, $floorOption->max_quantity));
       $this->floor_price = $floorOption->price_per_floor;
@@ -218,11 +250,43 @@ class YandexMapCalculator extends Component
   }
 
   /**
+   * Увеличить количество этажей
+   */
+  public function incrementFloors()
+  {
+    $this->updateFloorsCount($this->floors_count + 1);
+  }
+
+  /**
+   * Уменьшить количество этажей
+   */
+  public function decrementFloors()
+  {
+    $this->updateFloorsCount($this->floors_count - 1);
+  }
+
+  /**
    * При изменении floors_count через wire:model
    */
   public function updatedFloorsCount($value)
   {
     $this->updateFloorsCount($value);
+  }
+
+  /**
+   * При изменении selected_services автоматически пересчитываем
+   */
+  public function updatedSelectedServices()
+  {
+    $this->recalculate();
+  }
+
+  /**
+   * При изменении has_cargo_elevator автоматически пересчитываем
+   */
+  public function updatedHasCargoElevator()
+  {
+    $this->recalculate();
   }
 
   /**
