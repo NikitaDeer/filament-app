@@ -156,7 +156,7 @@ class OrderResource extends Resource
           ->default('—')
           ->toggleable(isToggledHiddenByDefault: true),
 
-        Tables\Columns\TextColumn::make('scheduled_date')про
+        Tables\Columns\TextColumn::make('scheduled_date')
           ->label('Запл. дата')
           ->date('d.m.Y')
           ->default('—')
