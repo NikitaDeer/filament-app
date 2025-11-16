@@ -34,6 +34,11 @@ class DatabaseSeeder extends Seeder
             PricingOptionSeeder::class,
             ServiceSeeder::class,
             HomeContentSeeder::class,
+            AboutContentSeeder::class,
+            ServicesContentSeeder::class,
+            FleetContentSeeder::class,
+            PricesContentSeeder::class,
+            ContactsContentSeeder::class,
         ]);
     }
 }

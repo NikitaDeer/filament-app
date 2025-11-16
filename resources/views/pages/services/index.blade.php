@@ -4,14 +4,13 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <span class="inline-block rounded-full bg-green-600 px-4 py-1.5 text-sm font-semibold text-white">
-          Наши услуги
+          {{ services_content('hero_badge', 'Наши услуги') }}
         </span>
         <h1 class="mt-6 text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl">
-          Полный спектр услуг по грузоперевозкам
+          {{ services_content('hero_title', 'Полный спектр услуг по грузоперевозкам') }}
         </h1>
         <p class="mx-auto mt-6 max-w-3xl text-lg leading-8 text-gray-600 dark:text-gray-400">
-          От квартирных переездов до доставки строительных материалов — мы решаем любые задачи по транспортировке грузов. 
-          Профессиональное оборудование, опытные специалисты и гарантия качества.
+          {{ services_content('hero_subtitle', 'От квартирных переездов до доставки строительных материалов — мы решаем любые задачи по транспортировке грузов. Профессиональное оборудование, опытные специалисты и гарантия качества.') }}
         </p>
         <div class="mt-8">
           <a href="{{ route('calculator.index') }}"

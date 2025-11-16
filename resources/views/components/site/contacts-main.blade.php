@@ -2,9 +2,9 @@
 <div class="bg-base-100 dark:bg-gray-900 py-16 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-2xl text-center">
-            <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">Свяжитесь с нами</h1>
+            <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">{{ contacts_content('hero_title', 'Свяжитесь с нами') }}</h1>
             <p class="mx-auto mt-4 max-w-3xl text-lg leading-8 text-gray-600 dark:text-gray-300">
-                Мы всегда рады помочь. Выберите удобный для вас способ связи, и мы ответим в кратчайшие сроки.
+                {{ contacts_content('hero_subtitle', 'Мы всегда рады помочь. Выберите удобный для вас способ связи, и мы ответим в кратчайшие сроки.') }}
             </p>
         </div>
 

@@ -4,11 +4,10 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
       <div class="mx-auto max-w-3xl text-center">
         <h1 class="text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl">
-          Наш автопарк
+          {{ fleet_content('hero_title', 'Наш автопарк') }}
         </h1>
         <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-300">
-          Современный парк грузовых автомобилей для любых задач. От небольших газелей до крупнотоннажных фур.
-          Все машины в отличном техническом состоянии и готовы к работе.
+          {{ fleet_content('hero_subtitle', 'Современный парк грузовых автомобилей для любых задач. От небольших газелей до крупнотоннажных фур. Все машины в отличном техническом состоянии и готовы к работе.') }}
         </p>
       </div>
     </div>

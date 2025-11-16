@@ -3,10 +3,9 @@
   <main class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <h1 class="text-4xl font-bold text-gray-800 dark:text-white sm:text-5xl">О компании СПБ Карго</h1>
+        <h1 class="text-4xl font-bold text-gray-800 dark:text-white sm:text-5xl">{{ about_content('hero_title', 'О компании СПБ Карго') }}</h1>
         <p class="mx-auto mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
-          Мы специализируемся на грузоперевозках в Санкт-Петербурге и Ленинградской области. Наша миссия — сделать
-          перевозку грузов простой, надежной и доступной для каждого.
+          {{ about_content('hero_subtitle', 'Мы специализируемся на грузоперевозках в Санкт-Петербурге и Ленинградской области. Наша миссия — сделать перевозку грузов простой, надежной и доступной для каждого.') }}
         </p>
       </div>
 

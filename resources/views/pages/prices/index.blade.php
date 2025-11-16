@@ -4,13 +4,13 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <span class="rounded bg-green-600 px-3 py-1 text-sm font-medium text-white">
-          Прозрачное ценообразование
+          {{ prices_content('hero_badge', 'Прозрачное ценообразование') }}
         </span>
         <h1 class="mt-4 text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl">
-          Актуальные цены на грузоперевозки
+          {{ prices_content('hero_title', 'Актуальные цены на грузоперевозки') }}
         </h1>
         <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-          Все цены указаны с учетом НДС. Точную стоимость вашего заказа можно рассчитать в нашем онлайн-калькуляторе
+          {{ prices_content('hero_subtitle', 'Все цены указаны с учетом НДС. Точную стоимость вашего заказа можно рассчитать в нашем онлайн-калькуляторе') }}
         </p>
         <div class="mt-8">
           <a href="{{ route('calculator.index') }}"
