@@ -6,47 +6,52 @@
       <!-- Левая колонка: Текст и CTA -->
       <div>
         <h1 class="text-4xl font-bold text-gray-800 dark:text-white lg:text-5xl">
-          Надежные
-          <span class="text-green-600 dark:text-green-500">грузоперевозки</span> в
-          СПБ и ЛО
+          {!! home_content('hero_title', 'Надежные <span class="text-green-600 dark:text-green-500">грузоперевозки</span> в СПБ и ЛО') !!}
         </h1>
         <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
-          Быстро, безопасно и по честной цене. Рассчитайте стоимость доставки за 30 секунд с помощью нашего
-          калькулятора.
+          {{ home_content('hero_subtitle', 'Быстро, безопасно и по честной цене. Рассчитайте стоимость доставки за 30 секунд с помощью нашего калькулятора.') }}
         </p>
         <div class="mt-8 grid grid-cols-2 gap-6 text-gray-700 dark:text-gray-300">
+          @if(home_content('hero_feature1'))
           <div class="flex items-center">
             <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <span class="ml-2">Работаем 24/7</span>
+            <span class="ml-2">{{ home_content('hero_feature1') }}</span>
           </div>
+          @endif
+          @if(home_content('hero_feature2'))
           <div class="flex items-center">
             <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <span class="ml-2">Опытные грузчики</span>
+            <span class="ml-2">{{ home_content('hero_feature2') }}</span>
           </div>
+          @endif
+          @if(home_content('hero_feature3'))
           <div class="flex items-center">
             <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <span class="ml-2">Страхование груза</span>
+            <span class="ml-2">{{ home_content('hero_feature3') }}</span>
           </div>
+          @endif
+          @if(home_content('hero_feature4'))
           <div class="flex items-center">
             <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <span class="ml-2">Фиксированные цены</span>
+            <span class="ml-2">{{ home_content('hero_feature4') }}</span>
           </div>
+          @endif
         </div>
         <div class="mt-10 flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
           <a href="#"
@@ -63,30 +68,42 @@
           </a>
         </div>
         <div class="mt-12 grid grid-cols-3 gap-8 text-center">
+          @if(home_content('stats_clients'))
           <div>
-            <p class="text-3xl font-bold text-green-600">500+</p>
-            <p class="text-gray-500">Довольных клиентов</p>
+            <p class="text-3xl font-bold text-green-600">{{ home_content('stats_clients') }}</p>
+            <p class="text-gray-500">{{ home_content('stats_clients_label') }}</p>
           </div>
+          @endif
+          @if(home_content('stats_availability'))
           <div>
-            <p class="text-3xl font-bold text-green-600">24/7</p>
-            <p class="text-gray-500">Работаем круглосуточно</p>
+            <p class="text-3xl font-bold text-green-600">{{ home_content('stats_availability') }}</p>
+            <p class="text-gray-500">{{ home_content('stats_availability_label') }}</p>
           </div>
+          @endif
+          @if(home_content('stats_years'))
           <div>
-            <p class="text-3xl font-bold text-green-600">5 лет</p>
-            <p class="text-gray-500">Опыт работы</p>
+            <p class="text-3xl font-bold text-green-600">{{ home_content('stats_years') }}</p>
+            <p class="text-gray-500">{{ home_content('stats_years_label') }}</p>
           </div>
+          @endif
         </div>
       </div>
 
       <!-- Правая колонка: Изображение -->
       <div class="relative hidden lg:block">
-        <div class="flex h-full items-center justify-center rounded-2xl bg-gray-100 p-8 dark:bg-gray-800">
-          <svg class="h-48 w-48 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
-          </svg>
-        </div>
+        @if(home_image('hero_image'))
+          <div class="flex h-full items-center justify-center rounded-2xl overflow-hidden">
+            <img src="{{ home_image('hero_image') }}" alt="Грузоперевозки" class="h-full w-full rounded-2xl object-cover">
+          </div>
+        @else
+          <div class="flex h-full items-center justify-center rounded-2xl bg-gray-100 p-8 dark:bg-gray-800">
+            <svg class="h-48 w-48 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
+            </svg>
+          </div>
+        @endif
         <div class="absolute right-0 top-10 rounded-lg bg-white p-4 text-sm shadow-lg dark:bg-gray-700">
           <p class="font-semibold">Быстрая доставка</p>
           <p class="text-gray-500 dark:text-gray-400">от 30 минут</p>
@@ -105,12 +122,14 @@
   <section class="bg-base-100 py-16 dark:bg-dark-base-100 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-12 text-center">
-        <h2 class="text-3xl font-bold sm:text-4xl">Почему выбирают нас</h2>
-        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">Мы предоставляем качественные услуги по доступным ценам
+        <h2 class="text-3xl font-bold sm:text-4xl">{{ home_content('advantages_title', 'Почему выбирают нас') }}</h2>
+        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
+          {{ home_content('advantages_subtitle', 'Мы предоставляем качественные услуги по доступным ценам') }}
         </p>
       </div>
       <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
         <!-- Advantage 1 -->
+        @if(home_content('advantages_adv1_title'))
         <div
           class="rounded-lg bg-gray-50 p-6 text-center shadow-md transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-neutral-800">
           <div class="mb-4 inline-block">
@@ -118,12 +137,14 @@
               <i class="fas fa-shipping-fast text-3xl text-primary-600 dark:text-primary-400"></i>
             </div>
           </div>
-          <h3 class="mb-2 text-xl font-semibold">Скорость и сроки</h3>
+          <h3 class="mb-2 text-xl font-semibold">{{ home_content('advantages_adv1_title') }}</h3>
           <p class="text-gray-700 dark:text-gray-300">
-            Гарантируем доставку в установленные сроки благодаря отлаженной логистике.
+            {{ home_content('advantages_adv1_description') }}
           </p>
         </div>
+        @endif
         <!-- Advantage 2 -->
+        @if(home_content('advantages_adv2_title'))
         <div
           class="rounded-lg bg-gray-50 p-6 text-center shadow-md transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-neutral-800">
           <div class="mb-4 inline-block">
@@ -131,12 +152,14 @@
               <i class="fas fa-shield-alt text-3xl text-primary-600 dark:text-primary-400"></i>
             </div>
           </div>
-          <h3 class="mb-2 text-xl font-semibold">Безопасность груза</h3>
+          <h3 class="mb-2 text-xl font-semibold">{{ home_content('advantages_adv2_title') }}</h3>
           <p class="text-gray-700 dark:text-gray-300">
-            Полная материальная ответственность и страхование каждого отправления.
+            {{ home_content('advantages_adv2_description') }}
           </p>
         </div>
+        @endif
         <!-- Advantage 3 -->
+        @if(home_content('advantages_adv3_title'))
         <div
           class="rounded-lg bg-gray-50 p-6 text-center shadow-md transition-transform duration-300 ease-in-out hover:-translate-y-2 dark:bg-neutral-800">
           <div class="mb-4 inline-block">
@@ -144,11 +167,12 @@
               <i class="fas fa-headset text-3xl text-primary-600 dark:text-primary-400"></i>
             </div>
           </div>
-          <h3 class="mb-2 text-xl font-semibold">Поддержка 24/7</h3>
+          <h3 class="mb-2 text-xl font-semibold">{{ home_content('advantages_adv3_title') }}</h3>
           <p class="text-gray-700 dark:text-gray-300">
-            Наши менеджеры всегда на связи и готовы ответить на любые ваши вопросы.
+            {{ home_content('advantages_adv3_description') }}
           </p>
         </div>
+        @endif
       </div>
     </div>
   </section>
@@ -157,23 +181,20 @@
   <section class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <h2 class="text-3xl font-bold text-gray-800 dark:text-white sm:text-4xl">О компании СПБ Карго</h2>
+        <h2 class="text-3xl font-bold text-gray-800 dark:text-white sm:text-4xl">{{ home_content('about_title', 'О компании СПБ Карго') }}</h2>
         <p class="mx-auto mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
-          Мы специализируемся на грузоперевозках в Санкт-Петербурге и Ленинградской области. Наша миссия — сделать
-          перевозку грузов простой, надежной и доступной для каждого.
+          {{ home_content('about_subtitle', 'Мы специализируемся на грузоперевозках в Санкт-Петербурге и Ленинградской области. Наша миссия — сделать перевозку грузов простой, надежной и доступной для каждого.') }}
         </p>
       </div>
 
       <div class="mt-16 grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
         <div>
-          <h3 class="text-2xl font-bold text-gray-800 dark:text-white">5 лет на рынке грузоперевозок</h3>
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ home_content('about_history_title', '5 лет на рынке грузоперевозок') }}</h3>
           <p class="mt-4 text-gray-600 dark:text-gray-400">
-            За это время мы выполнили более 10,000 заказов и заслужили доверие сотен клиентов. Мы понимаем, что каждый
-            груз важен, поэтому относимся к каждому заказу с максимальной ответственностью.
+            {{ home_content('about_description1', 'За это время мы выполнили более 10,000 заказов и заслужили доверие сотен клиентов. Мы понимаем, что каждый груз важен, поэтому относимся к каждому заказу с максимальной ответственностью.') }}
           </p>
           <p class="mt-4 text-gray-600 dark:text-gray-400">
-            Наша команда состоит из опытных профессионалов, которые знают город как свои пять пальцев и всегда найдут
-            оптимальный маршрут для вашего груза.
+            {{ home_content('about_description2', 'Наша команда состоит из опытных профессионалов, которые знают город как свои пять пальцев и всегда найдут оптимальный маршрут для вашего груза.') }}
           </p>
           <ul class="mt-6 space-y-3">
             <li class="flex items-center text-green-600 dark:text-green-400">
@@ -221,9 +242,9 @@
   <section class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-12 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">Наш автопарк</h2>
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">{{ home_content('fleet_title', 'Наш автопарк') }}</h2>
         <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-          Современный парк грузовых автомобилей для перевозки любых грузов. От компактных газелей до крупнотоннажных фур.
+          {{ home_content('fleet_subtitle', 'Современный парк грузовых автомобилей для перевозки любых грузов. От компактных газелей до крупнотоннажных фур.') }}
         </p>
       </div>
 
@@ -360,10 +381,9 @@
   <section class="bg-gray-50 py-16 dark:bg-neutral-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-12 text-center">
-        <h2 class="text-3xl font-bold sm:text-4xl">Наши услуги</h2>
+        <h2 class="text-3xl font-bold sm:text-4xl">{{ home_content('services_title', 'Наши услуги') }}</h2>
         <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-          Предоставляем полный спектр услуг по грузоперевозкам и грузовым работам для частных лиц и малого бизнеса в
-          Санкт-Петербурге и области.
+          {{ home_content('services_subtitle', 'Предоставляем полный спектр услуг по грузоперевозкам для частных лиц и малого бизнеса в Санкт-Петербурге и области.') }}
         </p>
       </div>
       @php
