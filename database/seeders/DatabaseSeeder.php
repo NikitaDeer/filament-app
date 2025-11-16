@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             VehicleSeeder::class,
             PricingOptionSeeder::class,
             ServiceSeeder::class,
+            HomeContentSeeder::class,
         ]);
     }
 }
