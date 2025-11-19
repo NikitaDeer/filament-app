@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             FleetContentSeeder::class,
             PricesContentSeeder::class,
             ContactsContentSeeder::class,
+            FaqSeeder::class,
         ]);
     }
 }

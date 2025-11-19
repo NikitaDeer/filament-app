@@ -34,4 +34,8 @@ Route::get('/vehicles', function () {
   return view('pages.vehicles.index');
 })->name('vehicles.index');
 
+Route::get('/faq', function () {
+  return view('pages.faq.index');
+})->name('faq.index');
+
 require __DIR__ . '/auth.php';

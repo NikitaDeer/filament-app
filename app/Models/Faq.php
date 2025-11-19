@@ -15,10 +15,12 @@ class Faq extends Model
         'category',
         'order',
         'is_published',
+        'is_popular',
     ];
 
     protected $casts = [
         'is_published' => 'boolean',
+        'is_popular' => 'boolean',
         'order' => 'integer',
     ];
 
@@ -36,6 +38,22 @@ class Faq extends Model
     public function scopeByCategory($query, $category)
     {
         return $query->where('category', $category);
+    }
+
+    /**
+     * Scope: популярные вопросы
+     */
+    public function scopePopular($query)
+    {
+        return $query->where('is_popular', true);
+    }
+
+    /**
+     * Scope: с сортировкой по order
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order', 'asc')->orderBy('id', 'asc');
     }
 
     /**

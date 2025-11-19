@@ -447,6 +447,9 @@
     </div>
   </section>
 
+  {{-- FAQ Section --}}
+  <x-faq-section />
+
   <x-site.cta />
 
   {{-- Footer --}}
