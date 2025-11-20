@@ -509,7 +509,8 @@ class YandexMapCalculator extends Component
       Log::info('New order notification sent', ['order_id' => $order->id]);
 
       $this->orderSubmittedSuccessfully = true;
-      $this->reset('name', 'phone', 'email', 'comment');
+      // Не сбрасываем поля сразу, чтобы пользователь видел модалку
+      // Сброс произойдет при закрытии модалки методом closeSuccessModal
       $this->showError = false;
 
     } catch (\Exception $e) {
@@ -529,6 +530,24 @@ class YandexMapCalculator extends Component
     $this->orderSubmittedSuccessfully = false;
     $this->mount();
     $this->dispatchBrowserEvent('new-order-started');
+  }
+
+  /**
+   * Закрыть модальное окно успеха и сбросить калькулятор
+   */
+  public function closeSuccessModal()
+  {
+    $this->orderSubmittedSuccessfully = false;
+    $this->resetCalculator();
+    
+    // Дополнительно сбрасываем поля формы контакта
+    $this->name = '';
+    $this->phone = '';
+    $this->email = '';
+    $this->comment = '';
+    $this->scheduled_datetime = '';
+    $this->client_comments = '';
+    $this->is_cash_payment = false;
   }
 
   /**

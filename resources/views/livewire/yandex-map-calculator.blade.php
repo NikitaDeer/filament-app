@@ -406,19 +406,7 @@
               </button>
             </form>
 
-            @if($orderSubmittedSuccessfully)
-              <div class="mt-4 rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
-                <div class="flex">
-                  <svg class="h-5 w-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                  </svg>
-                  <div class="ml-3">
-                    <p class="text-sm font-medium text-green-800 dark:text-green-300">Заявка успешно отправлена!</p>
-                    <p class="mt-1 text-sm text-green-700 dark:text-green-400">Мы свяжемся с вами в ближайшее время</p>
-                  </div>
-                </div>
-              </div>
-            @endif
+
           </div>
         @endif
     </div>
@@ -688,6 +676,50 @@
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  @endif
+
+  {{-- Модальное окно успешной отправки заказа --}}
+  @if($orderSubmittedSuccessfully)
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
+         x-data x-init="$el.classList.add('opacity-100')"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+      
+      <div class="relative w-full max-w-md transform rounded-2xl bg-white p-6 text-center shadow-2xl transition-all dark:bg-gray-800"
+           x-on:click.outside="$wire.closeSuccessModal()">
+        
+        {{-- Иконка успеха --}}
+        <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+          <svg class="h-10 w-10 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+
+        <h3 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">Заявка принята!</h3>
+        
+        <p class="mb-6 text-gray-600 dark:text-gray-300">
+          Спасибо за ваш заказ. Наш менеджер свяжется с вами в ближайшее время для подтверждения деталей.
+        </p>
+
+        <button wire:click="closeSuccessModal"
+                class="w-full rounded-xl bg-green-600 px-6 py-3 text-base font-semibold text-white shadow-lg transition-all hover:bg-green-700 hover:shadow-green-500/30 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+          Отлично, жду звонка
+        </button>
+
+        {{-- Кнопка закрытия (крестик) --}}
+        <button wire:click="closeSuccessModal" 
+                class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+
       </div>
     </div>
   @endif

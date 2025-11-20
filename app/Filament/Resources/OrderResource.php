@@ -39,8 +39,17 @@ class OrderResource extends Resource
           ->schema([
             Forms\Components\TextInput::make('from_address')->label('Начальная точка')->disabled()->columnSpanFull(),
             Forms\Components\TextInput::make('to_address')->label('Конечная точка')->disabled()->columnSpanFull(),
-            Forms\Components\KeyValue::make('route_points')
+            Forms\Components\Repeater::make('route_points')
               ->label('Все точки маршрута')
+              ->schema([
+                Forms\Components\TextInput::make('address')
+                  ->label('Адрес')
+                  ->disabled()
+                  ->columnSpanFull(),
+                Forms\Components\KeyValue::make('details')
+                  ->label('Детали (подъезд, этаж и т.д.)')
+                  ->disabled(),
+              ])
               ->disabled()
               ->columnSpanFull()
               ->visible(fn ($record) => !empty($record->route_points)),
