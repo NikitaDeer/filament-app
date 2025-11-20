@@ -116,6 +116,16 @@
     </div>
   </section>
 
+  {{-- Yandex Map Calculator Section --}}
+  <section id="calculator" class="bg-gray-50 py-16 dark:bg-neutral-900 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-12 text-center text-3xl font-bold sm:text-4xl">
+        Онлайн-калькулятор
+      </h2>
+      @livewire('yandex-map-calculator')
+    </div>
+  </section>
+
 
 
   {{-- Advantages Section --}}
@@ -437,15 +447,7 @@
     </div>
   </section>
 
-  {{-- Yandex Map Calculator Section --}}
-  <section id="calculator" class="bg-gray-50 py-16 dark:bg-neutral-900 sm:py-24">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-12 text-center text-3xl font-bold sm:text-4xl">
-        Онлайн-калькулятор
-      </h2>
-      @livewire('yandex-map-calculator')
-    </div>
-  </section>
+
 
   {{-- FAQ Section --}}
   <x-faq-section />

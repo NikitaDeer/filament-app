@@ -352,6 +352,32 @@
             <h3 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Оформление заказа</h3>
 
             <form wire:submit.prevent="submitOrder" class="space-y-4">
+              
+              {{-- Глобальные ошибки валидации --}}
+              @if ($errors->any() || $showError)
+                <div class="rounded-lg bg-red-50 p-4 dark:bg-red-900/20">
+                  <div class="flex">
+                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                    <div class="ml-3">
+                      <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
+                        Ошибка при оформлении заказа
+                      </h3>
+                      <div class="mt-2 text-sm text-red-700 dark:text-red-300">
+                        <ul class="list-disc pl-5 space-y-1">
+                          @if($showError)
+                            <li>Произошла ошибка на сервере. Попробуйте позже.</li>
+                          @endif
+                          @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                          @endforeach
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              @endif
               <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Ваше имя *</label>
                 <input type="text" wire:model="name"
@@ -401,8 +427,15 @@
               </div>
 
               <button type="submit"
-                      class="w-full rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
-                Отправить заявку
+                      wire:loading.attr="disabled"
+                      wire:loading.class="opacity-50 cursor-not-allowed"
+                      class="flex w-full items-center justify-center rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
+                <svg wire:loading wire:target="submitOrder" class="mr-3 -ml-1 h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span wire:loading.remove wire:target="submitOrder">Отправить заявку</span>
+                <span wire:loading wire:target="submitOrder">Отправка...</span>
               </button>
             </form>
 

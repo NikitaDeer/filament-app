@@ -497,6 +497,10 @@ class YandexMapCalculator extends Component
 
     $order = Order::create($orderData);
 
+    // Считаем заказ успешным сразу после создания записи в БД
+    $this->orderSubmittedSuccessfully = true;
+    $this->showError = false;
+
     try {
       $emailChannel = NotificationChannel::where('type', 'email')
         ->where('is_active', true)
@@ -508,14 +512,9 @@ class YandexMapCalculator extends Component
 
       Log::info('New order notification sent', ['order_id' => $order->id]);
 
-      $this->orderSubmittedSuccessfully = true;
-      // Не сбрасываем поля сразу, чтобы пользователь видел модалку
-      // Сброс произойдет при закрытии модалки методом closeSuccessModal
-      $this->showError = false;
-
     } catch (\Exception $e) {
-      Log::error('Ошибка отправки заявки: ' . $e->getMessage(), ['order_id' => $order->id]);
-      $this->showError = true;
+      // Логируем ошибку отправки почты, но не пугаем пользователя, так как заказ уже создан
+      Log::error('Ошибка отправки уведомления о заявке: ' . $e->getMessage(), ['order_id' => $order->id]);
     }
   }
 
