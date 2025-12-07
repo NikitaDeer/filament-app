@@ -508,7 +508,17 @@ class YandexMapCalculator extends Component
 
       $emailTo = $emailChannel ? $emailChannel->value : config('mail.from.address');
 
-      Notification::route('mail', $emailTo)->notify(new NewOrderNotification($order));
+      $telegramChannel = NotificationChannel::where('type', 'telegram')
+        ->where('is_active', true)
+        ->first();
+
+      $notifiable = Notification::route('mail', $emailTo);
+
+      if ($telegramChannel) {
+          $notifiable->route('telegram', $telegramChannel->value);
+      }
+
+      $notifiable->notify(new NewOrderNotification($order));
 
       Log::info('New order notification sent', ['order_id' => $order->id]);
 

@@ -35,4 +35,8 @@ return [
         'key' => env('YANDEX_MAPS_API_KEY'),
     ],
 
+    'telegram-bot-api' => [
+        'token' => env('TELEGRAM_BOT_TOKEN'),
+    ],
+
 ];
