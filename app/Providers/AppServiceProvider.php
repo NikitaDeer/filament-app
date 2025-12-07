@@ -12,7 +12,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(\NotificationChannels\Telegram\Telegram::class, function () {
+            return new \NotificationChannels\Telegram\Telegram(
+                config('services.telegram-bot-api.token'),
+                new \GuzzleHttp\Client(['verify' => false]),
+                config('services.telegram-bot-api.base_uri')
+            );
+        });
     }
 
     /**

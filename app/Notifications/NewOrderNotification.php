@@ -34,7 +34,7 @@ class NewOrderNotification extends Notification
    */
   public function via(object $notifiable): array
   {
-    return ['mail', TelegramChannel::class];
+    return [TelegramChannel::class];
   }
 
   /**
@@ -49,6 +49,8 @@ class NewOrderNotification extends Notification
 
   public function toTelegram($notifiable)
   {
+      \Illuminate\Support\Facades\Log::info('NewOrderNotification: toTelegram called', ['order_id' => $this->order->id, 'chat_id' => $notifiable->telegram_chat_id ?? 'null']);
+      
       $url = route('filament.resources.orders.edit', $this->order);
 
       return TelegramMessage::create()

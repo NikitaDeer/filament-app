@@ -502,29 +502,29 @@ class YandexMapCalculator extends Component
     $this->showError = false;
 
     try {
-      $emailChannel = NotificationChannel::where('type', 'email')
-        ->where('is_active', true)
-        ->first();
-
-      $emailTo = $emailChannel ? $emailChannel->value : config('mail.from.address');
-
       $telegramChannel = NotificationChannel::where('type', 'telegram')
         ->where('is_active', true)
         ->first();
 
-      $notifiable = Notification::route('mail', $emailTo);
-
       if ($telegramChannel) {
-          $notifiable->route('telegram', $telegramChannel->value);
+          // Используем route('telegram', ...) для отправки только в телеграм
+          // 'mail' здесь больше не нужен, так как мы отключили его в Notification классе,
+          // но для Notification::route нужен какой-то драйвер, если мы используем on-demand notification.
+          // Однако, Notification::route('telegram', $id) возвращает AnonymousNotifiable.
+          
+          Log::info('Sending notification to Telegram channel', ['value' => $telegramChannel->value]);
+          
+          Notification::route('telegram', $telegramChannel->value)
+            ->notify(new NewOrderNotification($order));
+      } else {
+          Log::warning('Telegram channel not found or inactive');
       }
-
-      $notifiable->notify(new NewOrderNotification($order));
 
       Log::info('New order notification sent', ['order_id' => $order->id]);
 
     } catch (\Exception $e) {
-      // Логируем ошибку отправки почты, но не пугаем пользователя, так как заказ уже создан
-      Log::error('Ошибка отправки уведомления о заявке: ' . $e->getMessage(), ['order_id' => $order->id]);
+      // Логируем ошибку, но не прерываем работу (хотя уведомление могло не уйти полностью)
+      Log::error('Ошибка отправки уведомления (возможно, проблема с SMTP или Telegram): ' . $e->getMessage(), ['order_id' => $order->id]);
     }
   }
 
