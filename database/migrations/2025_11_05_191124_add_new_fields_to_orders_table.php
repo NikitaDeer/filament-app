@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->date('scheduled_date')->nullable()->after('status');
+            $table->date('scheduled_date')->nullable()->after('total_cost');
             $table->time('scheduled_time')->nullable()->after('scheduled_date');
             $table->text('client_comments')->nullable()->after('scheduled_time');
             $table->boolean('is_cash_payment')->default(false)->after('client_comments');
