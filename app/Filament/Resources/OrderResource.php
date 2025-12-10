@@ -46,8 +46,14 @@ class OrderResource extends Resource
                   ->label('Адрес')
                   ->disabled()
                   ->columnSpanFull(),
-                Forms\Components\KeyValue::make('details')
-                  ->label('Детали (подъезд, этаж и т.д.)')
+                Forms\Components\Grid::make(5)
+                  ->schema([
+                    Forms\Components\TextInput::make('details.entrance')->label('Подъезд'),
+                    Forms\Components\TextInput::make('details.floor')->label('Этаж'),
+                    Forms\Components\TextInput::make('details.apartment')->label('Кв./Офис'),
+                    Forms\Components\TextInput::make('details.intercom_code')->label('Домофон'),
+                    Forms\Components\TextInput::make('details.contact_phone')->label('Телефон'),
+                  ])
                   ->disabled(),
               ])
               ->disabled()
