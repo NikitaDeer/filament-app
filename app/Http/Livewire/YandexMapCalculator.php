@@ -120,6 +120,8 @@ class YandexMapCalculator extends Component
       unset($this->route_points[$index]);
       $this->route_points = array_values($this->route_points); // Переиндексация
 
+      $this->emit('routePointRemoved');
+
       if (count($this->route_points) >= 2) {
         $this->recalculate();
       } else {
