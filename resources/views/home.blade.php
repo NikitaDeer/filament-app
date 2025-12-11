@@ -54,7 +54,7 @@
           @endif
         </div>
         <div class="mt-10 flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-          <a href="#"
+          <a href="#calculator"
             class="btn flex items-center justify-center rounded-lg bg-green-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-green-700">
             Рассчитать стоимость
             <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -62,7 +62,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
             </svg>
           </a>
-          <a href="#"
+          <a href="{{ route('contacts.index') }}"
             class="btn flex items-center justify-center rounded-lg bg-gray-200 px-8 py-3 font-semibold text-gray-800 transition-colors hover:bg-gray-300">
             Связаться с нами
           </a>
@@ -292,7 +292,7 @@
         <div class="overflow-hidden px-8">
           <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
             <template x-for="(veh, idx) in visibleVehicles" :key="veh.id">
-              <a :href="'{{ route('calculator.index') }}'" 
+              <a href="#calculator" 
                  class="group block rounded-2xl border-2 border-gray-200 p-6 transition-all hover:border-green-600 hover:shadow-xl dark:border-gray-700 dark:hover:border-green-600">
                 
                 {{-- Изображение --}}
