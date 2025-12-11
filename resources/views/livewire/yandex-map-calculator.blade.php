@@ -507,27 +507,48 @@
               @foreach($route_points as $index => $point)
                 <div class="rounded-xl border-2 border-gray-200 bg-white p-4 shadow-sm transition-all dark:border-gray-700 dark:bg-gray-800">
 
-                  {{-- Верхняя часть: основная информация --}}
-                  <div draggable="true"
-                       x-on:dragstart="dragging = {{ $index }}"
-                       x-on:dragend="dragging = null"
-                       x-on:dragover.prevent
-                       x-on:drop.prevent="if (dragging !== null && dragging !== {{ $index }}) { $wire.reorderRoutePoints(dragging, {{ $index }}) }"
-                       :class="{ 'opacity-50': dragging === {{ $index }} }"
-                       class="flex items-start gap-3 cursor-move">
+                  <div class="flex items-start gap-3">
+                    {{-- Левая часть: драг-хендл и кнопки --}}
+                    <div class="flex flex-col items-center gap-1">
+                      {{-- Иконка перетаскивания (скрыта на мобильных, если неудобно, но оставим для десктопа) --}}
+                      <div draggable="true"
+                           x-on:dragstart="dragging = {{ $index }}"
+                           x-on:dragend="dragging = null"
+                           x-on:dragover.prevent
+                           x-on:drop.prevent="if (dragging !== null && dragging !== {{ $index }}) { $wire.reorderRoutePoints(dragging, {{ $index }}) }"
+                           :class="{ 'opacity-50': dragging === {{ $index }} }"
+                           class="hidden cursor-move text-gray-400 hover:text-green-600 lg:block">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                        </svg>
+                      </div>
 
-                    {{-- Иконка перетаскивания --}}
-                    <div class="text-gray-400 hover:text-green-600">
-                      <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-                      </svg>
-                    </div>
+                      {{-- Кнопки Вверх/Вниз для мобильных --}}
+                      <div class="flex flex-col gap-1 lg:hidden">
+                        @if($index > 0)
+                          <button wire:click="reorderRoutePoints({{ $index }}, {{ $index - 1 }})"
+                                  class="rounded bg-gray-100 p-1 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+                            </svg>
+                          </button>
+                        @endif
+                        @if($index < count($route_points) - 1)
+                          <button wire:click="reorderRoutePoints({{ $index }}, {{ $index + 1 }})"
+                                  class="rounded bg-gray-100 p-1 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                          </button>
+                        @endif
+                      </div>
 
-                    {{-- Номер точки --}}
-                    <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full
-                                @if($index === 0) bg-green-600 @elseif($index === count($route_points) - 1) bg-red-600 @else bg-blue-600 @endif
-                                text-base font-bold text-white shadow-md">
-                      {{ $index + 1 }}
+                      {{-- Номер точки --}}
+                      <div class="mt-1 flex h-8 w-8 items-center justify-center rounded-full
+                                  @if($index === 0) bg-green-600 @elseif($index === count($route_points) - 1) bg-red-600 @else bg-blue-600 @endif
+                                  text-sm font-bold text-white shadow-md lg:h-12 lg:w-12 lg:text-base">
+                        {{ $index + 1 }}
+                      </div>
                     </div>
 
                     {{-- Детали точки --}}
