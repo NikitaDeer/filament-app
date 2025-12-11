@@ -862,25 +862,28 @@ document.addEventListener('livewire:load', function() {
     clearMap();
   });
 
-  Livewire.on('routePointRemoved', () => {
+  Livewire.on('routePointRemoved', (routePoints) => {
     clearMap();
-    const routePoints = @this.get('route_points');
-    routePoints.forEach((point, index) => {
-      addPlacemark(point.coords, index);
-    });
-    if (routePoints.length >= 2) {
-      buildRoute();
+    // routePoints передаются из PHP, используем их
+    if (Array.isArray(routePoints)) {
+        routePoints.forEach((point, index) => {
+            addPlacemark(point.coords, index);
+        });
+        if (routePoints.length >= 2) {
+            buildRoute();
+        }
     }
   });
 
-  Livewire.on('routeReordered', () => {
+  Livewire.on('routeReordered', (routePoints) => {
     clearMap();
-    const routePoints = @this.get('route_points');
-    routePoints.forEach((point, index) => {
-      addPlacemark(point.coords, index);
-    });
-    if (routePoints.length >= 2) {
-      buildRoute();
+    if (Array.isArray(routePoints)) {
+        routePoints.forEach((point, index) => {
+            addPlacemark(point.coords, index);
+        });
+        if (routePoints.length >= 2) {
+            buildRoute();
+        }
     }
   });
 });
