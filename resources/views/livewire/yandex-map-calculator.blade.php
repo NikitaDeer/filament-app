@@ -387,7 +387,8 @@
 
               <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Телефон *</label>
-                <input type="tel" wire:model="phone" placeholder="+7 (___) ___-__-__"
+                <input type="tel" wire:model.lazy="phone" placeholder="+7 (___) ___-__-__"
+                       oninput="formatPhoneNumber(this)"
                        class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                 @error('phone') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
               </div>
@@ -714,8 +715,9 @@
 
           <div>
             <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Контактный телефон</label>
-            <input type="tel" wire:model="current_point_details.contact_phone"
+            <input type="tel" wire:model.lazy="current_point_details.contact_phone"
                    placeholder="+7 (___) ___-__-__"
+                   oninput="formatPhoneNumber(this)"
                    class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
           </div>
 
@@ -886,6 +888,32 @@ document.addEventListener('livewire:load', function() {
         }
     }
   });
+
+  window.formatPhoneNumber = function(input) {
+    let value = input.value.replace(/\D/g, '');
+    if (!value) {
+        input.value = '';
+        return;
+    }
+    
+    // Если первая цифра 8, меняем на 7
+    if (value[0] === '8') value = '7' + value.slice(1);
+    // Если первая цифра не 7 (и не 8, которую мы уже заменили), добавляем 7
+    if (value[0] !== '7') value = '7' + value;
+    
+    // Обрезаем до 11 цифр (7 + 10 цифр номера)
+    value = value.substring(0, 11);
+
+    let formatted = '+7';
+    if (value.length > 1) formatted += ' (' + value.substring(1, 4);
+    if (value.length > 4) formatted += ') ' + value.substring(4, 7);
+    if (value.length > 7) formatted += '-' + value.substring(7, 9);
+    if (value.length > 9) formatted += '-' + value.substring(9, 11);
+
+    input.value = formatted;
+    // Важно: сообщаем Livewire об изменении значения
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  }
 });
 </script>
 @endpush
