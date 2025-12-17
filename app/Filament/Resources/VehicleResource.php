@@ -110,6 +110,14 @@ class VehicleResource extends Resource
                             ->minValue(0)
                             ->step(0.01)
                             ->prefix('₽'),
+
+                        Forms\Components\TextInput::make('additional_hour_price')
+                            ->label('Цена за доп. час (₽)')
+                            ->numeric()
+                            ->minValue(0)
+                            ->step(0.01)
+                            ->prefix('₽')
+                            ->helperText('Стоимость каждого дополнительного часа сверх минимума'),
                     ])
                     ->columns(2)
                     ->collapsible(),

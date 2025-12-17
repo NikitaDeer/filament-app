@@ -261,17 +261,7 @@
                         <div class="flex-1 min-w-0">
                           <div class="flex items-baseline justify-between">
                             <h5 class="font-semibold text-gray-900 dark:text-white">{{ $service->name }}</h5>
-                            @if($service->price)
-                              <span class="ml-2 whitespace-nowrap text-sm font-bold text-green-600 dark:text-green-400">
-                                {{ number_format($service->price, 0) }} ₽
-                              </span>
-                            @endif
                           </div>
-                          @if($service->description)
-                            <p class="mt-1 text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
-                              {{ $service->description }}
-                            </p>
-                          @endif
                           @if($service->is_popular)
                             <span class="mt-1 inline-block rounded-full bg-orange-100 px-2 py-0.5 text-xs font-semibold text-orange-800 dark:bg-orange-900/30 dark:text-orange-400">
                               ⭐ Популярно
@@ -282,6 +272,11 @@
                     </div>
                   </label>
                 @endforeach
+              </div>
+              <div class="mt-4 rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
+                <p class="text-xs text-blue-800 dark:text-blue-300">
+                  💡 Стоимость каждой дополнительной услуги согласуется индивидуально
+                </p>
               </div>
             </div>
           @endif
