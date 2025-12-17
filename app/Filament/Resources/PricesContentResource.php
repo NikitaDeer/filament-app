@@ -32,60 +32,12 @@ class PricesContentResource extends Resource
             Forms\Components\Section::make('Секции с ценами')->schema([
                 Forms\Components\TextInput::make('transport_section_title')->label('Заголовок "Транспорт"')->columnSpan(2),
                 Forms\Components\Textarea::make('transport_section_subtitle')->label('Подзаголовок')->rows(2)->columnSpan(2),
-                Forms\Components\Select::make('transport_section_icon')
-                    ->label('Иконка "Транспорт"')
-                    ->options([
-                        'heroicon-o-truck' => 'Грузовик',
-                        'heroicon-o-clock' => 'Часы',
-                        'heroicon-o-currency-dollar' => 'Деньги',
-                        'heroicon-o-users' => 'Люди',
-                        'heroicon-o-archive' => 'Коробка',
-                        'heroicon-o-clipboard-check' => 'Список',
-                        'heroicon-o-shield-check' => 'Щит',
-                        'heroicon-o-star' => 'Звезда',
-                        'heroicon-o-lightning-bolt' => 'Молния',
-                        'heroicon-o-office-building' => 'Здание',
-                    ])
-                    ->default('heroicon-o-truck')
-                    ->columnSpan(2),
                 
                 Forms\Components\TextInput::make('options_section_title')->label('Заголовок "Опции"')->columnSpan(2),
                 Forms\Components\Textarea::make('options_section_subtitle')->label('Подзаголовок')->rows(2)->columnSpan(2),
-                Forms\Components\Select::make('options_section_icon')
-                    ->label('Иконка "Опции"')
-                    ->options([
-                        'heroicon-o-truck' => 'Грузовик',
-                        'heroicon-o-clock' => 'Часы',
-                        'heroicon-o-currency-dollar' => 'Деньги',
-                        'heroicon-o-users' => 'Люди',
-                        'heroicon-o-archive' => 'Коробка',
-                        'heroicon-o-clipboard-check' => 'Список',
-                        'heroicon-o-shield-check' => 'Щит',
-                        'heroicon-o-star' => 'Звезда',
-                        'heroicon-o-lightning-bolt' => 'Молния',
-                        'heroicon-o-office-building' => 'Здание',
-                    ])
-                    ->default('heroicon-o-clipboard-check')
-                    ->columnSpan(2),
                 
                 Forms\Components\TextInput::make('special_section_title')->label('Заголовок "Особые услуги"')->columnSpan(2),
                 Forms\Components\Textarea::make('special_section_subtitle')->label('Подзаголовок')->rows(2)->columnSpan(2),
-                Forms\Components\Select::make('special_section_icon')
-                    ->label('Иконка "Особые услуги"')
-                    ->options([
-                        'heroicon-o-truck' => 'Грузовик',
-                        'heroicon-o-clock' => 'Часы',
-                        'heroicon-o-currency-dollar' => 'Деньги',
-                        'heroicon-o-users' => 'Люди',
-                        'heroicon-o-archive' => 'Коробка',
-                        'heroicon-o-clipboard-check' => 'Список',
-                        'heroicon-o-shield-check' => 'Щит',
-                        'heroicon-o-star' => 'Звезда',
-                        'heroicon-o-lightning-bolt' => 'Молния',
-                        'heroicon-o-office-building' => 'Здание',
-                    ])
-                    ->default('heroicon-o-star')
-                    ->columnSpan(2),
                 
                 Forms\Components\TextInput::make('conditions_section_title')->label('Заголовок "Условия"')->columnSpan(2),
                 Forms\Components\Textarea::make('conditions_section_description')->label('Описание')->rows(3)->columnSpan(2),
