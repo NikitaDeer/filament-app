@@ -314,9 +314,9 @@
                 <div class="rounded-xl bg-white p-6 shadow-md dark:bg-gray-800">
                   <div class="flex items-center">
                     <div class="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
-                        @if(!empty($item['icon']))
-                            @svg($item['icon'], 'h-6 w-6 text-green-600 dark:text-green-400')
-                        @endif
+                        <svg class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
                     </div>
                     <h3 class="ml-3 text-lg font-semibold text-gray-900 dark:text-white">{{ $item['title'] ?? '' }}</h3>
                   </div>

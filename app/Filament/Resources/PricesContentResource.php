@@ -45,21 +45,6 @@ class PricesContentResource extends Resource
                 Forms\Components\Repeater::make('conditions_items')
                     ->label('Карточки условий')
                     ->schema([
-                        Forms\Components\Select::make('icon')
-                            ->label('Иконка')
-                            ->options([
-                                'heroicon-o-truck' => 'Грузовик',
-                                'heroicon-o-clock' => 'Часы',
-                                'heroicon-o-currency-dollar' => 'Деньги',
-                                'heroicon-o-users' => 'Люди',
-                                'heroicon-o-archive' => 'Коробка',
-                                'heroicon-o-clipboard-check' => 'Список',
-                                'heroicon-o-shield-check' => 'Щит',
-                                'heroicon-o-star' => 'Звезда',
-                                'heroicon-o-lightning-bolt' => 'Молния',
-                                'heroicon-o-office-building' => 'Здание',
-                            ])
-                            ->required(),
                         Forms\Components\TextInput::make('title')->label('Заголовок')->required(),
                         Forms\Components\Textarea::make('description')->label('Описание')->required(),
                     ])
