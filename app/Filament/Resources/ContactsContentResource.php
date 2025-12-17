@@ -49,8 +49,6 @@ class ContactsContentResource extends Resource
             Forms\Components\Section::make('Социальные сети')->schema([
                 Forms\Components\TextInput::make('social_title')->label('Заголовок')->placeholder('Мы в соцсетях'),
                 Forms\Components\TextInput::make('social_vk')->label('VK')->placeholder('https://vk.com/yourpage'),
-                Forms\Components\TextInput::make('social_telegram')->label('Telegram')->placeholder('https://t.me/yourbot'),
-                Forms\Components\TextInput::make('social_whatsapp')->label('WhatsApp')->placeholder('+79123456789'),
             ])->columns(1)->collapsible(),
         ]);
     }

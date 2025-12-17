@@ -26,8 +26,6 @@ class ContactsContent extends Model
         'hours_weekend',
         'social_title',
         'social_vk',
-        'social_telegram',
-        'social_whatsapp',
         'is_published',
         'published_at',
         'created_by',
