@@ -257,7 +257,6 @@
               <tr>
                 <th class="px-6 py-4 text-left text-sm font-semibold">Услуга</th>
                 <th class="px-6 py-4 text-left text-sm font-semibold">Описание</th>
-                <th class="px-6 py-4 text-center text-sm font-semibold">Стоимость</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
@@ -275,15 +274,6 @@
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
                     {{ $service->description ?? '—' }}
-                  </td>
-                  <td class="px-6 py-4 text-center">
-                    @if($service->price)
-                      <span class="text-lg font-bold text-green-600 dark:text-green-400">
-                        {{ number_format($service->price, 0, ',', ' ') }} ₽
-                      </span>
-                    @else
-                      <span class="text-sm text-gray-500 dark:text-gray-400">По запросу</span>
-                    @endif
                   </td>
                 </tr>
               @endforeach

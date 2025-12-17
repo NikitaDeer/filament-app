@@ -41,27 +41,6 @@ class ServiceResource extends Resource
               ->maxLength(100),
           ])->columns(2),
 
-        Section::make('Ценообразование')
-          ->schema([
-            Select::make('pricing_type')
-              ->label('Тип цены')
-              ->options([
-                'fixed' => 'Фиксированная цена',
-                'hourly' => 'Руб/час',
-              ])
-              ->required()
-              ->default('fixed'),
-
-            Forms\Components\TextInput::make('price')
-              ->label('Цена')
-              ->numeric()
-              ->minValue(0)
-              ->step(0.1)
-              ->required()
-              ->helperText('Укажите стоимость в рублях.'),
-          ])->columns(2),
-
-
         Section::make('Описание услуги')
           ->schema([
         Forms\Components\Textarea::make('description')
@@ -83,10 +62,6 @@ class ServiceResource extends Resource
             Forms\Components\Toggle::make('is_popular')
               ->label('Популярная услуга')
               ->default(false),
-            Forms\Components\Toggle::make('is_calculator_option')
-              ->label('Доступна в калькуляторе')
-              ->default(false)
-              ->helperText('Если включено, услуга будет отображаться в калькуляторе стоимости'),
             Forms\Components\Select::make('icon')
               ->label('Иконка')
               ->options([
@@ -139,24 +114,6 @@ class ServiceResource extends Resource
           ->limit(30)
           ->tooltip(fn ($record) => $record->name),
 
-        Tables\Columns\TextColumn::make('price')
-          ->label('Цена')
-          ->formatStateUsing(function ($state, $record) {
-            if ($record && $record->pricing_type === 'hourly') {
-              return number_format((float) $state, 0, '.', ' ') . ' ₽/час';
-            }
-            return 'от ' . number_format((float) $state, 0, '.', ' ') . ' ₽';
-          })
-          ->sortable(),
-
-        Tables\Columns\BadgeColumn::make('pricing_type')
-          ->label('Тип цены')
-          ->colors([
-            'success' => 'fixed',
-            'warning' => 'hourly',
-          ])
-          ->formatStateUsing(fn ($state) => $state === 'hourly' ? 'Руб/час' : 'Фикс.'),
-
         Tables\Columns\ToggleColumn::make('is_published')
           ->label('Опубликовано')
           ->onColor('success')
@@ -166,11 +123,6 @@ class ServiceResource extends Resource
           ->label('Популярная')
           ->onColor('warning')
           ->offColor('secondary'),
-        
-        Tables\Columns\ToggleColumn::make('is_calculator_option')
-          ->label('В калькуляторе')
-          ->onColor('primary')
-          ->offColor('secondary'),
       ])
       ->filters([
         Tables\Filters\TernaryFilter::make('is_published')
@@ -178,12 +130,6 @@ class ServiceResource extends Resource
           ->placeholder('Все услуги')
           ->trueLabel('Опубликованные')
           ->falseLabel('Неопубликованные'),
-        
-        Tables\Filters\TernaryFilter::make('is_calculator_option')
-          ->label('В калькуляторе')
-          ->placeholder('Все услуги')
-          ->trueLabel('В калькуляторе')
-          ->falseLabel('Не в калькуляторе'),
         
         Tables\Filters\TernaryFilter::make('is_popular')
           ->label('Популярность')
@@ -208,18 +154,6 @@ class ServiceResource extends Resource
           ->action(fn ($records) => $records->each->update(['is_published' => false]))
           ->deselectRecordsAfterCompletion()
           ->color('danger'),
-        Tables\Actions\BulkAction::make('addToCalculator')
-          ->label('Добавить в калькулятор')
-          ->icon('heroicon-o-calculator')
-          ->action(fn ($records) => $records->each->update(['is_calculator_option' => true]))
-          ->deselectRecordsAfterCompletion()
-          ->color('primary'),
-        Tables\Actions\BulkAction::make('removeFromCalculator')
-          ->label('Убрать из калькулятора')
-          ->icon('heroicon-o-minus-circle')
-          ->action(fn ($records) => $records->each->update(['is_calculator_option' => false]))
-          ->deselectRecordsAfterCompletion()
-          ->color('warning'),
       ]);
   }
 
