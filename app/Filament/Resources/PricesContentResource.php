@@ -32,15 +32,60 @@ class PricesContentResource extends Resource
             Forms\Components\Section::make('Секции с ценами')->schema([
                 Forms\Components\TextInput::make('transport_section_title')->label('Заголовок "Транспорт"')->columnSpan(2),
                 Forms\Components\Textarea::make('transport_section_subtitle')->label('Подзаголовок')->rows(2)->columnSpan(2),
-                Forms\Components\FileUpload::make('transport_section_icon')->label('Иконка "Транспорт"')->image()->directory('prices-icons')->columnSpan(2),
+                Forms\Components\Select::make('transport_section_icon')
+                    ->label('Иконка "Транспорт"')
+                    ->options([
+                        'heroicon-o-truck' => 'Грузовик',
+                        'heroicon-o-clock' => 'Часы',
+                        'heroicon-o-currency-dollar' => 'Деньги',
+                        'heroicon-o-users' => 'Люди',
+                        'heroicon-o-archive' => 'Коробка',
+                        'heroicon-o-clipboard-check' => 'Список',
+                        'heroicon-o-shield-check' => 'Щит',
+                        'heroicon-o-star' => 'Звезда',
+                        'heroicon-o-lightning-bolt' => 'Молния',
+                        'heroicon-o-office-building' => 'Здание',
+                    ])
+                    ->default('heroicon-o-truck')
+                    ->columnSpan(2),
                 
                 Forms\Components\TextInput::make('options_section_title')->label('Заголовок "Опции"')->columnSpan(2),
                 Forms\Components\Textarea::make('options_section_subtitle')->label('Подзаголовок')->rows(2)->columnSpan(2),
-                Forms\Components\FileUpload::make('options_section_icon')->label('Иконка "Опции"')->image()->directory('prices-icons')->columnSpan(2),
+                Forms\Components\Select::make('options_section_icon')
+                    ->label('Иконка "Опции"')
+                    ->options([
+                        'heroicon-o-truck' => 'Грузовик',
+                        'heroicon-o-clock' => 'Часы',
+                        'heroicon-o-currency-dollar' => 'Деньги',
+                        'heroicon-o-users' => 'Люди',
+                        'heroicon-o-archive' => 'Коробка',
+                        'heroicon-o-clipboard-check' => 'Список',
+                        'heroicon-o-shield-check' => 'Щит',
+                        'heroicon-o-star' => 'Звезда',
+                        'heroicon-o-lightning-bolt' => 'Молния',
+                        'heroicon-o-office-building' => 'Здание',
+                    ])
+                    ->default('heroicon-o-clipboard-check')
+                    ->columnSpan(2),
                 
                 Forms\Components\TextInput::make('special_section_title')->label('Заголовок "Особые услуги"')->columnSpan(2),
                 Forms\Components\Textarea::make('special_section_subtitle')->label('Подзаголовок')->rows(2)->columnSpan(2),
-                Forms\Components\FileUpload::make('special_section_icon')->label('Иконка "Особые услуги"')->image()->directory('prices-icons')->columnSpan(2),
+                Forms\Components\Select::make('special_section_icon')
+                    ->label('Иконка "Особые услуги"')
+                    ->options([
+                        'heroicon-o-truck' => 'Грузовик',
+                        'heroicon-o-clock' => 'Часы',
+                        'heroicon-o-currency-dollar' => 'Деньги',
+                        'heroicon-o-users' => 'Люди',
+                        'heroicon-o-archive' => 'Коробка',
+                        'heroicon-o-clipboard-check' => 'Список',
+                        'heroicon-o-shield-check' => 'Щит',
+                        'heroicon-o-star' => 'Звезда',
+                        'heroicon-o-lightning-bolt' => 'Молния',
+                        'heroicon-o-office-building' => 'Здание',
+                    ])
+                    ->default('heroicon-o-star')
+                    ->columnSpan(2),
                 
                 Forms\Components\TextInput::make('conditions_section_title')->label('Заголовок "Условия"')->columnSpan(2),
                 Forms\Components\Textarea::make('conditions_section_description')->label('Описание')->rows(3)->columnSpan(2),
@@ -48,20 +93,27 @@ class PricesContentResource extends Resource
                 Forms\Components\Repeater::make('conditions_items')
                     ->label('Карточки условий')
                     ->schema([
-                        Forms\Components\FileUpload::make('icon')->label('Иконка')->image()->directory('prices-icons')->required(),
+                        Forms\Components\Select::make('icon')
+                            ->label('Иконка')
+                            ->options([
+                                'heroicon-o-truck' => 'Грузовик',
+                                'heroicon-o-clock' => 'Часы',
+                                'heroicon-o-currency-dollar' => 'Деньги',
+                                'heroicon-o-users' => 'Люди',
+                                'heroicon-o-archive' => 'Коробка',
+                                'heroicon-o-clipboard-check' => 'Список',
+                                'heroicon-o-shield-check' => 'Щит',
+                                'heroicon-o-star' => 'Звезда',
+                                'heroicon-o-lightning-bolt' => 'Молния',
+                                'heroicon-o-office-building' => 'Здание',
+                            ])
+                            ->required(),
                         Forms\Components\TextInput::make('title')->label('Заголовок')->required(),
                         Forms\Components\Textarea::make('description')->label('Описание')->required(),
                     ])
                     ->columns(3)
                     ->columnSpan(2),
             ])->columns(2)->collapsible(),
-
-            Forms\Components\Section::make('CTA Секция (Внизу)')->schema([
-                Forms\Components\TextInput::make('cta_title')->label('Заголовок')->required(),
-                Forms\Components\Textarea::make('cta_subtitle')->label('Подзаголовок')->rows(2),
-                Forms\Components\TextInput::make('cta_button_1_text')->label('Текст кнопки 1 (Калькулятор)')->default('Открыть калькулятор'),
-                Forms\Components\TextInput::make('cta_button_2_text')->label('Текст кнопки 2 (Контакты)')->default('Связаться с нами'),
-            ])->columns(1)->collapsible(),
         ]);
     }
 

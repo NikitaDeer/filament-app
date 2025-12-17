@@ -30,13 +30,7 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-12 text-center">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-          @if($icon = prices_image('transport_section_icon'))
-            <img src="{{ $icon }}" class="mr-2 inline-block h-8 w-8 text-green-600 object-contain" alt="">
-          @else
-            <svg class="mr-2 inline-block h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
-            </svg>
-          @endif
+          @svg(prices_content('transport_section_icon', 'heroicon-o-truck'), 'mr-2 inline-block h-8 w-8 text-green-600')
           {{ prices_content('transport_section_title', 'Аренда грузового транспорта') }}
         </h2>
         <p class="mt-2 text-gray-600 dark:text-gray-400">{{ prices_content('transport_section_subtitle', 'Стоимость аренды за километр и час работы') }}</p>
@@ -129,13 +123,7 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-12 text-center">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-          @if($icon = prices_image('options_section_icon'))
-            <img src="{{ $icon }}" class="mr-2 inline-block h-8 w-8 text-green-600 object-contain" alt="">
-          @else
-            <svg class="mr-2 inline-block h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-            </svg>
-          @endif
+          @svg(prices_content('options_section_icon', 'heroicon-o-clipboard-check'), 'mr-2 inline-block h-8 w-8 text-green-600')
           {{ prices_content('options_section_title', 'Дополнительные опции') }}
         </h2>
         <p class="mt-2 text-gray-600 dark:text-gray-400">{{ prices_content('options_section_subtitle', 'Услуги, которые можно добавить к вашему заказу') }}</p>
@@ -251,13 +239,7 @@
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-12 text-center">
           <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-            @if($icon = prices_image('special_section_icon'))
-                <img src="{{ $icon }}" class="mr-2 inline-block h-8 w-8 text-green-600 object-contain" alt="">
-            @else
-                <svg class="mr-2 inline-block h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
-                </svg>
-            @endif
+            @svg(prices_content('special_section_icon', 'heroicon-o-star'), 'mr-2 inline-block h-8 w-8 text-green-600')
             {{ prices_content('special_section_title', 'Специальные услуги') }}
           </h2>
           <p class="mt-2 text-gray-600 dark:text-gray-400">{{ prices_content('special_section_subtitle', 'Дополнительный сервис для комфортной перевозки') }}</p>
@@ -327,7 +309,7 @@
                   <div class="flex items-center">
                     <div class="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
                         @if(!empty($item['icon']))
-                            <img src="{{ Storage::url($item['icon']) }}" class="h-6 w-6 object-contain" alt="">
+                            @svg($item['icon'], 'h-6 w-6 text-green-600 dark:text-green-400')
                         @endif
                     </div>
                     <h3 class="ml-3 text-lg font-semibold text-gray-900 dark:text-white">{{ $item['title'] ?? '' }}</h3>
@@ -436,9 +418,9 @@
   {{-- CTA секция --}}
   <section class="bg-gradient-to-r from-green-600 to-green-700 py-16">
     <div class="container mx-auto px-4 text-center sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold text-white">{{ prices_content('cta_title', 'Рассчитайте точную стоимость прямо сейчас!') }}</h2>
+      <h2 class="text-3xl font-bold text-white">Рассчитайте точную стоимость прямо сейчас!</h2>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-green-100">
-        {{ prices_content('cta_subtitle', 'Воспользуйтесь нашим онлайн-калькулятором для расчета стоимости вашего заказа с учетом всех параметров') }}
+        Воспользуйтесь нашим онлайн-калькулятором для расчета стоимости вашего заказа с учетом всех параметров
       </p>
       <div class="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
         <a href="{{ route('calculator.index') }}"
@@ -446,14 +428,14 @@
           <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
           </svg>
-          {{ prices_content('cta_button_1_text', 'Открыть калькулятор') }}
+          Открыть калькулятор
         </a>
         <a href="{{ route('contacts.index') }}"
            class="inline-flex items-center justify-center rounded-lg border-2 border-white px-8 py-3 font-semibold text-white transition-colors hover:bg-green-800">
           <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
           </svg>
-          {{ prices_content('cta_button_2_text', 'Связаться с нами') }}
+          Связаться с нами
         </a>
       </div>
     </div>

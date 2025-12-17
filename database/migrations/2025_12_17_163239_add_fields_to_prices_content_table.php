@@ -19,12 +19,6 @@ return new class extends Migration
             
             // Conditions section cards (Repeater)
             $table->json('conditions_items')->nullable()->after('conditions_section_description');
-            
-            // CTA Section
-            $table->string('cta_title')->nullable()->after('conditions_items');
-            $table->text('cta_subtitle')->nullable()->after('cta_title');
-            $table->string('cta_button_1_text')->nullable()->after('cta_subtitle');
-            $table->string('cta_button_2_text')->nullable()->after('cta_button_1_text');
         });
     }
 
@@ -36,10 +30,6 @@ return new class extends Migration
                 'options_section_icon',
                 'special_section_icon',
                 'conditions_items',
-                'cta_title',
-                'cta_subtitle',
-                'cta_button_1_text',
-                'cta_button_2_text',
             ]);
         });
     }
