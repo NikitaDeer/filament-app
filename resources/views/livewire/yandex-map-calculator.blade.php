@@ -343,7 +343,7 @@
                   
                   @if($vehicle && $vehicle->additional_hour_price)
                     <p class="text-xs text-green-700 dark:text-green-400">
-                      ⏱️ Дополнительный час: {{ number_format($vehicle->additional_hour_price, 0) }} ₽
+                      ⏱️ Дополнительный час (с 11-й минуты каждого часа): {{ number_format($vehicle->additional_hour_price, 0) }} ₽
                     </p>
                   @endif
                 </div>
