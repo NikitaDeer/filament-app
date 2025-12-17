@@ -28,12 +28,6 @@ class ContactsContentResource extends Resource
                 Forms\Components\Textarea::make('hero_subtitle')->label('Подзаголовок')->required()->rows(2),
             ])->columns(1)->collapsible(),
             
-            Forms\Components\Section::make('Адрес')->schema([
-                Forms\Components\TextInput::make('address_title')->label('Заголовок')->placeholder('Наш офис'),
-                Forms\Components\TextInput::make('address_line1')->label('Адрес строка 1')->placeholder('г. Санкт-Петербург,'),
-                Forms\Components\TextInput::make('address_line2')->label('Адрес строка 2')->placeholder('Невский проспект, д. 28'),
-            ])->columns(1)->collapsible(),
-            
             Forms\Components\Section::make('Поддержка')->schema([
                 Forms\Components\TextInput::make('support_title')->label('Заголовок')->placeholder('Поддержка'),
                 Forms\Components\TextInput::make('support_phone')->label('Телефон')->placeholder('+7 (812) 123-45-67'),
@@ -44,11 +38,6 @@ class ContactsContentResource extends Resource
                 Forms\Components\TextInput::make('hours_title')->label('Заголовок')->placeholder('Режим работы'),
                 Forms\Components\TextInput::make('hours_weekdays')->label('Будни')->placeholder('Пн-Пт: 9:00-21:00'),
                 Forms\Components\TextInput::make('hours_weekend')->label('Выходные')->placeholder('Сб-Вс: 10:00-18:00'),
-            ])->columns(1)->collapsible(),
-            
-            Forms\Components\Section::make('Социальные сети')->schema([
-                Forms\Components\TextInput::make('social_title')->label('Заголовок')->placeholder('Мы в соцсетях'),
-                Forms\Components\TextInput::make('social_vk')->label('VK')->placeholder('https://vk.com/yourpage'),
             ])->columns(1)->collapsible(),
         ]);
     }
