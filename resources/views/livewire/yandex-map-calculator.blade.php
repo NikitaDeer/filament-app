@@ -324,17 +324,28 @@
                 </div>
               @endif
 
-              @if($services_cost > 0)
-                <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                  <span>Дополнительные услуги:</span>
-                  <span class="font-medium text-gray-900 dark:text-white">{{ number_format($services_cost, 0) }} ₽</span>
-                </div>
-              @endif
-
               <div class="border-t border-gray-300 pt-3 dark:border-gray-600">
                 <div class="flex justify-between">
                   <span class="text-lg font-bold text-gray-900 dark:text-white">Итого:</span>
                   <span class="text-2xl font-bold text-green-600 dark:text-green-400">{{ number_format($total_cost, 0) }} ₽</span>
+                </div>
+                
+                <div class="mt-3 space-y-2 border-t border-gray-200 pt-3 dark:border-gray-700">
+                  <p class="text-xs text-gray-500 dark:text-gray-400">
+                    ℹ️ Указанная стоимость является предварительной и может измениться после уточнения деталей заказа
+                  </p>
+                  
+                  @if(count($selected_services) > 0)
+                    <p class="text-xs text-blue-700 dark:text-blue-400">
+                      💡 Стоимость каждой дополнительной услуги согласуется индивидуально
+                    </p>
+                  @endif
+                  
+                  @if($vehicle && $vehicle->additional_hour_price)
+                    <p class="text-xs text-green-700 dark:text-green-400">
+                      ⏱️ Дополнительный час: {{ number_format($vehicle->additional_hour_price, 0) }} ₽
+                    </p>
+                  @endif
                 </div>
               </div>
             </div>
