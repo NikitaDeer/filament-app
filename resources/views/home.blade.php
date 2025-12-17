@@ -117,9 +117,9 @@
   </section>
 
   {{-- Yandex Map Calculator Section --}}
-  <section id="calculator" class="bg-gray-50 py-16 dark:bg-neutral-900 sm:py-24">
+  <section id="calculator" class="bg-gray-50 py-8 dark:bg-neutral-900 sm:py-16">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-12 text-center text-3xl font-bold sm:text-4xl">
+      <h2 class="mb-8 text-center text-3xl font-bold text-green-600 dark:text-green-500 sm:mb-12 sm:text-4xl">
         Онлайн-калькулятор
       </h2>
       @livewire('yandex-map-calculator')
@@ -132,7 +132,7 @@
   <section class="bg-base-100 py-16 dark:bg-dark-base-100 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-12 text-center">
-        <h2 class="text-3xl font-bold sm:text-4xl">{{ home_content('advantages_title', 'Почему выбирают нас') }}</h2>
+        <h2 class="text-3xl font-bold text-green-600 dark:text-green-500 sm:text-4xl">{{ home_content('advantages_title', 'Почему выбирают нас') }}</h2>
         <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
           {{ home_content('advantages_subtitle', 'Мы предоставляем качественные услуги по доступным ценам') }}
         </p>
@@ -191,7 +191,7 @@
   <section class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <h2 class="text-3xl font-bold text-gray-800 dark:text-white sm:text-4xl">{{ home_content('about_title', 'О компании СПБ Карго') }}</h2>
+        <h2 class="text-3xl font-bold text-green-600 dark:text-green-500 sm:text-4xl">{{ home_content('about_title', 'О компании СПБ Карго') }}</h2>
         <p class="mx-auto mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
           {{ home_content('about_subtitle', 'Мы специализируемся на грузоперевозках в Санкт-Петербурге и Ленинградской области. Наша миссия — сделать перевозку грузов простой, надежной и доступной для каждого.') }}
         </p>
@@ -252,7 +252,7 @@
   <section class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-12 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">{{ home_content('fleet_title', 'Наш автопарк') }}</h2>
+        <h2 class="text-3xl font-bold text-green-600 dark:text-green-500 sm:text-4xl">{{ home_content('fleet_title', 'Наш автопарк') }}</h2>
         <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
           {{ home_content('fleet_subtitle', 'Современный парк грузовых автомобилей для перевозки любых грузов. От компактных газелей до крупнотоннажных фур.') }}
         </p>
@@ -391,7 +391,7 @@
   <section class="bg-gray-50 py-16 dark:bg-neutral-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-12 text-center">
-        <h2 class="text-3xl font-bold sm:text-4xl">{{ home_content('services_title', 'Наши услуги') }}</h2>
+        <h2 class="text-3xl font-bold text-green-600 dark:text-green-500 sm:text-4xl">{{ home_content('services_title', 'Наши услуги') }}</h2>
         <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
           {{ home_content('services_subtitle', 'Предоставляем полный спектр услуг по грузоперевозкам для частных лиц и малого бизнеса в Санкт-Петербурге и области.') }}
         </p>
