@@ -10,7 +10,7 @@
             rel="noopener noreferrer"
             class="text-4xl font-semibold text-gray-300 hover:text-primary-500 transition"
         >
-            СПБ Карго
+            Мобилиум
         </a>
     @endif
 

@@ -10,7 +10,7 @@
               </path>
             </svg>
           </div>
-          <h1 class="ml-3 text-xl font-bold text-gray-800 dark:text-white">СПБ Карго</h1>
+          <h1 class="ml-3 text-xl font-bold text-gray-800 dark:text-white">Мобилиум</h1>
         </div>
         <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
           Надежные грузоперевозки в Санкт-Петербурге и Ленинградской области. Работаем с частными лицами и малым
@@ -63,7 +63,7 @@
       </div>
     </div>
     <div class="mt-12 border-t pt-8 text-center text-sm text-gray-400">
-      <p>&copy; {{ date('Y') }} СПБ Карго. Все права защищены.</p>
+      <p>&copy; {{ date('Y') }} Мобилиум. Все права защищены.</p>
     </div>
   </div>
 </footer>

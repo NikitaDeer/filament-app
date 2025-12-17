@@ -3,7 +3,7 @@
   <main class="bg-white py-16 dark:bg-gray-900 sm:py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <h1 class="text-4xl font-bold text-gray-800 dark:text-white sm:text-5xl">{{ about_content('hero_title', 'О компании СПБ Карго') }}</h1>
+        <h1 class="text-4xl font-bold text-gray-800 dark:text-white sm:text-5xl">{{ about_content('hero_title', 'О компании Мобилиум') }}</h1>
         <p class="mx-auto mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
           {{ about_content('hero_subtitle', 'Мы специализируемся на грузоперевозках в Санкт-Петербурге и Ленинградской области. Наша миссия — сделать перевозку грузов простой, надежной и доступной для каждого.') }}
         </p>
@@ -65,7 +65,7 @@
             </svg>
           </div>
           <h3 class="mt-4 text-xl font-bold">Надежность</h3>
-          <p class="mt-2 text-gray-500 dark:text-gray-400">Страхование груза и гарантия сохранности. Работаем официально
+          <p class="mt-2 text-gray-500 dark:text-gray-400">Гарантия сохранности груза. Работаем официально
             с договором.</p>
         </div>
         <div class="rounded-lg bg-gray-50 p-8 text-center dark:bg-gray-800">

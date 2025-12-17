@@ -12,7 +12,7 @@
             </svg>
           </div>
           <div class="ml-3">
-            <h1 class="text-xl font-bold text-gray-800 dark:text-white">СПБ Карго</h1>
+            <h1 class="text-xl font-bold text-gray-800 dark:text-white">Мобилиум</h1>
             <p class="text-sm text-gray-500 dark:text-gray-400">Грузоперевозки</p>
           </div>
         </a>
