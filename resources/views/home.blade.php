@@ -5,7 +5,7 @@
     <div class="container mx-auto grid grid-cols-1 items-center gap-12 px-6 py-16 lg:grid-cols-2 lg:py-24">
       <!-- Левая колонка: Текст и CTA -->
       <div>
-        <h1 class="text-4xl font-bold text-gray-800 dark:text-white lg:text-5xl">
+        <h1 class="text-4xl font-bold text-green-600 dark:text-white lg:text-5xl">
           {!! home_content('hero_title', 'Надежные <span class="text-green-600 dark:text-green-500">грузоперевозки</span> в СПБ и ЛО') !!}
         </h1>
         <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
