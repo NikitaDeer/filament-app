@@ -62,6 +62,20 @@ if (!function_exists('prices_content')) {
     }
 }
 
+if (!function_exists('prices_image')) {
+    function prices_image($field, $default = '')
+    {
+        $content = PricesContent::getPublished();
+        $imagePath = $content?->$field;
+        
+        if ($imagePath) {
+            return \Storage::url($imagePath);
+        }
+        
+        return $default;
+    }
+}
+
 if (!function_exists('contacts_content')) {
     function contacts_content($field, $default = '')
     {

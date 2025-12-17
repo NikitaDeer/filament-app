@@ -18,12 +18,20 @@ class PricesContent extends Model
         'hero_subtitle',
         'transport_section_title',
         'transport_section_subtitle',
+        'transport_section_icon',
         'options_section_title',
         'options_section_subtitle',
+        'options_section_icon',
         'special_section_title',
         'special_section_subtitle',
+        'special_section_icon',
         'conditions_section_title',
         'conditions_section_description',
+        'conditions_items',
+        'cta_title',
+        'cta_subtitle',
+        'cta_button_1_text',
+        'cta_button_2_text',
         'is_published',
         'published_at',
         'created_by',
@@ -32,6 +40,7 @@ class PricesContent extends Model
     protected $casts = [
         'is_published' => 'boolean',
         'published_at' => 'datetime',
+        'conditions_items' => 'array',
     ];
 
     public function creator()
