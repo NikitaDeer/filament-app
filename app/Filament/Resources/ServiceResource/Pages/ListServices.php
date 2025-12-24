@@ -20,8 +20,6 @@ class ListServices extends ListRecords
 
     protected function getHeaderWidgets(): array
     {
-        return [
-            ServiceResource\Widgets\ServiceStatsOverview::class,
-        ];
+        return [];
     }
 }
