@@ -360,8 +360,8 @@ class YandexMapCalculator extends Component
       return;
     }
 
-    $services = Service::whereIn('id', $this->selected_services)->get();
-    $this->services_cost = $services->sum('price');
+    // Стоимость услуг теперь всегда 0, так как "будет лично согласовываться"
+    $this->services_cost = 0;
   }
 
   /**
@@ -634,7 +634,6 @@ class YandexMapCalculator extends Component
   {
     $vehicles = Vehicle::active()->ordered()->get();
     $services = Service::where('is_published', true)
-                       ->where('is_calculator_option', true)
                        ->get();
 
     $loaderOption = PricingOption::ofType('грузчики')->active()->first();
