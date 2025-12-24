@@ -20,7 +20,7 @@ class HomeContentSeeder extends Seeder
             'hero_subtitle' => 'Быстро, безопасно и по честной цене. Рассчитайте стоимость доставки за 30 секунд с помощью нашего калькулятора.',
             'hero_feature1' => 'Работаем 24/7',
             'hero_feature2' => 'Опытные грузчики',
-            'hero_feature3' => 'Страхование груза',
+            'hero_feature3' => 'Бережная транспортировка',
             'hero_feature4' => 'Фиксированные цены',
             'hero_image' => null,
             
@@ -38,7 +38,7 @@ class HomeContentSeeder extends Seeder
             'advantages_adv1_title' => 'Скорость и сроки',
             'advantages_adv1_description' => 'Гарантируем доставку в установленные сроки благодаря отлаженной логистике.',
             'advantages_adv2_title' => 'Безопасность груза',
-            'advantages_adv2_description' => 'Полная материальная ответственность и страхование каждого отправления.',
+            'advantages_adv2_description' => 'Полная материальная ответственность и гарантия сохранности каждого отправления.',
             'advantages_adv3_title' => 'Поддержка 24/7',
             'advantages_adv3_description' => 'Наши менеджеры всегда на связи и готовы ответить на любые ваши вопросы.',
             
