@@ -38,7 +38,7 @@ class HomeContentSeeder extends Seeder
             'advantages_adv1_title' => 'Скорость и сроки',
             'advantages_adv1_description' => 'Гарантируем доставку в установленные сроки благодаря отлаженной логистике.',
             'advantages_adv2_title' => 'Безопасность груза',
-            'advantages_adv2_description' => 'Полная материальная ответственность и гарантия сохранности каждого отправления.',
+            'advantages_adv2_description' => 'Мы бережно относимся к каждому грузу, используем надежную упаковку и правильные крепления.',
             'advantages_adv3_title' => 'Поддержка 24/7',
             'advantages_adv3_description' => 'Наши менеджеры всегда на связи и готовы ответить на любые ваши вопросы.',
             
